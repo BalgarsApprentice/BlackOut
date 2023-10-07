@@ -28,8 +28,8 @@ TileMap groundTiles;
 const int SCREEN_WIDTH = 768;
 const int SCREEN_HEIGHT = 576;
 
-Player player;
 bool isDark = true;
+Player player;
 Level level1;
 Level level2;
 Level level3;
