@@ -1,6 +1,8 @@
 #pragma once
 
-class Light
+#include <Object.hpp>
+
+class Light : public Object
 {
 public:
 	Light();
