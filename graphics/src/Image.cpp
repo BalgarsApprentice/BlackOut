@@ -158,9 +158,9 @@ void Image::copy( const Image& srcImage, std::optional<Math::RectI> srcRect, std
     srcAABB.clamp( srcImage.m_AABB );
 
     // Source width
-    const int sW = static_cast<int>( srcAABB.width() );
+    const int sW = static_cast<int>( srcAABB.width() ) + 1;
     // Source height
-    const int sH = static_cast<int>( srcAABB.height() );
+    const int sH = static_cast<int>( srcAABB.height() ) + 1;
 
     // If the destination AABB doesn't intersect with this image bounds...
     // In other words, the destination bounds is completely offscreen.
@@ -168,17 +168,17 @@ void Image::copy( const Image& srcImage, std::optional<Math::RectI> srcRect, std
         return;
 
     // Destination width
-    const int dW = static_cast<int>( dstAABB.width() );
+    const int dW = static_cast<int>( dstAABB.width() ) + 1;
     // Destination height
-    const int dH = static_cast<int>( dstAABB.height() );
+    const int dH = static_cast<int>( dstAABB.height() ) + 1;
 
     // Clamp the dstAABB to the bounds of this image (to prevent writing outside of this image's bounds).
     AABB dstImage = dstAABB.clamped( m_AABB );
 
     // Clamped image width.
-    const int iW = static_cast<int>( dstImage.width() );
+    const int iW = static_cast<int>( dstImage.width() ) + 1;
     // Clamped image height.
-    const int iH = static_cast<int>( dstImage.height() );
+    const int iH = static_cast<int>( dstImage.height() ) + 1;
     // Clamped image area
     const int iA = iW * iH;
 
