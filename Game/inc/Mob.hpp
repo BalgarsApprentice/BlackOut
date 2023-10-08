@@ -2,6 +2,8 @@
 
 #include <glm/vec2.hpp>
 #include <Graphics/Sprite.hpp>
+#include <Graphics/ResourceManager.hpp>
+#include <Graphics/SpriteAnim.hpp>
 
 class Mob
 {
@@ -20,9 +22,7 @@ public:
 	const glm::vec2& getPosition() const;
 
 private:
-//	glm::vec2 position{ 352.0f, 256.0f };
 	Graphics::Sprite sprite;
-//	float playerSpeed{ 60.0f };
 
 protected:
 	glm::vec2 position{ 352.0f, 256.0f };

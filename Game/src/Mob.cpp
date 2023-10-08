@@ -13,8 +13,7 @@ Mob::Mob(const glm::vec2& pos, const Sprite& _sprite)
 
 void Mob::update(float deltaTime)
 {
-	//position.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
-	//position.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
+	
 }
 
 void Mob::draw(Image& image)

@@ -24,36 +24,15 @@ Window window;
 Camera2D camera;
 Image image1;
 Image image2;
-Sprite whiteLight;
-SpriteAnim walkAnim;
+Sprite flashlight;
+//SpriteAnim walkAnim;
 SpriteAnim lightAnim;
 TileMap groundTiles;
-
-int map[432] = {
-    7, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
-    2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5
-};
 
 const int SCREEN_WIDTH = 768;
 const int SCREEN_HEIGHT = 576;
 
-bool isDark = false;
+bool isDark = true;
 Player player;
 Level level1;
 Level level2;
@@ -66,6 +45,8 @@ void InitGame()
 
 int main()
 {
+    player.playerSetup();
+
     image1.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
     image2.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -75,26 +56,25 @@ int main()
 
     camera.setZoom(2.0f);
 
-    auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
+    //auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
     auto groundtileSprites = ResourceManager::loadSpriteSheet("assets/textures/groundtiles.png", 32, 32, 0, 0);
     auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
 
-    walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
+    //walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
     lightAnim = SpriteAnim{ lightSprites, 4, {} };
 
     groundTiles = TileMap{ groundtileSprites, 24, 18 };
 
-    auto whiteSpaceImage = ResourceManager::loadImage("assets/textures/whitesquare.png");
+    auto whiteSpaceImage = ResourceManager::loadImage("assets/textures/wideflashlight.png");
 
-    whiteLight = Sprite(whiteSpaceImage);
+    flashlight = Sprite(whiteSpaceImage, BlendMode::AlphaBlend);
 
     int k = 0;
     for (int i = 0; i < 18; ++i)
     {
         for (int j = 0; j < 24; ++j)
         {
-            groundTiles(i, j) = map[k++];
-            //groundTiles(i, j) = (i + groundtileSprites->getNumColumns() + j) % groundtileSprites->getNumSprites();
+            groundTiles(i, j) = level1.getMap()[k++];
         }
     }
 
@@ -111,7 +91,7 @@ int main()
         Input::update();
 
         player.update(timer.elapsedSeconds());
-        walkAnim.update(timer.elapsedSeconds());
+        //player.getSpriteAnim().update(timer.elapsedSeconds());
         lightAnim.update(timer.elapsedSeconds());
 
         //Render Loop
@@ -121,6 +101,7 @@ int main()
         if (isDark)
         {
             image2.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
+            image2.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
         }
 
         groundTiles.draw(image1);
@@ -130,7 +111,7 @@ int main()
             image1.copy(image2, {}, {}, BlendMode::MultiplicativeBlend);
         }
 
-        image1.drawSprite(walkAnim, player.getPosition().x, player.getPosition().y);
+        image1.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
 
         image1.drawText(Font::Default, fps, 10, 10, Color::White);
 

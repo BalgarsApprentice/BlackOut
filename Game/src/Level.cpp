@@ -2,3 +2,8 @@
 
 
 Level::Level() = default;
+
+const int* Level::getMap() const
+{
+	return map;
+}

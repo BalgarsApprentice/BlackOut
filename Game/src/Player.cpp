@@ -3,31 +3,17 @@
 
 using namespace Graphics;
 
-//Player::Player() = default;
+Player::Player() = default;
 
-//Player::Player(const glm::vec2& pos, const Sprite& _sprite)
-//	: position{ pos }
-//	, sprite{ _sprite }
-//{
-//}
-//
+void Player::playerSetup()
+{
+	auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
+	walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
+}
+
 void Player::update(float deltaTime)
 {
 	position.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
 	position.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
+	walkAnim.update(deltaTime);
 }
-//
-//void Player::draw(Image& image)
-//{
-//	image.drawSprite(sprite, position.x, position.y);
-//}
-//
-//void Player::setPosition(const glm::vec2& pos)
-//{
-//	position = pos;
-//}
-//
-//const glm::vec2& Player::getPosition() const
-//{
-//	return position;
-//}
