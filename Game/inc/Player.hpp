@@ -21,6 +21,8 @@ public:
 private:
 	Graphics::SpriteAnim walkAnim;
 
+	void setAnimState();
+
 protected:
 
 };

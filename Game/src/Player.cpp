@@ -15,5 +15,11 @@ void Player::update(float deltaTime)
 {
 	position.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
 	position.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
+	setAnimState();
 	walkAnim.update(deltaTime);
+}
+
+void Player::setAnimState()
+{
+
 }

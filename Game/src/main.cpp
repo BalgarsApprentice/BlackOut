@@ -10,17 +10,14 @@
 #include <Graphics/ResourceManager.hpp>
 #include <Graphics/BlendMode.hpp>
 #include <Graphics/Input.hpp>
-#include <Math/Camera2D.hpp>
 
 #include <fmt/core.h>
 
 #include <iostream>
 
 using namespace Graphics;
-using namespace Math;
 
 Window window;
-Camera2D camera;
 Image image1;
 Image image2;
 Sprite flashlight;
@@ -37,7 +34,7 @@ Level level3;
 
 void InitGame()
 {
-    player.setPosition({ (SCREEN_WIDTH / 2 - 32), (SCREEN_HEIGHT / 2 - 32)});
+    player.setPosition({ (SCREEN_WIDTH / 2 - 16), (SCREEN_HEIGHT / 2 - 16)});
 }
 
 int main()
@@ -51,8 +48,6 @@ int main()
     window.create(L"Out of Sight, Out of Mind", SCREEN_WIDTH, SCREEN_HEIGHT);
     window.show();
     //window.setFullscreen(true);
-
-    camera.setZoom(2.0f);
 
     auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
 
