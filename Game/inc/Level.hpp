@@ -1,13 +1,18 @@
 #pragma once
 
 #include <Graphics/ResourceManager.hpp>
+#include <Graphics/TileMap.hpp>
 
 class Level
 {
 public:
 	Level();
 
-	const int* getMap() const;
+    void levelSetup();
+
+	//const int* getMap() const;
+
+    Graphics::TileMap getTileMap();
 
 private:
 	int map[432] = {
@@ -30,4 +35,6 @@ private:
     11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1,
     2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5
     };
+
+    Graphics::TileMap groundTiles;
 };

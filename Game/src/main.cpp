@@ -5,7 +5,6 @@
 #include <Graphics/Image.hpp>
 #include <Graphics/Sprite.hpp>
 #include <Graphics/SpriteAnim.hpp>
-#include <Graphics/TileMap.hpp>
 #include <Graphics/Timer.hpp>
 #include <Graphics/Font.hpp>
 #include <Graphics/ResourceManager.hpp>
@@ -25,9 +24,7 @@ Camera2D camera;
 Image image1;
 Image image2;
 Sprite flashlight;
-//SpriteAnim walkAnim;
 SpriteAnim lightAnim;
-TileMap groundTiles;
 
 const int SCREEN_WIDTH = 768;
 const int SCREEN_HEIGHT = 576;
@@ -46,6 +43,7 @@ void InitGame()
 int main()
 {
     player.playerSetup();
+    level1.levelSetup();
 
     image1.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
     image2.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -56,27 +54,13 @@ int main()
 
     camera.setZoom(2.0f);
 
-    //auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
-    auto groundtileSprites = ResourceManager::loadSpriteSheet("assets/textures/groundtiles.png", 32, 32, 0, 0);
     auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
 
-    //walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
     lightAnim = SpriteAnim{ lightSprites, 4, {} };
-
-    groundTiles = TileMap{ groundtileSprites, 24, 18 };
 
     auto whiteSpaceImage = ResourceManager::loadImage("assets/textures/wideflashlight.png");
 
     flashlight = Sprite(whiteSpaceImage, BlendMode::AlphaBlend);
-
-    int k = 0;
-    for (int i = 0; i < 18; ++i)
-    {
-        for (int j = 0; j < 24; ++j)
-        {
-            groundTiles(i, j) = level1.getMap()[k++];
-        }
-    }
 
     Timer       timer;
     double      totalTime = 0.0;
@@ -91,7 +75,6 @@ int main()
         Input::update();
 
         player.update(timer.elapsedSeconds());
-        //player.getSpriteAnim().update(timer.elapsedSeconds());
         lightAnim.update(timer.elapsedSeconds());
 
         //Render Loop
@@ -104,7 +87,7 @@ int main()
             image2.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
         }
 
-        groundTiles.draw(image1);
+        level1.getTileMap().draw(image1);
 
         if (isDark)
         {
