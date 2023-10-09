@@ -61,3 +61,31 @@ void TileMap::draw( Image& image ) const
         y += spriteHeight;
     }
 }
+
+void TileMap::drawOffset(Image& image, int horizontal, int vertical) const
+{
+    if (!spriteSheet)
+        return;
+
+    const int spriteWidth = static_cast<int>(spriteSheet->getSpriteWidth());
+    const int spriteHeight = static_cast<int>(spriteSheet->getSpriteHeight());
+    const int numSprites = static_cast<int>(spriteSheet->getNumSprites());
+
+    int x = horizontal * spriteWidth;
+    int y = vertical * spriteHeight;
+    int z = 0;
+    for (uint32_t i = 0u; i < rows; ++i)
+    {
+        x = horizontal * spriteWidth;
+        for (uint32_t j = 0; j < columns; ++j)
+        {
+            const int spriteId = spriteGrid[i * columns + j];
+            if (spriteId >= 0 && spriteId < numSprites)
+            {
+                image.drawSprite(spriteSheet->getSprite(spriteId), x, y);
+            }
+            x += spriteWidth;
+        }
+        y += spriteHeight;
+    }
+}

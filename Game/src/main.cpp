@@ -1,5 +1,6 @@
 #include <Player.hpp>
 #include <Level.hpp>
+#include <GameManager.hpp>
 
 #include <Graphics/Window.hpp>
 #include <Graphics/Image.hpp>
@@ -18,16 +19,16 @@
 using namespace Graphics;
 
 Window window;
-Image image1;
-Image image2;
+Image canvas;
+Image darkness;
 Sprite flashlight;
 SpriteAnim lightAnim;
 
 const int SCREEN_WIDTH = 768;
 const int SCREEN_HEIGHT = 576;
 
-bool isDark = true;
-Player player;
+bool isDark = 0;
+Player player{ {352.0f, 256.0f}, {} };
 Level level1;
 Level level2;
 Level level3;
@@ -39,13 +40,16 @@ void InitGame()
 
 int main()
 {
+    //Load Files
     player.playerSetup();
     level1.levelSetup();
 
-    image1.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    image2.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    window.create(L"Out of Sight, Out of Mind", SCREEN_WIDTH, SCREEN_HEIGHT);
+    GameManager::instance().setImages(&canvas, &darkness);
+
+    window.create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);
     window.show();
     //window.setFullscreen(true);
 
@@ -68,32 +72,60 @@ int main()
 
         //Update the input state
         Input::update();
+        GameManager::instance().updateGameObjects(timer.elapsedSeconds());
 
-        player.update(timer.elapsedSeconds());
+        //player.update(timer.elapsedSeconds());
         lightAnim.update(timer.elapsedSeconds());
 
+        {
+            //auto aabb = player.getAABB();
+            //glm::vec2 correction{0};
+            //if (aabb.min.x < 0)
+            //{
+            //    correction.x = -aabb.min.x;
+            //}
+            //if (aabb.min.y < 0)
+            //{
+            //    correction.y = -aabb.min.y;
+            //}
+            //if (aabb.max.x >= canvas.getWidth())
+            //{
+            //    correction.x = canvas.getWidth() - aabb.max.x;
+            //}
+            //if (aabb.max.y >= canvas.getHeight())
+            //{
+            //    correction.y = canvas.getHeight() - aabb.max.y;
+            //}
+
+            ////Apply correction
+            //player.translate(correction);
+        }
+
         //Render Loop
-        image1.clear(Color::Blue);
-        image2.clear(Color::Black);
+        canvas.clear(Color::Blue);
+        darkness.clear(Color::Black);
 
         if (isDark)
         {
-            image2.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
-            image2.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
+            darkness.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
+            darkness.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
         }
 
-        level1.getTileMap().draw(image1);
+        level1.getTileMap().drawOffset(canvas, level1.getHorizontalOffset(), level1.getVerticalOffset());
 
         if (isDark)
         {
-            image1.copy(image2, {}, {}, BlendMode::MultiplicativeBlend);
+            canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
         }
 
-        image1.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
+        canvas.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
+#if _DEBUG
+        canvas.drawAABB(player.getBox().getAABB(player.getPosition()), Color::Yellow, {}, FillMode::WireFrame);
+#endif
 
-        image1.drawText(Font::Default, fps, 10, 10, Color::White);
+        canvas.drawText(Font::Default, fps, 10, 10, Color::White);
 
-        window.present(image1);
+        window.present(canvas);
 
         Event e;
         while (window.popEvent(e))
@@ -113,14 +145,7 @@ int main()
                     window.toggleVSync();
                     break;
                 case KeyCode::B:
-                    if (isDark)
-                    {
-                        isDark = false;
-                    }
-                    else
-                    {
-                        isDark = true;
-                    }
+                    isDark = !isDark;
                     break;
                 }
 

@@ -7,15 +7,15 @@ Level::Level() = default;
 void Level::levelSetup()
 {
 	auto groundtileSprites = ResourceManager::loadSpriteSheet("assets/textures/groundtiles.png", 32, 32, 0, 0);
-	groundTiles = TileMap{ groundtileSprites, 24, 18 };
+	groundTiles = TileMap{ groundtileSprites, numRows, numColumns };
 }
 
-Graphics::TileMap Level::getTileMap()
+Graphics::TileMap& Level::getTileMap()
 {
     int k = 0;
-    for (int i = 0; i < 18; ++i)
+    for (int i = 0; i < numColumns; ++i)
     {
-        for (int j = 0; j < 24; ++j)
+        for (int j = 0; j < numRows; ++j)
         {
             groundTiles(i, j) = map[k++];
         }
@@ -23,9 +23,3 @@ Graphics::TileMap Level::getTileMap()
 
     return groundTiles;
 }
-
-
-//const int* Level::getMap() const
-//{
-//	return map;
-//}

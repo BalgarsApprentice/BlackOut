@@ -121,6 +121,8 @@ public:
     /// <param name="image">The image to draw the tile map to.</param>
     void draw( Image& image ) const;
 
+    void drawOffset(Image& image, int horizontal, int vertical) const;
+
 private:
     // The number of columns in the tile map.
     uint32_t columns = 0u;
