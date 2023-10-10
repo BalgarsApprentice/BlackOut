@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\BoxCollider.cpp" />
     <ClCompile Include="src\Flashlight.cpp" />
+    <ClCompile Include="src\GameManager.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Level.cpp" />
     <ClCompile Include="src\Light.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="src\Mob.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\WindowDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\BoxCollider.hpp" />
@@ -31,6 +33,7 @@
     <ClInclude Include="inc\Mob.hpp" />
     <ClInclude Include="inc\Object.hpp" />
     <ClInclude Include="inc\Player.hpp" />
+    <ClInclude Include="inc\WindowDisplay.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

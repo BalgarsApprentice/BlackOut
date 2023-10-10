@@ -38,7 +38,7 @@ void Player::update(float deltaTime)
 	walkAnim.update(deltaTime);
 }
 
-void draw()
+void Player::draw()
 {
 
 }

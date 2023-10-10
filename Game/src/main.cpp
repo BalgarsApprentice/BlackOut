@@ -19,13 +19,14 @@
 using namespace Graphics;
 
 Window window;
+Window* prtWindow = &window;
 Image canvas;
 Image darkness;
 Sprite flashlight;
 SpriteAnim lightAnim;
 
-const int SCREEN_WIDTH = 768;
-const int SCREEN_HEIGHT = 576;
+//const int SCREEN_WIDTH = 768;
+//const int SCREEN_HEIGHT = 576;
 
 bool isDark = 0;
 Player player{ {352.0f, 256.0f}, {} };
@@ -35,22 +36,25 @@ Level level3;
 
 void InitGame()
 {
-    player.setPosition({ (SCREEN_WIDTH / 2 - 16), (SCREEN_HEIGHT / 2 - 16)});
+    //player.setPosition({ (SCREEN_WIDTH / 2 - 16), (SCREEN_HEIGHT / 2 - 16)});
 }
 
 int main()
 {
+    //Initialize Game
+    GameManager::instance().initializeGame(prtWindow);
+
     //Load Files
     player.playerSetup();
     level1.levelSetup();
 
-    canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    //canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    //darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    GameManager::instance().setImages(&canvas, &darkness);
+    //GameManager::instance().setImages(&canvas, &darkness);
 
-    window.create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);
-    window.show();
+    //window.create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);
+    //window.show();
     //window.setFullscreen(true);
 
     auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
@@ -125,7 +129,7 @@ int main()
 
         canvas.drawText(Font::Default, fps, 10, 10, Color::White);
 
-        window.present(canvas);
+        window.present(GameManager::instance().getCanvas());
 
         Event e;
         while (window.popEvent(e))
