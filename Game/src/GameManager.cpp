@@ -9,53 +9,74 @@ void GameManager::initializeGame(Window* prtWindow)
 
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	level.levelSetup();
 }
 
 void GameManager::addGameObject(GameObject* object)
 {
-	arrayOfPointers[endOfArray++] = object;
+	arrayOfprtObjects[endOfObjectArray++] = object;
+}
+
+void GameManager::addLight(Light* light)
+{
+	arrayOfprtLights[endOfLightArray++] = light;
 }
 
 void GameManager::updateGameObjects(float deltaTime)
 {
-	for (int i = 0; i < endOfArray; ++i)
+	for (int i = 0; i < endOfObjectArray; ++i)
 	{
-		arrayOfPointers[i]->update(deltaTime);
+		arrayOfprtObjects[i]->update(deltaTime);
 	}
+
+	drawGameObjects();
 }
 
 void GameManager::drawGameObjects()
 {
-	for (int i = 1; i < endOfArray; ++i) //start with 1 because 0 should be the player
+	canvas.clear(Color::Blue);
+	darkness.clear(Color::Black);
+
+	for (int i = 1; i < endOfObjectArray; ++i) //start with 1 because 0 should be the player
 	{
-		arrayOfPointers[i]->draw(*canvas);
+		arrayOfprtObjects[i]->draw();
 	}
 
-	if (isDark)
-	{
-		darkness.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
-		darkness.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
-	}
+	level.getTileMap().drawOffset(canvas, level.getHorizontalOffset(), level.getVerticalOffset());
 
-	level1.getTileMap().drawOffset(canvas, level1.getHorizontalOffset(), level1.getVerticalOffset());
-
+#if _DEBUG
 	if (isDark)
 	{
 		canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
 	}
+#else
+	canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
+#endif
 
-	arrayOfPointers[0]->draw(darkness);
+	arrayOfprtObjects[0]->draw(); //drawing the player last
+
+	//canvas.drawText(Font::Default, fps, 10, 10, Color::White);
 }
 
 void GameManager::clearGameObjects()
 {
-	for (int i = 1; i < endOfArray; ++i) //start with 1 because 0 should be the player
+	for (int i = 1; i < endOfObjectArray; ++i) //start with 1 because 0 should be the player
 	{
-		arrayOfPointers[i] = nullptr;
+		arrayOfprtObjects[i] = nullptr;
 	}
 }
 
-const Image GameManager::getCanvas() const
+GraphicsFlyweight& GameManager::getGraphicsAdr()
+{
+	return graphicsFlyweight;
+}
+
+const void GameManager::flipDarkness()
+{
+	isDark = !isDark;
+}
+Image& GameManager::getCanvas()
 {
 	return canvas;
 }

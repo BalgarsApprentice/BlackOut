@@ -1,9 +1,10 @@
 #pragma once
 
 #include <GameObject.hpp>
-#include <Graphics/SpriteAnim.hpp>
+#include <Graphics/Image.hpp>
 #include <Graphics/ResourceManager.hpp>
 #include <Mob.hpp>
+#include <Drawer.hpp>
 #include <BoxCollider.hpp>
 
 class Player : public GameObject
@@ -11,27 +12,25 @@ class Player : public GameObject
 public:
 	Player();
 
-	explicit Player(const glm::vec2& aPos, Mob aMob);
+	explicit Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface);
 
 	void playerSetup();
 
-	void update(float deltaTime);
+	void update(float deltaTime) override;
 
-	void draw();
+	void draw() override;
 
-	Graphics::SpriteAnim getSpriteAnim()
-	{
-		return Player::walkAnim;
-	};
+	//Graphics::SpriteAnim getSpriteAnim()
+	//{
+	//	return Player::walkAnim;
+	//};
 
 	const BoxCollider getBox() const;
 
 private:
 	Mob mob;
+	Drawer drawer;
 	BoxCollider collider{ {position.x + 16, position.y + 11}, {{0, 0, 0}, {32, 32, 0}} };
-	//glm::vec2 position{ 352.0f, 256.0f };
-
-	Graphics::SpriteAnim walkAnim;
 
 	enum class State
 	{

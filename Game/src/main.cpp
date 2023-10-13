@@ -1,5 +1,3 @@
-#include <Player.hpp>
-#include <Level.hpp>
 #include <GameManager.hpp>
 
 #include <Graphics/Window.hpp>
@@ -20,42 +18,16 @@ using namespace Graphics;
 
 Window window;
 Window* prtWindow = &window;
+GameManager* gameManager = &GameManager::instance();
 Image canvas;
 Image darkness;
 Sprite flashlight;
 SpriteAnim lightAnim;
 
-//const int SCREEN_WIDTH = 768;
-//const int SCREEN_HEIGHT = 576;
-
-bool isDark = 0;
-Player player{ {352.0f, 256.0f}, {} };
-Level level1;
-Level level2;
-Level level3;
-
-void InitGame()
-{
-    //player.setPosition({ (SCREEN_WIDTH / 2 - 16), (SCREEN_HEIGHT / 2 - 16)});
-}
-
 int main()
 {
     //Initialize Game
-    GameManager::instance().initializeGame(prtWindow);
-
-    //Load Files
-    player.playerSetup();
-    level1.levelSetup();
-
-    //canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    //darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    //GameManager::instance().setImages(&canvas, &darkness);
-
-    //window.create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);
-    //window.show();
-    //window.setFullscreen(true);
+    gameManager->initializeGame(prtWindow);
 
     auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
 
@@ -76,12 +48,9 @@ int main()
 
         //Update the input state
         Input::update();
-        GameManager::instance().updateGameObjects(timer.elapsedSeconds());
+        gameManager->updateGameObjects(timer.elapsedSeconds());
 
-        //player.update(timer.elapsedSeconds());
-        lightAnim.update(timer.elapsedSeconds());
-
-        {
+        //{
             //auto aabb = player.getAABB();
             //glm::vec2 correction{0};
             //if (aabb.min.x < 0)
@@ -103,33 +72,27 @@ int main()
 
             ////Apply correction
             //player.translate(correction);
-        }
+        //}
 
-        //Render Loop
-        canvas.clear(Color::Blue);
-        darkness.clear(Color::Black);
+        //if (isDark)
+        //{
+        //    darkness.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
+        //    darkness.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
+        //}
 
-        if (isDark)
-        {
-            darkness.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
-            darkness.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
-        }
+        //if (isDark)
+        //{
+        //    canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
+        //}
 
-        level1.getTileMap().drawOffset(canvas, level1.getHorizontalOffset(), level1.getVerticalOffset());
+        //canvas.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
+//#if _DEBUG
+//        canvas.drawAABB(player.getBox().getAABB(player.getPosition()), Color::Yellow, {}, FillMode::WireFrame);
+//#endif
 
-        if (isDark)
-        {
-            canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
-        }
+        gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::White);
 
-        canvas.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
-#if _DEBUG
-        canvas.drawAABB(player.getBox().getAABB(player.getPosition()), Color::Yellow, {}, FillMode::WireFrame);
-#endif
-
-        canvas.drawText(Font::Default, fps, 10, 10, Color::White);
-
-        window.present(GameManager::instance().getCanvas());
+        window.present(gameManager->getCanvas());
 
         Event e;
         while (window.popEvent(e))
@@ -148,9 +111,11 @@ int main()
                 case KeyCode::V:
                     window.toggleVSync();
                     break;
+#if _DEBUG
                 case KeyCode::B:
-                    isDark = !isDark;
+                    gameManager->flipDarkness();
                     break;
+#endif
                 }
 
             }

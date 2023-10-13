@@ -4,16 +4,17 @@ using namespace Graphics;
 
 Player::Player() = default;
 
-Player::Player(const glm::vec2& aPos, Mob aMob)
+Player::Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface)
 	: GameObject{ aPos, this }
 	, mob{ aMob }
+	, drawer{ surface }
 {
 }
 
 void Player::playerSetup()
 {
-	auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
-	walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
+	//auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
+	//walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
 }
 
 void Player::update(float deltaTime)
@@ -35,12 +36,12 @@ void Player::update(float deltaTime)
 	//{
 	//	setState(State::Idle);
 	//}
-	walkAnim.update(deltaTime);
+	drawer.update(deltaTime);
 }
 
 void Player::draw()
 {
-
+	drawer.drawMe(position);
 }
 
 const BoxCollider Player::getBox() const

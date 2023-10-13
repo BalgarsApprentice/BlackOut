@@ -3,7 +3,7 @@
 #include <GameObject.hpp>
 #include <Math/AABB.hpp>
 
-class BoxCollider : GameObject
+class BoxCollider
 {
 public:
 	BoxCollider();
