@@ -4,55 +4,59 @@ using namespace Graphics;
 
 Player::Player() = default;
 
-Player::Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface)
+Player::Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface, Flashlight& aFlashlight)
 	: GameObject{ aPos, this }
 	, mob{ aMob }
-	, drawer{ surface }
+	, canvas{ &surface }
+	, flashlight{ &aFlashlight }
 {
 }
 
-void Player::playerSetup()
+void Player::setup()
 {
-	//auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
-	//walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
+	auto playerSprites = ResourceManager::loadSpriteSheet("assets/textures/playersheet.png", 64, 64, 0, 0, BlendMode::AlphaBlend);
+	walkAnim = SpriteAnim{ playerSprites, 4, {{0, 2}} };
 }
 
 void Player::update(float deltaTime)
 {
 	position = mob.move(position, deltaTime);
+	position += collider.boundaryCheck(position);
+	flashlight->setPosition({ position.x - 52, position.y + 32 });
 
-	//glm::vec2 initialPos = position;
-
-	//position.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
-	//position.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
-
-	//velocity = (position - initialPos) / deltaTime;
-
-	//if (glm::length(velocity) > 0)
-	//{
-	//	setState(State::Down);
-	//}
-	//else
-	//{
-	//	setState(State::Idle);
-	//}
-	drawer.update(deltaTime);
+	walkAnim.update(deltaTime);
 }
 
 void Player::draw()
 {
-	drawer.drawMe(position);
-}
-
-const BoxCollider Player::getBox() const
-{
-	return collider;
-}
-
-void Player::setState(State newState)
-{
-	if (newState != state)
+	/*								State system not set up yet
+	switch(mob.getState())
 	{
-		state = newState;
+	case Mob::State::Idle :
+		break;
+
+	case Mob::State::Left:
+		break;
+
+	case Mob::State::Right:
+		break;
+
+	case Mob::State::Up:
+		break;
+
+	case Mob::State::Down:
+		break;
+
+	case Mob::State::Dead:
+		break;
+
+	case Mob::State::None:
+		break;
 	}
+	*/
+
+	canvas->drawSprite(walkAnim, position.x, position.y);
+#if _DEBUG
+    canvas->drawAABB(collider.getAABB(position), Color::Yellow, {}, FillMode::WireFrame);
+#endif
 }

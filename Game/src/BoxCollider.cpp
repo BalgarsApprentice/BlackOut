@@ -1,22 +1,36 @@
 #include <BoxCollider.hpp>
+#include <Singleton.hpp>
+#include <Logger.hpp>
 
 BoxCollider::BoxCollider() = default;
 
-BoxCollider::BoxCollider(const glm::vec2& aPos, Math::AABB aabb)
-	: box{aabb}
+BoxCollider::BoxCollider(Math::AABB aabb)
+    : box{aabb}
 {
 }
 
-void BoxCollider::update(float deltaTime)
+glm::vec2& BoxCollider::boundaryCheck(const glm::vec2& aPos)
 {
+    auto aabb = getAABB(aPos);
+    glm::vec2 correction{ 0 };
+    if (aabb.min.x < 0)
+    {
+        correction.x = -aabb.min.x;
+    }
+    if (aabb.min.y < 0)
+    {
+        correction.y = -aabb.min.y;
+    }
+    if (aabb.max.x >= 768)
+    {
+        correction.x = 768 - aabb.max.x;
+    }
+    if (aabb.max.y >= 576)
+    {
+        correction.y = 576 - aabb.max.y;
+    }
 
-}
-
-void BoxCollider::draw(Graphics::Image surface)
-{
-//#if _DEBUG
-//	surface.drawAABB(getAABB(position), Graphics::Color::Yellow, {}, Graphics::FillMode::WireFrame);
-//#endif
+    return correction;
 }
 
 const Math::AABB BoxCollider::getAABB(const glm::vec2& aPos) const

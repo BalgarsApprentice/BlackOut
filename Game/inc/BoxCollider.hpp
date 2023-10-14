@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GameObject.hpp>
+#include <Graphics/Image.hpp>
 #include <Math/AABB.hpp>
 
 class BoxCollider
@@ -8,14 +8,13 @@ class BoxCollider
 public:
 	BoxCollider();
 
-	BoxCollider(const glm::vec2& aPos, Math::AABB aabb);
+	BoxCollider(Math::AABB aabb);
 
-	void update(float deltaTime);
-
-	void draw(Graphics::Image surface);
+	glm::vec2& boundaryCheck(const glm::vec2& aPos);
 
 	const Math::AABB getAABB(const glm::vec2& aPos) const;
 
 private:
 	Math::AABB box = { };
+	int counter{ 0 };
 };

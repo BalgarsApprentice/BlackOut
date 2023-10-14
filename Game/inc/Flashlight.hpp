@@ -1,12 +1,22 @@
 #pragma once
 
-#include <Light.hpp>
+#include <GameObject.hpp>
+#include <Graphics/Sprite.hpp>
 
-class Flashlight : public Light
+class Flashlight : public GameObject
 {
 public:
 	Flashlight();
 
-private:
+	Flashlight(const glm::vec2& aPos, Graphics::Image& surface);
 
+	void setup() override;
+
+	void update(float deltaTime) override;
+
+	void draw() override;
+
+private:
+	Graphics::Image* darkness;
+	Graphics::Sprite flashlightSprite;
 };

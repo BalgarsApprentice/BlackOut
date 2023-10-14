@@ -2,13 +2,14 @@
 
 #include <Graphics/ResourceManager.hpp>
 #include <Graphics/TileMap.hpp>
+#include <Light.hpp>
 
 class Level
 {
 public:
 	Level();
 
-    void levelSetup();
+    void levelSetup(Graphics::Image& surface);
 
     Graphics::TileMap& getTileMap();
 
@@ -51,4 +52,7 @@ private:
 
     const uint32_t numRows = 24 - horizontalOffset;
     const uint32_t numColumns = 18 - verticalOffset;
+
+    static Light* arrayOfprtLights[4];
+    static glm::vec2 arrayOfPositions[4];
 };

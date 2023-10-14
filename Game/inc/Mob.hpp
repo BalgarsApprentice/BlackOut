@@ -9,31 +9,31 @@
 class Mob
 {
 public:
-	//Default constructor
 	Mob();
-
-	explicit Mob(const Graphics::Sprite& sprite);
-
-	void update(float deltaTime);
 
 	glm::vec2 move(glm::vec2 aPos, float deltaTime);
 
-	void draw(Graphics::Image& image);
+	enum class State
+	{
+		Idle,
+		Left,
+		Right,
+		Up,
+		Down,
+		Dead,
+		None
+	};
 
-	//void setPosition(const glm::vec2& pos);
-
-	//const glm::vec2& getPosition() const;
-
-	//const Math::AABB getAABB() const;
-
-	void translate(const glm::vec2& t);
+	const State getState() const;
 
 private:
-	Graphics::Sprite sprite;
-
-protected:
-	//glm::vec2 position{ 352.0f, 256.0f };
+	glm::vec2 initialPos{ 0, 0 };
 	glm::vec2 velocity{ 0, 0 };
 	float playerSpeed{ 60.0f };
-	Math::AABB aabb = { {0, 0, 0}, {32, 32, 0} };
+
+	State state = State::None;
+
+	void setState(State newState);
+
+protected:
 };

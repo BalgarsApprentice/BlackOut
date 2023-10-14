@@ -10,38 +10,29 @@ void GameManager::initializeGame(Window* prtWindow)
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	level.levelSetup();
+	level.levelSetup(darkness);
+	setupGameObjects();
 }
 
-void GameManager::addGameObject(GameObject* object)
+void GameManager::setupGameObjects()
 {
-	arrayOfprtObjects[endOfObjectArray++] = object;
-}
-
-void GameManager::addLight(Light* light)
-{
-	arrayOfprtLights[endOfLightArray++] = light;
+	GameObject::setupGameObjects();
 }
 
 void GameManager::updateGameObjects(float deltaTime)
 {
-	for (int i = 0; i < endOfObjectArray; ++i)
-	{
-		arrayOfprtObjects[i]->update(deltaTime);
-	}
+	GameObject::updateGameObjects(deltaTime);
 
-	drawGameObjects();
+	drawToCanvas();
 }
 
-void GameManager::drawGameObjects()
+void GameManager::drawToCanvas()
 {
 	canvas.clear(Color::Blue);
 	darkness.clear(Color::Black);
 
-	for (int i = 1; i < endOfObjectArray; ++i) //start with 1 because 0 should be the player
-	{
-		arrayOfprtObjects[i]->draw();
-	}
+	GameObject::drawGameObjects(); //This skips drawing the player and the flashlight.
+	flashlight.draw();
 
 	level.getTileMap().drawOffset(canvas, level.getHorizontalOffset(), level.getVerticalOffset());
 
@@ -53,29 +44,19 @@ void GameManager::drawGameObjects()
 #else
 	canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
 #endif
-
-	arrayOfprtObjects[0]->draw(); //drawing the player last
-
-	//canvas.drawText(Font::Default, fps, 10, 10, Color::White);
+	player.draw();
 }
 
 void GameManager::clearGameObjects()
 {
-	for (int i = 1; i < endOfObjectArray; ++i) //start with 1 because 0 should be the player
-	{
-		arrayOfprtObjects[i] = nullptr;
-	}
-}
-
-GraphicsFlyweight& GameManager::getGraphicsAdr()
-{
-	return graphicsFlyweight;
+	GameObject::clearGameObjects(); //This skips clearing the player
 }
 
 const void GameManager::flipDarkness()
 {
 	isDark = !isDark;
 }
+
 Image& GameManager::getCanvas()
 {
 	return canvas;

@@ -2,51 +2,28 @@
 
 #include <GameObject.hpp>
 #include <Graphics/Image.hpp>
-#include <Graphics/ResourceManager.hpp>
 #include <Mob.hpp>
-#include <Drawer.hpp>
+#include <Graphics/SpriteAnim.hpp>
 #include <BoxCollider.hpp>
+#include <Flashlight.hpp>
 
 class Player : public GameObject
 {
 public:
 	Player();
 
-	explicit Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface);
+	explicit Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface, Flashlight& aFlashlight);
 
-	void playerSetup();
+	void setup() override;
 
 	void update(float deltaTime) override;
 
 	void draw() override;
 
-	//Graphics::SpriteAnim getSpriteAnim()
-	//{
-	//	return Player::walkAnim;
-	//};
-
-	const BoxCollider getBox() const;
-
 private:
 	Mob mob;
-	Drawer drawer;
-	BoxCollider collider{ {position.x + 16, position.y + 11}, {{0, 0, 0}, {32, 32, 0}} };
-
-	enum class State
-	{
-		None,
-		Idle,
-		Left,
-		Right,
-		Up,
-		Down,
-		Dead
-	};
-
-	State state = State::None;
-
-	void setState(State newState);
-
-protected:
-
+	Graphics::Image* canvas;
+	Graphics::SpriteAnim walkAnim;
+	BoxCollider collider{ {{0, 0, 0}, {28, 32, 0}} };
+	Flashlight* flashlight;
 };

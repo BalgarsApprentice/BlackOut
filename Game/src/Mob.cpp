@@ -5,49 +5,36 @@ using namespace Graphics;
 
 Mob::Mob() = default;
 
-Mob::Mob(const Sprite& _sprite)
-	: sprite{ _sprite }
-	, aabb{ {0, 0, 0}, {32, 32, 0} }
-{
-}
-
 glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 {
+	initialPos = aPos;
+
 	aPos.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
 	aPos.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
+
+	velocity = (aPos - initialPos) / deltaTime;
+
+	if (glm::length(velocity) > 0)
+	{
+		setState(State::Down);
+	}
+	else
+	{
+		setState(State::Idle);
+	}
 	
 	return aPos;
 }
 
-void Mob::update(float deltaTime)
+void Mob::setState(State newState)
 {
-	
+	if (newState != state)
+	{
+		state = newState;
+	}
 }
 
-void Mob::draw(Image& image)
+const Mob::State Mob::getState() const
 {
-//	image.drawSprite(sprite, position.x, position.y);
-//#if _DEBUG
-//	image.drawAABB(getAABB(), Color::Yellow, {}, FillMode::WireFrame);
-//#endif
-}
-
-//void Mob::setPosition(const glm::vec2& pos)
-//{
-//	position = pos;
-//}
-
-//const glm::vec2& Mob::getPosition() const
-//{
-//	return position;
-//}
-//
-//const Math::AABB Mob::getAABB() const
-//{
-//	return aabb + glm::vec3{ position.x + 16, position.y + 11, 0 };
-//}
-
-void Mob::translate(const glm::vec2& t)
-{
-//	position += t;
+	return state;
 }

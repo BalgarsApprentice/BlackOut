@@ -1,13 +1,10 @@
+#include <Singleton.hpp>
+#include <Logger.hpp>
 #include <GameManager.hpp>
 
 #include <Graphics/Window.hpp>
-#include <Graphics/Image.hpp>
-#include <Graphics/Sprite.hpp>
-#include <Graphics/SpriteAnim.hpp>
 #include <Graphics/Timer.hpp>
 #include <Graphics/Font.hpp>
-#include <Graphics/ResourceManager.hpp>
-#include <Graphics/BlendMode.hpp>
 #include <Graphics/Input.hpp>
 
 #include <fmt/core.h>
@@ -18,24 +15,15 @@ using namespace Graphics;
 
 Window window;
 Window* prtWindow = &window;
-GameManager* gameManager = &GameManager::instance();
-Image canvas;
-Image darkness;
-Sprite flashlight;
-SpriteAnim lightAnim;
+Logger* logger = &Singleton<Logger>::GetInstance();
+GameManager* gameManager = &Singleton<GameManager>::GetInstance();
 
 int main()
 {
+    logger->write("Blackout has started.");
+
     //Initialize Game
     gameManager->initializeGame(prtWindow);
-
-    auto lightSprites = ResourceManager::loadSpriteSheet("assets/textures/lightanim.png", 128, 128, 0, 0);
-
-    lightAnim = SpriteAnim{ lightSprites, 4, {} };
-
-    auto whiteSpaceImage = ResourceManager::loadImage("assets/textures/wideflashlight.png");
-
-    flashlight = Sprite(whiteSpaceImage, BlendMode::AlphaBlend);
 
     Timer       timer;
     double      totalTime = 0.0;
@@ -46,9 +34,8 @@ int main()
     {
         // Update Loop
 
-        //Update the input state
         Input::update();
-        gameManager->updateGameObjects(timer.elapsedSeconds());
+        gameManager->updateGameObjects(timer.elapsedSeconds()); // Rendering handled by the Game Manager after updating.
 
         //{
             //auto aabb = player.getAABB();
@@ -73,22 +60,6 @@ int main()
             ////Apply correction
             //player.translate(correction);
         //}
-
-        //if (isDark)
-        //{
-        //    darkness.drawSprite(lightAnim, SCREEN_WIDTH / 2, SCREEN_WIDTH / 2);
-        //    darkness.drawSprite(flashlight, player.getPosition().x - 53, player.getPosition().y + 32);
-        //}
-
-        //if (isDark)
-        //{
-        //    canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
-        //}
-
-        //canvas.drawSprite(player.getSpriteAnim(), player.getPosition().x, player.getPosition().y);
-//#if _DEBUG
-//        canvas.drawAABB(player.getBox().getAABB(player.getPosition()), Color::Yellow, {}, FillMode::WireFrame);
-//#endif
 
         gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::White);
 
