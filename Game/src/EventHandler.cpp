@@ -26,14 +26,14 @@ void EventHandler::eventQueue(Window* window)
                 gameManager->flipDarkness();
                 break;
 #endif
-            case KeyCode::M:
+            case KeyCode::Z:
                 Flashlight::lockFlashlight();
                 break;
             }
         case Event::KeyReleased:
             switch (e.key.code)
             {
-            case KeyCode::N:
+            case KeyCode::Z:
                 Flashlight::unlockFlashlight();
                 break;
 
