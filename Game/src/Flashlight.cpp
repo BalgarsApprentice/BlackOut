@@ -23,24 +23,6 @@ void Flashlight::update(float deltaTime)
 {
 	//add a check for collision here
 	 
-	
-	/*if (Input::getKeyDown(KeyCode::Z))
-	{
-		lockFlashlight = true;
-	}
-	if (!Input::getKeyUp(KeyCode::Z))
-	{
-		lockFlashlight = false;
-	}
-
-	if (Input::getKeyDown("z"))
-	{
-		lockFlashlight = true;
-	}
-	if (!Input::getKeyUp("z"))
-	{
-		lockFlashlight = false;
-	}*/
 }
 
 void Flashlight::draw()
@@ -57,6 +39,7 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos, Mob::State state)
 	{
 		state = oldState;
 	}
+
 	switch (state)
 	{
 	case Mob::State::Left:

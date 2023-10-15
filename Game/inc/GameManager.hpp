@@ -23,6 +23,8 @@ public:
 
 	const void flipDarkness();
 
+	const void flipPause();
+
 	Graphics::Image& getCanvas();
 
 private:
@@ -33,6 +35,7 @@ private:
 	const int SCREEN_HEIGHT = 576;
 
 	bool isDark = 1;
+	bool isGameRunning = 1;
 
 	Level level;
 	glm::vec2 startPosition{ 352.0f, 256.0f };

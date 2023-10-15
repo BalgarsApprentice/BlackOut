@@ -8,8 +8,10 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 {
 	initialPos = aPos;
 
-	aPos.x += Input::getAxis("Horizontal") * playerSpeed * deltaTime;
-	aPos.y -= Input::getAxis("Vertical") * playerSpeed * deltaTime;
+	glm::vec2 coords = normalize(glm::vec2{ Input::getAxis("Horizontal"), Input::getAxis("Vertical") });
+
+	aPos.x += coords.x * playerSpeed * deltaTime;
+	aPos.y -= coords.y * playerSpeed * deltaTime;
 
 	velocity = (aPos - initialPos) / deltaTime;
 
@@ -17,8 +19,8 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 	{
 		oldState = state;
 
-		float angle = atan2(velocity.x, velocity.y);
-		octant = int(round(8 * angle / (2 * M_PI) + 8)) % 8;
+		float angle = atan2(velocity.x, velocity.y);				////////////
+		octant = int(round(8 * angle / (2 * M_PI) + 8)) % 8;		//I can barely visualize the math here. Consider replacing it.
 		int cardinal = octant / 2;
 		switch (cardinal)
 		{
@@ -48,6 +50,18 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 	}
 	
 	return aPos;
+}
+
+glm::vec2 Mob::normalize(glm::vec2 coords)
+{
+	float normalized = glm::length(glm::vec2{ Input::getAxis("Horizontal"), Input::getAxis("Vertical") });
+
+	if (normalized > 0)
+	{
+		coords /= normalized;
+		return coords;
+	}
+	return {0, 0};
 }
 
 void Mob::setState(State newState)

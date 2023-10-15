@@ -21,7 +21,10 @@ void GameManager::setupGameObjects()
 
 void GameManager::updateGameObjects(float deltaTime)
 {
-	GameObject::updateGameObjects(deltaTime);
+	if (isGameRunning)
+	{
+		GameObject::updateGameObjects(deltaTime);
+	}
 
 	drawToCanvas();
 }
@@ -55,6 +58,11 @@ void GameManager::clearGameObjects()
 const void GameManager::flipDarkness()
 {
 	isDark = !isDark;
+}
+
+const void GameManager::flipPause()
+{
+	isGameRunning = !isGameRunning;
 }
 
 Image& GameManager::getCanvas()

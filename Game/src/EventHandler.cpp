@@ -18,6 +18,7 @@ void EventHandler::eventQueue(Window* window)
             case KeyCode::Escape:
                 window->destroy();
                 break;
+
             case KeyCode::V:
                 window->toggleVSync();
                 break;
@@ -29,7 +30,12 @@ void EventHandler::eventQueue(Window* window)
             case KeyCode::Z:
                 Flashlight::lockFlashlight();
                 break;
+
+            case KeyCode::P:
+                gameManager->flipPause();
+                break;
             }
+            break;
         case Event::KeyReleased:
             switch (e.key.code)
             {
@@ -38,6 +44,7 @@ void EventHandler::eventQueue(Window* window)
                 break;
 
             }
+            break;
         }
     }
 }

@@ -17,6 +17,8 @@ public:
 
 	glm::vec2 move(glm::vec2 aPos, float deltaTime);
 
+	glm::vec2 normalize(glm::vec2 coords);
+
 	enum class State
 	{
 		Idle,
