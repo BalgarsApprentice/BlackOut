@@ -23,7 +23,22 @@ public:
 private:
 	Mob mob;
 	Graphics::Image* canvas;
-	Graphics::SpriteAnim walkAnim;
+
+	Graphics::Sprite idleLeftSprite;
+	Graphics::Sprite idleRightSprite;
+	Graphics::Sprite idleUpSprite;
+	Graphics::Sprite idleDownSprite;
+	Graphics::SpriteAnim leftAnim;
+	Graphics::SpriteAnim rightAnim;
+	Graphics::SpriteAnim upAnim;
+	Graphics::SpriteAnim downAnim;
+	Graphics::SpriteAnim deadAnim;
+	Graphics::SpriteAnim noneAnim;
+
 	BoxCollider collider{ {{0, 0, 0}, {28, 32, 0}} };
 	Flashlight* flashlight;
+
+	std::string stringState{ "" };
+
+	void updateAnims(float deltaTime);
 };

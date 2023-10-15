@@ -1,6 +1,7 @@
 #include <Singleton.hpp>
 #include <Logger.hpp>
 #include <GameManager.hpp>
+#include <EventHandler.hpp>
 
 #include <Graphics/Window.hpp>
 #include <Graphics/Timer.hpp>
@@ -22,7 +23,6 @@ int main()
 {
     logger->write("Blackout has started.");
 
-    //Initialize Game
     gameManager->initializeGame(prtWindow);
 
     Timer       timer;
@@ -32,65 +32,14 @@ int main()
 
     while (window)
     {
-        // Update Loop
-
         Input::update();
-        gameManager->updateGameObjects(timer.elapsedSeconds()); // Rendering handled by the Game Manager after updating.
-
-        //{
-            //auto aabb = player.getAABB();
-            //glm::vec2 correction{0};
-            //if (aabb.min.x < 0)
-            //{
-            //    correction.x = -aabb.min.x;
-            //}
-            //if (aabb.min.y < 0)
-            //{
-            //    correction.y = -aabb.min.y;
-            //}
-            //if (aabb.max.x >= canvas.getWidth())
-            //{
-            //    correction.x = canvas.getWidth() - aabb.max.x;
-            //}
-            //if (aabb.max.y >= canvas.getHeight())
-            //{
-            //    correction.y = canvas.getHeight() - aabb.max.y;
-            //}
-
-            ////Apply correction
-            //player.translate(correction);
-        //}
+        gameManager->updateGameObjects(timer.elapsedSeconds());
 
         gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::White);
 
         window.present(gameManager->getCanvas());
 
-        Event e;
-        while (window.popEvent(e))
-        {
-            switch (e.type)
-            {
-            case Event::Close:
-                window.destroy();
-                break;
-            case Event::KeyPressed:
-                switch (e.key.code)
-                {
-                case KeyCode::Escape:
-                    window.destroy();
-                    break;
-                case KeyCode::V:
-                    window.toggleVSync();
-                    break;
-#if _DEBUG
-                case KeyCode::B:
-                    gameManager->flipDarkness();
-                    break;
-#endif
-                }
-
-            }
-        }
+        Singleton<EventHandler>::GetInstance().eventQueue(prtWindow);
 
         timer.tick();
         ++frameCount;
@@ -106,6 +55,5 @@ int main()
             totalTime = 0.0;
         }
     }
-
     return 0;
 }

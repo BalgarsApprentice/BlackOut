@@ -1,7 +1,13 @@
 #pragma once
 
+#include <Singleton.hpp>
+#include <Logger.hpp>
+
 #include <GameObject.hpp>
 #include <Graphics/Sprite.hpp>
+#include <Mob.hpp>
+#include <Graphics/Input.hpp>
+#include <Graphics/KeyCodes.hpp>
 
 class Flashlight : public GameObject
 {
@@ -16,7 +22,21 @@ public:
 
 	void draw() override;
 
+	void setFlashlightPosition(const glm::vec2& pos, Mob::State state);
+
+	static void lockFlashlight();
+
+	static void unlockFlashlight();
+
 private:
 	Graphics::Image* darkness;
-	Graphics::Sprite flashlightSprite;
+	Graphics::Sprite leftFlashlightSprite;
+	Graphics::Sprite rightFlashlightSprite;
+	Graphics::Sprite upFlashlightSprite;
+	Graphics::Sprite downFlashlightSprite;
+
+	Graphics::Sprite* currentFlashlightSprite{ nullptr };
+
+	static bool isFlashlightLocked;
+	Mob::State oldState{};
 };

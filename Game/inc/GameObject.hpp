@@ -1,11 +1,11 @@
 #pragma once
 
-#include <glm/vec2.hpp>
-#include <Graphics/Image.hpp>
-#include <Graphics/ResourceManager.hpp>
 #include <Singleton.hpp>
 #include <Logger.hpp>
 
+#include <glm/vec2.hpp>
+#include <Graphics/Image.hpp>
+#include <Graphics/ResourceManager.hpp>
 class GameObject
 {
 public:
