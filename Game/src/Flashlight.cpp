@@ -76,7 +76,11 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos, Mob::State state)
 		currentFlashlightSprite = &downFlashlightSprite;
 		break;
 	}
-	oldState = state;
+
+	if (state != Mob::State::Idle)
+	{
+		oldState = state;
+	}
 }
 
 void Flashlight::lockFlashlight()
