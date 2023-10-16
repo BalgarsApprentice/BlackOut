@@ -14,6 +14,8 @@ public:
 
 	const Math::AABB getAABB(const glm::vec2& aPos) const;
 
+	bool collides(const BoxCollider& aCollider) const;
+
 private:
 	Math::AABB box = { };
 	int counter{ 0 };

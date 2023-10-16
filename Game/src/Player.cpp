@@ -96,7 +96,7 @@ void Player::draw()
 	}
 	
 #if _DEBUG
-    canvas->drawAABB(collider.getAABB(position), Color::Yellow, {}, FillMode::WireFrame);
+	canvas->drawAABB(collider.getAABB({ position.x + 16, position.y + 11 }), Color::Yellow, {}, FillMode::WireFrame);
 	canvas->drawText(Font::Default, stringState , position.x + 16, position.y - 2, Color::White);
 #endif
 }

@@ -2,6 +2,9 @@
 
 #define _USE_MATH_DEFINES
 
+#include <Singleton.hpp>
+#include <Logger.hpp>
+
 #include <glm/vec2.hpp>
 #include <Graphics/Sprite.hpp>
 #include <Graphics/ResourceManager.hpp>

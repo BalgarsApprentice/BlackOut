@@ -19,29 +19,23 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 	{
 		oldState = state;
 
-		float angle = atan2(velocity.x, velocity.y);				////////////
-		octant = int(round(8 * angle / (2 * M_PI) + 8)) % 8;		//I can barely visualize the math here. Consider replacing it.
-		int cardinal = octant / 2;
-		switch (cardinal)
+		Singleton<Logger>::GetInstance().write(std::to_string(coords.y));
+		
+		if (velocity.y > 0 && abs(coords.x) < 0.7f)
 		{
-		case 0:
 			setState(State::Down);
-			break;
-		case 1:
-			if (abs(velocity.y) < 0.2f )
-			{
-				setState(State::Right);
-			}
-			break;
-		case 2:
+		}
+		else if (velocity.y < 0 && abs(coords.x) < 0.7f)
+		{
 			setState(State::Up);
-			break;
-		case 3:
-			if (abs(velocity.y) < 0.2f)
-			{
-				setState(State::Left);
-			}
-			break;
+		}
+		else if (velocity.x > 0)
+		{
+			setState(State::Right);
+		}
+		else if (velocity.x < 0)
+		{
+			setState(State::Left);
 		}
 	}
 	else

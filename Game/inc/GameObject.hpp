@@ -15,6 +15,8 @@ public:
 
 	//virtual functions
 //////////////////////////////////////////////////////////////////////////////////////////
+	virtual ~GameObject() = default;
+
 	virtual void setup();
 
 	virtual void update(float deltaTime);
