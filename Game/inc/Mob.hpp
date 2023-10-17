@@ -8,7 +8,7 @@
 #include <glm/vec2.hpp>
 #include <Graphics/Sprite.hpp>
 #include <Graphics/ResourceManager.hpp>
-#include <Graphics/Input.hpp>
+#include <AI.hpp>
 #include <cmath>
 
 #include <Math/AABB.hpp>
@@ -17,6 +17,8 @@ class Mob
 {
 public:
 	Mob();
+
+	explicit Mob(AI& aController);
 
 	glm::vec2 move(glm::vec2 aPos, float deltaTime);
 
@@ -37,17 +39,14 @@ public:
 
 	const State getOldState() const;
 
-	const int getOctant() const;
-
 private:
-	glm::vec2 initialPos{ 0, 0 };
+	AI* controller;
+	glm::vec2 target{ 0, 0 };
 	glm::vec2 velocity{ 0, 0 };
-	float playerSpeed{ 60.0f };
+	float speed{ 60.0f };
 
 	State state = State::Idle;
 	State oldState = State::Right;
-
-	int octant{ 2 };
 
 	void setState(State newState);
 

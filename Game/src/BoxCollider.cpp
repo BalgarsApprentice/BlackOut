@@ -40,5 +40,5 @@ const Math::AABB BoxCollider::getAABB(const glm::vec2& aPos) const
 
 bool BoxCollider::collides(const BoxCollider& aCollider) const
 {
-    return getAABB().intersect(aCollider.getAABB());
+    return 0; //getAABB().intersect(aCollider.getAABB());
 }

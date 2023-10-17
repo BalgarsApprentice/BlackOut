@@ -6,7 +6,8 @@
 #include <Graphics/Window.hpp>
 #include <GameObject.hpp>
 #include <Player.hpp>
-
+#include <Human.hpp>
+#include <AI.hpp>
 
 class GameManager
 {
@@ -39,6 +40,7 @@ private:
 
 	Level level;
 	glm::vec2 startPosition{ 352.0f, 256.0f };
-	Player player{ startPosition, {}, canvas, flashlight };
+	Human human;
+	Player player{ startPosition, human, canvas, flashlight };
 	Flashlight flashlight{ startPosition, darkness };
 };

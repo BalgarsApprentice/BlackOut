@@ -4,9 +4,9 @@ using namespace Graphics;
 
 Player::Player() = default;
 
-Player::Player(const glm::vec2& aPos, Mob aMob, Graphics::Image& surface, Flashlight& aFlashlight)
+Player::Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight)
 	: GameObject{ aPos, this }
-	, mob{ aMob }
+	, mob{ aController }
 	, canvas{ &surface }
 	, flashlight{ &aFlashlight }
 {
@@ -32,7 +32,7 @@ void Player::setup()
 void Player::update(float deltaTime)
 {
 	position = mob.move(position, deltaTime);
-	position += collider.boundaryCheck(position);
+	position += collider.boundaryCheck({ position.x + 16, position.y + 11 });
 	flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
 
 	updateAnims(deltaTime);
@@ -43,23 +43,20 @@ void Player::draw()
 	switch(mob.getState())
 	{
 	case Mob::State::Idle:
-		if (mob.getOldState() != Mob::State::Idle)
+		switch (mob.getOldState())
 		{
-			switch (mob.getOldState())
-			{
-			case Mob::State::Left:
-				canvas->drawSprite(idleLeftSprite, position.x, position.y);
-				break;
-			case Mob::State::Right:
-				canvas->drawSprite(idleRightSprite, position.x, position.y);
-				break;
-			case Mob::State::Up:
-				canvas->drawSprite(idleUpSprite, position.x, position.y);
-				break;
-			case Mob::State::Down:
-				canvas->drawSprite(idleDownSprite, position.x, position.y);
-				break;
-			}
+		case Mob::State::Left:
+			canvas->drawSprite(idleLeftSprite, position.x, position.y);
+			break;
+		case Mob::State::Right:
+			canvas->drawSprite(idleRightSprite, position.x, position.y);
+			break;
+		case Mob::State::Up:
+			canvas->drawSprite(idleUpSprite, position.x, position.y);
+			break;
+		case Mob::State::Down:
+			canvas->drawSprite(idleDownSprite, position.x, position.y);
+			break;
 		}
 		stringState = "Idle";
 		break;

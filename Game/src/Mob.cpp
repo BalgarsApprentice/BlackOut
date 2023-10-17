@@ -4,38 +4,38 @@ using namespace Graphics;
 
 Mob::Mob() = default;
 
+Mob::Mob(AI& aController) 
+	: controller{ &aController }
+{
+}
+
 glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 {
-	initialPos = aPos;
+	glm::vec2 direction = normalize(controller->getTarget(aPos));
 
-	glm::vec2 coords = normalize(glm::vec2{ Input::getAxis("Horizontal"), Input::getAxis("Vertical") });
+	direction.y = -direction.y;
 
-	aPos.x += coords.x * playerSpeed * deltaTime;
-	aPos.y -= coords.y * playerSpeed * deltaTime;
+	aPos += direction * speed * deltaTime;
 
-	velocity = (aPos - initialPos) / deltaTime;
-
-	if (glm::length(velocity) > 0)
+	if (glm::length(direction) > 0)
 	{
 		oldState = state;
-
-		Singleton<Logger>::GetInstance().write(std::to_string(coords.y));
 		
-		if (velocity.y > 0 && abs(coords.x) < 0.7f)
-		{
-			setState(State::Down);
-		}
-		else if (velocity.y < 0 && abs(coords.x) < 0.7f)
-		{
-			setState(State::Up);
-		}
-		else if (velocity.x > 0)
+		if (direction.x > 0)
 		{
 			setState(State::Right);
 		}
-		else if (velocity.x < 0)
+		else if (direction.x < 0)
 		{
 			setState(State::Left);
+		}
+		else if (direction.y > 0)
+		{
+			setState(State::Down);
+		}
+		else if (direction.y < 0)
+		{
+			setState(State::Up);
 		}
 	}
 	else
@@ -48,14 +48,14 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 
 glm::vec2 Mob::normalize(glm::vec2 coords)
 {
-	float normalized = glm::length(glm::vec2{ Input::getAxis("Horizontal"), Input::getAxis("Vertical") });
+	float length = glm::length(coords);
 
-	if (normalized > 0)
+	if (length > 0)
 	{
-		coords /= normalized;
+		coords /= length;
 		return coords;
 	}
-	return {0, 0};
+	return { 0, 0 };
 }
 
 void Mob::setState(State newState)
@@ -74,9 +74,4 @@ const Mob::State Mob::getState() const
 const Mob::State Mob::getOldState() const
 {
 	return oldState;
-}
-
-const int Mob::getOctant() const
-{
-	return octant;
 }
