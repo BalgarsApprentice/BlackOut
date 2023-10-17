@@ -16,7 +16,20 @@ public:
 
 	void draw() override;
 
+	static void initializeCollisionGroup(GameObject* entity);
+
+	static void litCheck(GameObject* entity);
+
+	void flipLitState();
+
+	const bool getLitState() const;
+
 private:
 	Graphics::Image* darkness;
 	Graphics::SpriteAnim lightAnim;
+
+	bool isOn{true};
+
+	static Light* arrayOfprtLights[64];
+	static int endOfLightArray;
 };
