@@ -32,7 +32,8 @@ void Player::setup()
 void Player::update(float deltaTime)
 {
 	position = mob.move(position, deltaTime);
-	position += collider.boundaryCheck({ position.x + 16, position.y + 11 });
+	updateColliders();
+	position += box.boundaryCheck({ position.x + 16, position.y + 10 });
 	flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
 
 	updateAnims(deltaTime);
@@ -93,9 +94,26 @@ void Player::draw()
 	}
 	
 #if _DEBUG
-	canvas->drawAABB(collider.getAABB({ position.x + 16, position.y + 11 }), Color::Yellow, {}, FillMode::WireFrame);
+	canvas->drawAABB(box.getAABB(), Color::Yellow, {}, FillMode::WireFrame);
 	canvas->drawText(Font::Default, stringState , position.x + 16, position.y - 2, Color::White);
+	if (isLit)
+	{
+		canvas->drawCircle({ { position.x + 30, position.y + 26 }, 16.0f }, Color::White, {}, FillMode::WireFrame);
+	}
 #endif
+
+	isLit = false;
+}
+
+void Player::updateColliders()
+{
+	box.setPosition({ position.x + 16, position.y + 10 });
+	circle.setPosition({ position.x + 30, position.y + 26 });
+}
+
+CircleCollider& Player::getCircle()
+{
+	return circle;
 }
 
 void Player::updateAnims(float deltaTime)

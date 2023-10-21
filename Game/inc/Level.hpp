@@ -11,6 +11,8 @@ public:
 
     void levelSetup(Graphics::Image& surface);
 
+    void levelUnload();
+
     Graphics::TileMap& getTileMap();
 
     const uint32_t getHorizontalOffset() const
@@ -45,6 +47,11 @@ private:
     2,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  5
     };
 
+    const BoxCollider obstacles[2] = {
+        Math::AABB{{192, 144, 0}, {576, 160, 1}},
+        Math::AABB{{0, 0, 0}, {1, 1, 1}}
+    };
+
     Graphics::TileMap groundTiles;
 
     const uint32_t horizontalOffset = 0;
@@ -52,7 +59,6 @@ private:
 
     const uint32_t numRows = 24 - horizontalOffset;
     const uint32_t numColumns = 18 - verticalOffset;
-
-    static Light* arrayOfprtLights[4];
-    static glm::vec2 arrayOfPositions[4];
+    
+    glm::vec2 arrayOfPositions[4]{ {192, 144}, {576, 144}, {192, 432}, {576, 432} };
 };

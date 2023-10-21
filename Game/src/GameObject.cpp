@@ -25,6 +25,12 @@ void GameObject::draw()
 {
 	Singleton<Logger>::GetInstance().write("Object missed draw. Check for override.");
 }
+CircleCollider& GameObject::getCircle()
+{
+	Singleton<Logger>::GetInstance().write("Object missed getCircle. Check for override.");
+	return circle;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -53,15 +59,25 @@ void GameObject::drawGameObjects()
 	}
 }
 
-void GameObject::clearGameObjects()
+void GameObject::clearGameObjects(int startingIndex)
 {
-	for (int i = 2; i < endOfObjectArray; ++i) //start with 2 to skip the player and the flashlight at 0 and 1 which should be cleared separately
+	for (int i = startingIndex; i < endOfObjectArray; ++i) //start with 2 to skip the player and the flashlight at 0 and 1 which should be cleared separately
 	{
-		delete arrayOfprtObjects[i];
 		arrayOfprtObjects[i] = nullptr;
 	}
+	endOfObjectArray = startingIndex;
 }
 //////////////////////////////////////////////////////////////////////////////////////////
+
+const bool GameObject::getLitState()
+{
+	return isLit;
+}
+
+void GameObject::setLitState(const bool aBool)
+{
+	isLit = aBool;
+}
 
 void GameObject::setPosition(const glm::vec2& pos)
 {

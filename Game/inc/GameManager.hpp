@@ -20,7 +20,9 @@ public:
 
 	void drawToCanvas();
 
-	void clearGameObjects();
+	void clearLevelGameObjects();
+
+	void clearAllGameObjects();
 
 	const void flipDarkness();
 
@@ -42,5 +44,6 @@ private:
 	glm::vec2 startPosition{ 352.0f, 256.0f };
 	Human human;
 	Player player{ startPosition, human, canvas, flashlight };
+	//Enemy enemy{};
 	Flashlight flashlight{ startPosition, darkness };
 };

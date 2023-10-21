@@ -5,7 +5,6 @@
 #include <Mob.hpp>
 #include <Graphics/Input.hpp>
 #include <Graphics/SpriteAnim.hpp>
-#include <BoxCollider.hpp>
 #include <Flashlight.hpp>
 #include <Human.hpp>
 
@@ -22,6 +21,10 @@ public:
 
 	void draw() override;
 
+	CircleCollider& getCircle() override;
+
+	void updateColliders();
+
 private:
 	Mob mob;
 	Graphics::Image* canvas;
@@ -37,7 +40,8 @@ private:
 	Graphics::SpriteAnim deadAnim;
 	Graphics::SpriteAnim noneAnim;
 
-	BoxCollider collider{ {{0, 0, 0}, {28, 32, 0}} };
+	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
+	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
 
 	std::string stringState{ "" };

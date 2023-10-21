@@ -1,9 +1,10 @@
 #pragma once
 
+#include <Collider.hpp>
 #include <Graphics/Image.hpp>
 #include <Math/AABB.hpp>
 
-class BoxCollider
+class BoxCollider : public Collider
 {
 public:
 	BoxCollider();
@@ -12,7 +13,7 @@ public:
 
 	glm::vec2& boundaryCheck(const glm::vec2& aPos);
 
-	const Math::AABB getAABB(const glm::vec2& aPos) const;
+	const Math::AABB getAABB() const;
 
 	bool collides(const BoxCollider& aCollider) const;
 

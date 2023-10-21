@@ -24,6 +24,7 @@ void GameManager::updateGameObjects(float deltaTime)
 	if (isGameRunning)
 	{
 		GameObject::updateGameObjects(deltaTime);
+		Light::litCheck(&player);
 	}
 
 	drawToCanvas();
@@ -50,9 +51,16 @@ void GameManager::drawToCanvas()
 	player.draw();
 }
 
-void GameManager::clearGameObjects()
+void GameManager::clearLevelGameObjects()
 {
-	GameObject::clearGameObjects(); //This skips clearing the player
+	level.levelUnload();
+	GameObject::clearGameObjects(2); //This skips clearing the player and the flashlight.
+}
+
+void GameManager::clearAllGameObjects()
+{
+	level.levelUnload();
+	GameObject::clearGameObjects(0);
 }
 
 const void GameManager::flipDarkness()

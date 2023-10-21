@@ -11,7 +11,7 @@ BoxCollider::BoxCollider(Math::AABB aabb)
 
 glm::vec2& BoxCollider::boundaryCheck(const glm::vec2& aPos)
 {
-    auto aabb = getAABB(aPos);
+    auto aabb = getAABB();
     glm::vec2 correction{ 0 };
     if (aabb.min.x < 0)
     {
@@ -33,12 +33,12 @@ glm::vec2& BoxCollider::boundaryCheck(const glm::vec2& aPos)
     return correction;
 }
 
-const Math::AABB BoxCollider::getAABB(const glm::vec2& aPos) const
+const Math::AABB BoxCollider::getAABB() const
 {
-	return box + glm::vec3{ aPos.x, aPos.y, 0 };
+	return box + glm::vec3{ position.x, position.y, 0 };
 }
 
 bool BoxCollider::collides(const BoxCollider& aCollider) const
 {
-    return 0; //getAABB().intersect(aCollider.getAABB());
+    return getAABB().intersect(aCollider.getAABB());
 }

@@ -13,6 +13,9 @@
   <ItemGroup>
     <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\BoxCollider.cpp" />
+    <ClCompile Include="src\CircleCollider.cpp" />
+    <ClCompile Include="src\Collider.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EventHandler.cpp" />
     <ClCompile Include="src\Flashlight.cpp" />
     <ClCompile Include="src\GameManager.cpp" />
@@ -30,6 +33,9 @@
   <ItemGroup>
     <ClInclude Include="inc\AI.hpp" />
     <ClInclude Include="inc\BoxCollider.hpp" />
+    <ClInclude Include="inc\CircleCollider.hpp" />
+    <ClInclude Include="inc\Collider.hpp" />
+    <ClInclude Include="inc\Enemy.hpp" />
     <ClInclude Include="inc\EventHandler.hpp" />
     <ClInclude Include="inc\Flashlight.hpp" />
     <ClInclude Include="inc\GameManager.hpp" />

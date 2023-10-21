@@ -9,6 +9,8 @@ Light::Light(const glm::vec2& aPos, Graphics::Image& surface)
 	, darkness{ &surface }
 {
 	arrayOfprtLights[endOfLightArray++] = this;
+	circle.setPosition(aPos);
+	isLit = true;
 }
 
 void Light::setup()
@@ -27,37 +29,41 @@ void Light::draw()
 	darkness->drawSprite(lightAnim, position.x, position.y);
 }
 
-void Light::initializeCollisionGroup(GameObject* entity)
+CircleCollider& Light::getCircle()
+{
+	return circle;
+}
+
+void Light::initializeCollisionGroup(Math::AABB& aObstacle)
 {
 	//check for AABB collision with all immobile AABB objects on screen
 	//add all collisions to an array
+	for (int i = 0; i < endOfLightArray; ++i)
+	{
+		if (arrayOfprtLights[i]->box.getAABB().intersect(aObstacle))
+		{
+			arrayOfprtLights[i]->arrayOfObstacles[arrayOfprtLights[i]->endOfObstaclesArray] = &aObstacle;
+			arrayOfprtLights[i]->endOfObstaclesArray += 1;
+		}
+	}
 }
 
-void Light::litCheck(GameObject* entity)
+void Light::litCheck(GameObject* mob) //static
 {
 	for (int i = 0; i < endOfLightArray; ++i)
 	{
 		if (arrayOfprtLights[i]->getLitState())
 		{
 			//check for circle distance with entity
-			//if entity collides, check for any AABB collision with the entity and immobile AABB objects within the light's array
+			if (arrayOfprtLights[i]->getCircle().collides(mob->getCircle()))
+			{
+				//setting the mob to lit activates it
+				mob->setLitState(true);
+				//check for any AABB collision with the entity and immobile AABB objects within the light's array
 				//correct entity position on AABB collision
-				//turn on entity AI
-				//return
+			}
 		}
-		//turn off entity AI
-		//turn off collision with player
 	}
-}
-
-void Light::flipLitState()
-{
-	isOn = !isOn;
-}
-
-const bool Light::getLitState() const
-{
-	return isOn;
 }
 
 Light* Light::arrayOfprtLights[64]{ nullptr };

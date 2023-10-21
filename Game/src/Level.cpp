@@ -11,7 +11,16 @@ void Level::levelSetup(Graphics::Image& surface)
 
     for (int i = 0; i < 4; ++i)
     {
-        arrayOfprtLights[i] = new Light(arrayOfPositions[i], surface);
+        Light::arrayOfprtLights[i] = new Light(arrayOfPositions[i], surface);
+    }
+    
+}
+
+void Level::levelUnload()
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        delete Light::arrayOfprtLights[i];
     }
 }
 
@@ -28,6 +37,3 @@ Graphics::TileMap& Level::getTileMap()
 
     return groundTiles;
 }
-
-Light* Level::arrayOfprtLights[4]{ nullptr };
-glm::vec2 Level::arrayOfPositions[4]{ {192, 144}, {576, 144}, {192, 432}, {576, 432} };

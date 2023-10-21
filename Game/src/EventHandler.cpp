@@ -10,12 +10,14 @@ void EventHandler::eventQueue(Window* window)
         switch (e.type)
         {
         case Event::Close:
+            gameManager->clearAllGameObjects();
             window->destroy();
             break;
         case Event::KeyPressed:
             switch (e.key.code)
             {
             case KeyCode::Escape:
+                gameManager->clearAllGameObjects();
                 window->destroy();
                 break;
 
