@@ -8,7 +8,7 @@ MovingLight::MovingLight(const glm::vec2& aPos, Graphics::Image& surface)
 	: Light{aPos, surface}
 {
 	position = { aPos.x, aPos.y - 64 };
-	arrayOfprtLights[endOfLightArray++] = this;
+	arrayOfptrLights[endOfLightArray++] = this;
 	circle.setPosition(aPos);
 	isLit = true;
 }
@@ -19,7 +19,7 @@ void MovingLight::setup()
 	lightAnim = SpriteAnim{ lightSprites, 4, {} };
 }
 
-void MovingLight::update(float deltaTime)
+void MovingLight::update(float deltaTime, GameObject& player)
 {
 	if (isMove)
 	{

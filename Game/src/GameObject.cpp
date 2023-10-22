@@ -16,7 +16,7 @@ void GameObject::setup()
 	Singleton<Logger>::GetInstance().write("Object missed setup. Check for override.");
 }
 
-void GameObject::update(float deltaTime)
+void GameObject::update(float deltaTime, GameObject& player)
 {
 	Singleton<Logger>::GetInstance().write("Object missed update. Check for override.");
 }
@@ -37,6 +37,15 @@ BoxCollider& GameObject::getBox()
 	return box;
 }
 
+bool GameObject::getHasFlashlight()
+{
+	return false;
+}
+
+void GameObject::setHasFlashlight(bool bit)
+{
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -49,11 +58,11 @@ void GameObject::setupGameObjects()
 	}
 }
 
-void GameObject::updateGameObjects(float deltaTime)
+void GameObject::updateGameObjects(float deltaTime, GameObject& player)
 {
 	for (int i = 0; i < endOfObjectArray; ++i)
 	{
-		arrayOfprtObjects[i]->update(deltaTime);
+		arrayOfprtObjects[i]->update(deltaTime, player);
 	}
 }
 

@@ -21,13 +21,17 @@ public:
 
 	virtual void setup();
 
-	virtual void update(float deltaTime);
+	virtual void update(float deltaTime, GameObject& player);
 
 	virtual void draw();
 
 	virtual CircleCollider& getCircle();
 
 	virtual BoxCollider& getBox();
+	
+	virtual bool getHasFlashlight();
+
+	virtual void setHasFlashlight(bool bit);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +39,7 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////
 	static void setupGameObjects();
 
-	static void updateGameObjects(float deltaTime);
+	static void updateGameObjects(float deltaTime, GameObject& player);
 
 	static void drawGameObjects();
 

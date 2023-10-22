@@ -19,7 +19,7 @@ void Flashlight::setup()
 	downFlashlightSprite = Sprite(flashlightImages, { 0, 492, 134, 164 }, BlendMode::AlphaBlend);
 }
 
-void Flashlight::update(float deltaTime)
+void Flashlight::update(float deltaTime, GameObject& player)
 {
 	//add a check for collision here
 	 

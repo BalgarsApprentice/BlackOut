@@ -15,7 +15,7 @@ public:
 
 	void setup() override;
 
-	void update(float deltaTime) override;
+	void update(float deltaTime, GameObject& player) override;
 
 	void draw() override;
 
@@ -33,8 +33,8 @@ protected:
 	CircleCollider circle{ {}, 56 };
 
 	Math::AABB arrayOfObstacles[8]{ };
-	int endOfObstaclesArray;
+	int endOfObstaclesArray{ 0 };
 
-	static Light* arrayOfprtLights[64];
+	static Light* arrayOfptrLights[64];
 	static int endOfLightArray;
 };

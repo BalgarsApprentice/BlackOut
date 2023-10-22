@@ -12,7 +12,7 @@ public:
 
 	void setup() override;
 
-	void update(float deltaTime) override;
+	void update(float deltaTime, GameObject& player) override;
 
 	void draw() override;
 

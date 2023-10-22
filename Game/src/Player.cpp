@@ -29,15 +29,22 @@ void Player::setup()
 	noneAnim	= SpriteAnim{ shareSprites, 0, { {1} } };
 }
 
-void Player::update(float deltaTime)
+void Player::update(float deltaTime, GameObject& player)
 {
 	lastPosition = position;
 	position = mob.move(position, deltaTime);
 	updateColliders();
 	position += box.boundaryCheck({ position.x + 16, position.y + 10 });
-	//flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
-
 	updateAnims(deltaTime);
+
+	if (hasFlashlight)
+	{
+		flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
+		for ()
+		{
+
+		}
+	}
 }
 
 void Player::draw()
@@ -120,6 +127,16 @@ CircleCollider& Player::getCircle()
 BoxCollider& Player::getBox()
 {
 	return box;
+}
+
+bool Player::getHasFlashlight()
+{
+	return hasFlashlight;
+}
+
+void Player::setHasFlashlight(bool bit)
+{
+	hasFlashlight = bit;
 }
 
 void Player::updateAnims(float deltaTime)

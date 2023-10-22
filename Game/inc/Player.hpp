@@ -17,7 +17,7 @@ public:
 
 	void setup() override;
 
-	void update(float deltaTime) override;
+	void update(float deltaTime, GameObject& player) override;
 
 	void draw() override;
 
@@ -25,7 +25,9 @@ public:
 
 	BoxCollider& getBox() override;
 
-	void updateColliders();
+	bool getHasFlashlight() override;
+
+	void setHasFlashlight(bool bit) override;
 
 private:
 	Mob mob;
@@ -45,9 +47,10 @@ private:
 	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
 	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
-
+	bool hasFlashlight{ false };
 
 	std::string stringState{ "" };
 
 	void updateAnims(float deltaTime);
+	void updateColliders();
 };

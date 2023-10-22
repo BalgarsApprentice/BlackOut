@@ -10,7 +10,7 @@ void GameManager::initializeGame(Window* prtWindow)
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	level.levelSetup(darkness);
+	level.levelSetup(canvas, darkness);
 	setupGameObjects();
 }
 
@@ -23,7 +23,7 @@ void GameManager::updateGameObjects(float deltaTime)
 {
 	if (isGameRunning)
 	{
-		GameObject::updateGameObjects(deltaTime);
+		GameObject::updateGameObjects(deltaTime, player);
 		Light::litCheck(&player);
 	}
 
@@ -35,10 +35,10 @@ void GameManager::drawToCanvas()
 	canvas.clear(Color::Blue);
 	darkness.clear(Color::Black);
 
+	level.getTileMap().drawOffset(canvas, level.getHorizontalOffset(), level.getVerticalOffset());
+
 	GameObject::drawGameObjects(); //This skips drawing the player and the flashlight.
 	flashlight.draw();
-
-	level.getTileMap().drawOffset(canvas, level.getHorizontalOffset(), level.getVerticalOffset());
 
 #if _DEBUG
 	int len = sizeof(level.obstacles) / sizeof(BoxCollider);
@@ -56,6 +56,7 @@ void GameManager::drawToCanvas()
 #else
 	canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);
 #endif
+
 	player.draw();
 }
 

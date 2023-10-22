@@ -8,7 +8,7 @@ Light::Light(const glm::vec2& aPos, Graphics::Image& surface)
 	: GameObject{ {aPos.x - 64, aPos.y - 64}, this }
 	, darkness{ &surface }
 {
-	arrayOfprtLights[endOfLightArray++] = this;
+	arrayOfptrLights[endOfLightArray++] = this;
 	circle.setPosition(aPos);
 	isLit = true;
 }
@@ -19,7 +19,7 @@ void Light::setup()
 	lightAnim = SpriteAnim{ lightSprites, 4, {} };
 }
 
-void Light::update(float deltaTime)
+void Light::update(float deltaTime, GameObject& player)
 {
 	lightAnim.update(deltaTime);
 }
@@ -40,9 +40,9 @@ void Light::initializeCollisionGroup(Math::AABB aObstacle) //static
 	//add all collisions to an array
 	for (int i = 0; i < endOfLightArray; ++i)
 	{
-		if (arrayOfprtLights[i]->box.getAABB().intersect(aObstacle))
+		if (arrayOfptrLights[i]->box.getAABB().intersect(aObstacle))
 		{
-			Light* ptrLight = arrayOfprtLights[i];
+			Light* ptrLight = arrayOfptrLights[i];
 			ptrLight->arrayOfObstacles[ptrLight->endOfObstaclesArray++] = aObstacle;
 		}
 	}
@@ -52,7 +52,7 @@ void Light::litCheck(GameObject* mob) //static
 {
 	for (int i = 0; i < endOfLightArray; ++i)
 	{
-		Light* ptrLight = arrayOfprtLights[i];
+		Light* ptrLight = arrayOfptrLights[i];
 		if (ptrLight->getLitState())
 		{
 			//check for circle distance with entity
@@ -75,5 +75,5 @@ void Light::litCheck(GameObject* mob) //static
 	}
 }
 
-Light* Light::arrayOfprtLights[64]{ nullptr };
+Light* Light::arrayOfptrLights[64]{ nullptr };
 int Light::endOfLightArray{ 0 };

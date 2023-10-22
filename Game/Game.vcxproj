@@ -18,6 +18,7 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EventHandler.cpp" />
     <ClCompile Include="src\Flashlight.cpp" />
+    <ClCompile Include="src\FlashlightObject.cpp" />
     <ClCompile Include="src\GameManager.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Human.cpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="inc\Enemy.hpp" />
     <ClInclude Include="inc\EventHandler.hpp" />
     <ClInclude Include="inc\Flashlight.hpp" />
+    <ClInclude Include="inc\FlashlightObject.hpp" />
     <ClInclude Include="inc\GameManager.hpp" />
     <ClInclude Include="inc\GameObject.hpp" />
     <ClInclude Include="inc\Human.hpp" />
