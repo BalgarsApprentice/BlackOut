@@ -41,7 +41,7 @@ private:
 	bool isGameRunning = 1;
 
 	Level level;
-	glm::vec2 startPosition{ 352.0f, 256.0f };
+	glm::vec2 startPosition{ 69.0f, 75.0f };
 	Human human;
 	Player player{ startPosition, human, canvas, flashlight };
 	//Enemy enemy{};

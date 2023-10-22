@@ -34,7 +34,7 @@ CircleCollider& Light::getCircle()
 	return circle;
 }
 
-void Light::initializeCollisionGroup(Math::AABB& aObstacle)
+void Light::initializeCollisionGroup(Math::AABB aObstacle) //static
 {
 	//check for AABB collision with all immobile AABB objects on screen
 	//add all collisions to an array
@@ -42,8 +42,8 @@ void Light::initializeCollisionGroup(Math::AABB& aObstacle)
 	{
 		if (arrayOfprtLights[i]->box.getAABB().intersect(aObstacle))
 		{
-			arrayOfprtLights[i]->arrayOfObstacles[arrayOfprtLights[i]->endOfObstaclesArray] = &aObstacle;
-			arrayOfprtLights[i]->endOfObstaclesArray += 1;
+			Light* ptrLight = arrayOfprtLights[i];
+			ptrLight->arrayOfObstacles[ptrLight->endOfObstaclesArray++] = aObstacle;
 		}
 	}
 }
@@ -52,15 +52,24 @@ void Light::litCheck(GameObject* mob) //static
 {
 	for (int i = 0; i < endOfLightArray; ++i)
 	{
-		if (arrayOfprtLights[i]->getLitState())
+		Light* ptrLight = arrayOfprtLights[i];
+		if (ptrLight->getLitState())
 		{
 			//check for circle distance with entity
-			if (arrayOfprtLights[i]->getCircle().collides(mob->getCircle()))
+			if (ptrLight->getCircle().collides(mob->getCircle()))
 			{
 				//setting the mob to lit activates it
 				mob->setLitState(true);
 				//check for any AABB collision with the entity and immobile AABB objects within the light's array
-				//correct entity position on AABB collision
+				for (int j = 0; j < ptrLight->endOfObstaclesArray; ++j)
+				{
+					//correct entity position on AABB collision
+					Math::AABB aabb = ptrLight->arrayOfObstacles[j];
+					if (mob->getBox().getAABB().intersect(aabb))
+					{
+						mob->goBack();
+					}
+				}
 			}
 		}
 	}

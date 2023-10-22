@@ -23,6 +23,8 @@ public:
 
 	CircleCollider& getCircle() override;
 
+	BoxCollider& getBox() override;
+
 	void updateColliders();
 
 private:
@@ -43,6 +45,7 @@ private:
 	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
 	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
+
 
 	std::string stringState{ "" };
 

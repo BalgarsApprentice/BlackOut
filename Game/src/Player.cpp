@@ -31,10 +31,11 @@ void Player::setup()
 
 void Player::update(float deltaTime)
 {
+	lastPosition = position;
 	position = mob.move(position, deltaTime);
 	updateColliders();
 	position += box.boundaryCheck({ position.x + 16, position.y + 10 });
-	flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
+	//flashlight->setFlashlightPosition({ position.x - 52, position.y + 32 }, mob.getState());
 
 	updateAnims(deltaTime);
 }
@@ -114,6 +115,11 @@ void Player::updateColliders()
 CircleCollider& Player::getCircle()
 {
 	return circle;
+}
+
+BoxCollider& Player::getBox()
+{
+	return box;
 }
 
 void Player::updateAnims(float deltaTime)

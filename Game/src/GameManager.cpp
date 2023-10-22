@@ -41,6 +41,14 @@ void GameManager::drawToCanvas()
 	level.getTileMap().drawOffset(canvas, level.getHorizontalOffset(), level.getVerticalOffset());
 
 #if _DEBUG
+	int len = sizeof(level.obstacles) / sizeof(BoxCollider);
+	for (int i = 0; i < len; ++i)
+	{
+		canvas.drawAABB(level.obstacles[i].getAABB(), Color::Yellow, {}, FillMode::WireFrame);
+	}
+#endif
+
+#if _DEBUG
 	if (isDark)
 	{
 		canvas.copy(darkness, {}, {}, BlendMode::MultiplicativeBlend);

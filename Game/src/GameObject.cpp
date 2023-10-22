@@ -31,6 +31,12 @@ CircleCollider& GameObject::getCircle()
 	return circle;
 }
 
+BoxCollider& GameObject::getBox()
+{
+	Singleton<Logger>::GetInstance().write("Object missed getCircle. Check for override.");
+	return box;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -87,6 +93,11 @@ void GameObject::setPosition(const glm::vec2& pos)
 const glm::vec2& GameObject::getPosition() const
 {
 	return position;
+}
+
+void GameObject::goBack()
+{
+	setPosition(lastPosition);
 }
 
 GameObject* GameObject::arrayOfprtObjects[128]{ nullptr };

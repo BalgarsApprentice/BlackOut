@@ -26,8 +26,10 @@
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Mob.cpp" />
+    <ClCompile Include="src\MovingLight.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Singleton.cpp" />
+    <ClCompile Include="src\SliderAI.cpp" />
     <ClCompile Include="src\WindowDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,8 +47,10 @@
     <ClInclude Include="inc\Light.hpp" />
     <ClInclude Include="inc\Logger.hpp" />
     <ClInclude Include="inc\Mob.hpp" />
+    <ClInclude Include="inc\MovingLight.hpp" />
     <ClInclude Include="inc\Player.hpp" />
     <ClInclude Include="inc\Singleton.hpp" />
+    <ClInclude Include="inc\SliderAI.hpp" />
     <ClInclude Include="inc\WindowDisplay.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

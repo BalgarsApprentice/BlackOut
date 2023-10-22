@@ -13,7 +13,11 @@ public:
 
 	glm::vec2& boundaryCheck(const glm::vec2& aPos);
 
-	const Math::AABB getAABB() const;
+	glm::vec2& collisionCorrection(Math::AABB box);
+
+	Math::AABB getAABB() const;
+
+	void setAABB(Math::AABB aBox);
 
 	bool collides(const BoxCollider& aCollider) const;
 

@@ -26,6 +26,9 @@ public:
 	virtual void draw();
 
 	virtual CircleCollider& getCircle();
+
+	virtual BoxCollider& getBox();
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -47,13 +50,17 @@ public:
 
 	const glm::vec2& getPosition() const;
 
+	void goBack();
+
 private:
 	static GameObject* arrayOfprtObjects[128];
 	static int endOfObjectArray;
+	BoxCollider box{};
 	CircleCollider circle{};
 	
 protected:
 	glm::vec2 position{ 0 };
+	glm::vec2 lastPosition{ 0 };
 	int objectIndex = 0;
 
 	bool isLit{ false };

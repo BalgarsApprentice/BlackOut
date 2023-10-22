@@ -11,7 +11,7 @@ public:
 
 	Light(const glm::vec2& aPos, Graphics::Image& surface);
 
-	//friend class Level;
+	friend class Level;
 
 	void setup() override;
 
@@ -21,18 +21,18 @@ public:
 
 	CircleCollider& getCircle() override;
 
-	static void initializeCollisionGroup(Math::AABB& aObstacle);
+	static void initializeCollisionGroup(Math::AABB aObstacle);
 
 	static void litCheck(GameObject* entity);
 
-private:
+protected:
 	Graphics::Image* darkness;
 	Graphics::SpriteAnim lightAnim;
 
 	BoxCollider box{};
-	CircleCollider circle{ {}, 64 };
+	CircleCollider circle{ {}, 56 };
 
-	Math::AABB* arrayOfObstacles[8]{ nullptr };
+	Math::AABB arrayOfObstacles[8]{ };
 	int endOfObstaclesArray;
 
 	static Light* arrayOfprtLights[64];
