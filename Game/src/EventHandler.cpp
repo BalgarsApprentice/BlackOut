@@ -45,22 +45,9 @@ void EventHandler::eventQueue(Window* window)
                 gameManager->teleportTopLeft();
                 break;
 #endif
-            case KeyCode::Z:
-                Flashlight::lockFlashlight();
-                break;
-
             case KeyCode::P:
                 gameManager->flipPause();
                 break;
-            }
-            break;
-        case Event::KeyReleased:
-            switch (e.key.code)
-            {
-            case KeyCode::Z:
-                Flashlight::unlockFlashlight();
-                break;
-
             }
             break;
         }

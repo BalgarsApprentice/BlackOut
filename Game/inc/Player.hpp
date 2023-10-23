@@ -14,7 +14,7 @@ class Player : public GameObject
 public:
 	Player();
 
-	explicit Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level& level);
+	explicit Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level* aLevel);
 
 	enum class State
 	{
@@ -50,7 +50,7 @@ public:
 private:
 	Mob mob;
 	Graphics::Image* canvas;
-	Level level;
+	Level* level;
 
 	Graphics::Sprite idleLeftSprite;
 	Graphics::Sprite idleRightSprite;

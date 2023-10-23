@@ -31,6 +31,7 @@
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Singleton.cpp" />
     <ClCompile Include="src\SliderAI.cpp" />
+    <ClCompile Include="src\Tracker.cpp" />
     <ClCompile Include="src\WindowDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +54,7 @@
     <ClInclude Include="inc\Player.hpp" />
     <ClInclude Include="inc\Singleton.hpp" />
     <ClInclude Include="inc\SliderAI.hpp" />
+    <ClInclude Include="inc\Tracker.hpp" />
     <ClInclude Include="inc\WindowDisplay.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

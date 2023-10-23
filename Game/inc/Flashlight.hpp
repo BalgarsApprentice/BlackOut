@@ -43,6 +43,8 @@ public:
 
 	const State getState() const;
 
+	const State getOldState() const;
+
 	void setPlayerState(State aState);
 
 private:

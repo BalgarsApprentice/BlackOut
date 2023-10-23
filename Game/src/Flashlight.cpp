@@ -138,6 +138,11 @@ const Flashlight::State Flashlight::getState() const
 	return state;
 }
 
+const Flashlight::State Flashlight::getOldState() const
+{
+	return oldState;
+}
+
 void Flashlight::setPlayerState(State aState)
 {
 	playerState = aState;

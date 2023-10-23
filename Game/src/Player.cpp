@@ -4,11 +4,12 @@ using namespace Graphics;
 
 Player::Player() = default;
 
-Player::Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level& level)
+Player::Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level* aLevel)
 	: GameObject{ aPos, this }
 	, mob{ aController }
 	, canvas{ &surface }
 	, flashlight{ &aFlashlight }
+	, level{ aLevel }
 {
 }
 
@@ -69,17 +70,17 @@ void Player::update(float deltaTime, GameObject& player)
 	{
 		flashlight->setFlashlightPosition(position);
 		flashlight->setPlayerState(sendFlashlightState());
-		int len = sizeof(level.obstacles) / sizeof(BoxCollider);
+		int len = sizeof(level->obstacles) / sizeof(BoxCollider);
 		for (int i = 0; i < len; ++i)
 		{
-			if (getBox().getAABB().intersect(level.obstacles[i].getAABB()))
+			if (getBox().getAABB().intersect(level->obstacles[i].getAABB()))
 			{
 				switch (getState())
 				{
 				case State::Left:
 					if (flashlight->getState() == Flashlight::State::Left || flashlight->getState() == Flashlight::State::Old)
 					{
-						if (getBox().getAABB().min.x > level.obstacles[i].getAABB().min.x)
+						if (getBox().getAABB().min.x > level->obstacles[i].getAABB().min.x)
 						{
 							setPosition({ lastPosition.x, position.y });
 						}
@@ -88,7 +89,7 @@ void Player::update(float deltaTime, GameObject& player)
 				case State::Right:
 					if (flashlight->getState() == Flashlight::State::Right || flashlight->getState() == Flashlight::State::Old)
 					{
-						if (getBox().getAABB().max.x < level.obstacles[i].getAABB().max.x)
+						if (getBox().getAABB().max.x < level->obstacles[i].getAABB().max.x)
 						{
 							setPosition({ lastPosition.x, position.y });
 						}
@@ -97,7 +98,7 @@ void Player::update(float deltaTime, GameObject& player)
 				case State::Up:
 					if (flashlight->getState() == Flashlight::State::Up || flashlight->getState() == Flashlight::State::Old)
 					{
-						if (getBox().getAABB().min.y > level.obstacles[i].getAABB().min.y)
+						if (getBox().getAABB().min.y > level->obstacles[i].getAABB().min.y)
 						{
 							setPosition({ position.x, lastPosition.y });
 						}
@@ -106,7 +107,7 @@ void Player::update(float deltaTime, GameObject& player)
 				case State::Down:
 					if (flashlight->getState() == Flashlight::State::Down || flashlight->getState() == Flashlight::State::Old)
 					{
-						if (getBox().getAABB().max.y < level.obstacles[i].getAABB().max.y)
+						if (getBox().getAABB().max.y < level->obstacles[i].getAABB().max.y)
 						{
 							setPosition({ position.x, lastPosition.y });
 						}
@@ -165,7 +166,7 @@ void Player::draw()
 		stringState = "Down";
 		break;
 
-	case State::Dead:
+	/*case State::Dead:
 		canvas->drawSprite(deadAnim, position.x, position.y);
 		stringState = "Dead";
 		break;
@@ -173,7 +174,7 @@ void Player::draw()
 	case State::None:
 		canvas->drawSprite(noneAnim, position.x, position.y);
 		stringState = "None";
-		break;
+		break;*/
 	}
 	
 #if _DEBUG

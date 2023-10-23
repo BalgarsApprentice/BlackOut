@@ -9,11 +9,11 @@ class BoxCollider : public Collider
 public:
 	BoxCollider();
 
-	BoxCollider(Math::AABB aabb);
+	BoxCollider(const Math::AABB& aabb);
 
-	glm::vec2& boundaryCheck(const glm::vec2& aPos);
+	glm::vec2 boundaryCheck(const glm::vec2& aPos);
 
-	glm::vec2& collisionCorrection(Math::AABB box);
+	glm::vec2 collisionCorrection(const Math::AABB& box);
 
 	Math::AABB getAABB() const;
 

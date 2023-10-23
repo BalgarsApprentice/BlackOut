@@ -27,15 +27,19 @@ void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
         Light::initializeCollisionGroup(obstacles[i].getAABB());
     }
 
-    new FlashlightObject({668, 100}, canvas);
+    ptrFlashlightObject = new FlashlightObject({668, 100}, canvas);
+    ptrFlashlightObject = nullptr;
 }
 
 void Level::levelUnload()
 {
-    for (int i = 0; i < 4; ++i)
+    int len = (sizeof(arrayOfPositions) + sizeof(arrayOfMPositions)) / sizeof(glm::vec2);
+    for (int i = 0; i < len; ++i)
     {
         delete Light::arrayOfptrLights[i];
     }
+
+    delete ptrFlashlightObject;
 }
 
 Graphics::TileMap& Level::getTileMap()

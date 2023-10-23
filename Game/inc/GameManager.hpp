@@ -7,6 +7,8 @@
 #include <GameObject.hpp>
 #include <Player.hpp>
 #include <Human.hpp>
+#include <Enemy.hpp>
+#include <Tracker.hpp>
 #include <AI.hpp>
 
 class GameManager
@@ -54,7 +56,8 @@ private:
 	Level level;
 	glm::vec2 startPosition{ 69.0f, 75.0f };
 	Human human;
-	Player player{ startPosition, human, canvas, flashlight, level };
-	//Enemy enemy{};
+	Player player{ startPosition, human, canvas, flashlight, &level };
+	Tracker tracker;
+	Enemy enemy{ startPosition, human, canvas, &level };
 	Flashlight flashlight{ startPosition, darkness };
 };

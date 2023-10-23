@@ -2,12 +2,12 @@
 
 BoxCollider::BoxCollider() = default;
 
-BoxCollider::BoxCollider(Math::AABB aabb)
+BoxCollider::BoxCollider(const Math::AABB& aabb)
     : box{aabb}
 {
 }
 
-glm::vec2& BoxCollider::boundaryCheck(const glm::vec2& aPos)
+glm::vec2 BoxCollider::boundaryCheck(const glm::vec2& aPos)
 {
     auto aabb = getAABB();
     glm::vec2 correction{ 0 };
@@ -31,7 +31,7 @@ glm::vec2& BoxCollider::boundaryCheck(const glm::vec2& aPos)
     return correction;
 }
 
-glm::vec2& BoxCollider::collisionCorrection(Math::AABB aBox)
+glm::vec2 BoxCollider::collisionCorrection(const Math::AABB& aBox)
 {
     auto aabb = getAABB();
     glm::vec2 correction{ 0 };

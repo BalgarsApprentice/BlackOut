@@ -76,7 +76,7 @@ void GameObject::drawGameObjects()
 
 void GameObject::clearGameObjects(int startingIndex)
 {
-	for (int i = startingIndex; i < endOfObjectArray; ++i) //start with 2 to skip the player and the flashlight at 0 and 1 which should be cleared separately
+	for (int i = startingIndex; i < endOfObjectArray; ++i) //starting with 2 skips the player and the flashlight at 0 and 1
 	{
 		arrayOfprtObjects[i] = nullptr;
 	}
