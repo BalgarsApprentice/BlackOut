@@ -16,17 +16,34 @@ public:
 
 	Flashlight(const glm::vec2& aPos, Graphics::Image& surface);
 
+	enum class State
+	{
+		Left,
+		Right,
+		Up,
+		Down,
+		Old
+	};
+
 	void setup() override;
 
 	void update(float deltaTime, GameObject& player) override;
 
 	void draw() override;
 
-	void setFlashlightPosition(const glm::vec2& pos, Mob::State state);
+	BoxCollider& getBox() override;
+
+	void setFlashlightPosition(const glm::vec2& pos);
 
 	static void lockFlashlight();
 
 	static void unlockFlashlight();
+
+	void updateColliders();
+
+	const State getState() const;
+
+	void setPlayerState(State aState);
 
 private:
 	Graphics::Image* darkness;
@@ -38,5 +55,9 @@ private:
 	Graphics::Sprite* currentFlashlightSprite{ nullptr };
 
 	static bool isFlashlightLocked;
-	Mob::State oldState{};
+	State state{ State::Right };
+	State oldState{ State::Right };
+	State playerState{ State::Right };
+
+	BoxCollider box{ {{0, 0, 0}, {1, 1, 0}} };
 };

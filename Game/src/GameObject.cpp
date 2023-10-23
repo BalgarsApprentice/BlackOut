@@ -33,7 +33,7 @@ CircleCollider& GameObject::getCircle()
 
 BoxCollider& GameObject::getBox()
 {
-	Singleton<Logger>::GetInstance().write("Object missed getCircle. Check for override.");
+	Singleton<Logger>::GetInstance().write("Object missed getBox. Check for override.");
 	return box;
 }
 

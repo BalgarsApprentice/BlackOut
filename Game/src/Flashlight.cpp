@@ -21,19 +21,51 @@ void Flashlight::setup()
 
 void Flashlight::update(float deltaTime, GameObject& player)
 {
-	//add a check for collision here
-	 
+	if (!player.getHasFlashlight()) return;
+
+	const int up  = Input::getKey(Graphics::KeyCode::Up) ? 1 : 0;
+	const int down = Input::getKey(Graphics::KeyCode::Down) ? 1 : 0;
+	int vertical = up - down;
+
+	const int left = Input::getKey(Graphics::KeyCode::Left) ? 1 : 0;
+	const int right = Input::getKey(Graphics::KeyCode::Right) ? 1 : 0;
+	int horizontal = left - right;
+
+	if (vertical > 0)
+	{
+		state = State::Up;
+	}
+	if (vertical < 0)
+	{
+		state = State::Down;
+	}
+	if (horizontal < 0)
+	{
+		state = State::Right;
+	}
+	if (horizontal > 0)
+	{
+		state = State::Left;
+	}
+	if (horizontal == 0 && vertical == 0)
+	{
+		state = playerState;
+	}
 }
 
 void Flashlight::draw()
 {
-	if (currentFlashlightSprite != nullptr)
-	{
-		darkness->drawSprite(*currentFlashlightSprite, position.x, position.y);
-	}
+	if (currentFlashlightSprite == nullptr) return;
+
+	darkness->drawSprite(*currentFlashlightSprite, position.x, position.y);
 }
 
-void Flashlight::setFlashlightPosition(const glm::vec2& aPos, Mob::State state)
+BoxCollider& Flashlight::getBox()
+{
+	return box;
+}
+
+void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 {
 	if (isFlashlightLocked)
 	{
@@ -42,25 +74,45 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos, Mob::State state)
 
 	switch (state)
 	{
-	case Mob::State::Left:
-		position = { aPos.x - 47, aPos.y - 82 };
+	case State::Left:
+		position = { aPos.x - 99, aPos.y - 50 };
 		currentFlashlightSprite = &leftFlashlightSprite;
 		break;
-	case Mob::State::Right:
-		position = { aPos.x + 80, aPos.y - 86 };
+	case State::Right:
+		position = { aPos.x + 28, aPos.y - 54 };
 		currentFlashlightSprite = &rightFlashlightSprite;
 		break;
-	case Mob::State::Up:
-		position = { aPos.x + 16, aPos.y - 166 };
+	case State::Up:
+		position = { aPos.x - 36, aPos.y - 134 };
 		currentFlashlightSprite = &upFlashlightSprite;
 		break;
-	case Mob::State::Down:
-		position = { aPos.x + 16, aPos.y - 16 };
+	case State::Down:
+		position = { aPos.x - 36, aPos.y + 16 };
 		currentFlashlightSprite = &downFlashlightSprite;
 		break;
+	case State::Old:
+		switch (oldState)
+		{
+		case State::Left:
+			position = { aPos.x - 99, aPos.y - 50 };
+			currentFlashlightSprite = &leftFlashlightSprite;
+			break;
+		case State::Right:
+			position = { aPos.x + 28, aPos.y - 54 };
+			currentFlashlightSprite = &rightFlashlightSprite;
+			break;
+		case State::Up:
+			position = { aPos.x - 36, aPos.y - 134 };
+			currentFlashlightSprite = &upFlashlightSprite;
+			break;
+		case State::Down:
+			position = { aPos.x - 36, aPos.y + 16 };
+			currentFlashlightSprite = &downFlashlightSprite;
+			break;
+		}
+		break;
 	}
-
-	if (state != Mob::State::Idle)
+	if (state != State::Old)
 	{
 		oldState = state;
 	}
@@ -76,5 +128,19 @@ void Flashlight::unlockFlashlight()
 	isFlashlightLocked = false;
 }
 
+void Flashlight::updateColliders()
+{
+	box.setPosition({ position.x + 16, position.y + 10 });
+}
+
+const Flashlight::State Flashlight::getState() const
+{
+	return state;
+}
+
+void Flashlight::setPlayerState(State aState)
+{
+	playerState = aState;
+}
 
 bool Flashlight::isFlashlightLocked{false};

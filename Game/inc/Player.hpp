@@ -3,6 +3,7 @@
 #include <GameObject.hpp>
 #include <Graphics/Image.hpp>
 #include <Mob.hpp>
+#include <Level.hpp>
 #include <Graphics/Input.hpp>
 #include <Graphics/SpriteAnim.hpp>
 #include <Flashlight.hpp>
@@ -13,7 +14,20 @@ class Player : public GameObject
 public:
 	Player();
 
-	explicit Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight);
+	explicit Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level& level);
+
+	//friend class Level;
+
+	enum class State
+	{
+		Idle,
+		Left,
+		Right,
+		Up,
+		Down,
+		Dead,
+		None
+	};
 
 	void setup() override;
 
@@ -29,9 +43,16 @@ public:
 
 	void setHasFlashlight(bool bit) override;
 
+	const State getState() const;
+
+	const State getOldState() const;
+	
+	Flashlight::State sendFlashlightState();
+
 private:
 	Mob mob;
 	Graphics::Image* canvas;
+	Level level;
 
 	Graphics::Sprite idleLeftSprite;
 	Graphics::Sprite idleRightSprite;
@@ -47,10 +68,14 @@ private:
 	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
 	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
-	bool hasFlashlight{ false };
 
 	std::string stringState{ "" };
 
 	void updateAnims(float deltaTime);
 	void updateColliders();
+
+	State state = State::Idle;
+	State oldState = State::Right;
+
+	void setState(State newState);
 };

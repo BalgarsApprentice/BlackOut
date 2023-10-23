@@ -42,8 +42,9 @@ private:
 
 	Level level;
 	glm::vec2 startPosition{ 69.0f, 75.0f };
+	glm::vec2 flashlightPosition{ 668.0f , 100.0f };
 	Human human;
-	Player player{ startPosition, human, canvas, flashlight };
+	Player player{ startPosition, human, canvas, flashlight, level };
 	//Enemy enemy{};
 	Flashlight flashlight{ startPosition, darkness };
 };

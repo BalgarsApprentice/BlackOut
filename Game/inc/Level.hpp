@@ -12,6 +12,8 @@ public:
 
     void levelSetup(Graphics::Image& canvas, Graphics::Image& darkness);
 
+    friend class Player;
+
     void levelUnload();
 
     Graphics::TileMap& getTileMap();

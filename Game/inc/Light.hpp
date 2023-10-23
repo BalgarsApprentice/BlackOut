@@ -9,7 +9,7 @@ class Light : public GameObject
 public:
 	Light();
 
-	Light(const glm::vec2& aPos, Graphics::Image& surface);
+	explicit Light(const glm::vec2& aPos, Graphics::Image& surface);
 
 	friend class Level;
 
@@ -25,15 +25,21 @@ public:
 
 	static void litCheck(GameObject* entity);
 
+	void updateColliders();
+
 protected:
 	Graphics::Image* darkness;
 	Graphics::SpriteAnim lightAnim;
 
-	BoxCollider box{};
+	BoxCollider box{ {{0, 0, 0}, {128, 128, 0}} };
 	CircleCollider circle{ {}, 56 };
 
 	Math::AABB arrayOfObstacles[8]{ };
 	int endOfObstaclesArray{ 0 };
+
+#if _DEBUG
+public:
+#endif
 
 	static Light* arrayOfptrLights[64];
 	static int endOfLightArray;

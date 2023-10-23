@@ -20,7 +20,7 @@ void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
     {
         new MovingLight(arrayOfMPositions[i], darkness);
     }
-    
+
     int len3 = sizeof(obstacles) / sizeof(BoxCollider);
     for (int i = 0; i < len3; ++i)
     {

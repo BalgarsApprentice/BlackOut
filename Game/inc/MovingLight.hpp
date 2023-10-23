@@ -17,6 +17,7 @@ public:
 	void draw() override;
 
 private:
+	BoxCollider box{ {{0, 0, 0}, {128, 128, 0}} };
 	float totaltime{ 0.0f };
 	float speed{ 60.0f };
 	int direction{ 1 };

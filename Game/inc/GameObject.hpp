@@ -68,4 +68,5 @@ protected:
 	int objectIndex = 0;
 
 	bool isLit{ false };
+	bool hasFlashlight{ false };
 };

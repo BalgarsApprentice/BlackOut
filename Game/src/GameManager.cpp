@@ -46,6 +46,11 @@ void GameManager::drawToCanvas()
 	{
 		canvas.drawAABB(level.obstacles[i].getAABB(), Color::Yellow, {}, FillMode::WireFrame);
 	}
+
+	//for (int i = 0; i < Light::endOfLightArray; ++i)
+	//{
+	//	canvas.drawAABB(Light::arrayOfptrLights[i]->getBox().getAABB(), Color::Yellow, {}, FillMode::Solid);
+	//}
 #endif
 
 #if _DEBUG

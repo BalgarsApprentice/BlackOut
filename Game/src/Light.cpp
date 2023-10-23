@@ -40,6 +40,7 @@ void Light::initializeCollisionGroup(Math::AABB aObstacle) //static
 	//add all collisions to an array
 	for (int i = 0; i < endOfLightArray; ++i)
 	{
+		arrayOfptrLights[i]->updateColliders();
 		if (arrayOfptrLights[i]->box.getAABB().intersect(aObstacle))
 		{
 			Light* ptrLight = arrayOfptrLights[i];
@@ -73,6 +74,11 @@ void Light::litCheck(GameObject* mob) //static
 			}
 		}
 	}
+}
+
+void Light::updateColliders()
+{
+	box.setPosition(position);
 }
 
 Light* Light::arrayOfptrLights[64]{ nullptr };
