@@ -16,8 +16,6 @@ public:
 
 	explicit Player(const glm::vec2& aPos, AI& aController, Graphics::Image& surface, Flashlight& aFlashlight, Level& level);
 
-	//friend class Level;
-
 	enum class State
 	{
 		Idle,

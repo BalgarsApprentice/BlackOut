@@ -91,3 +91,23 @@ Image& GameManager::getCanvas()
 {
 	return canvas;
 }
+
+void GameManager::teleportTopRight()
+{
+	player.setPosition({ 668.0f, 100.0f });
+}
+
+void GameManager::teleportBottomRight()
+{
+	player.setPosition({ 668.0f, 476.0f });
+}
+
+void GameManager::teleportBottomLeft()
+{
+	player.setPosition({ 100.0f, 476.0f });
+}
+
+void GameManager::teleportTopLeft()
+{
+	player.setPosition({ 100.0f, 100.0f });
+}

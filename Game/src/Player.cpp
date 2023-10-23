@@ -31,10 +31,11 @@ void Player::setup()
 
 void Player::update(float deltaTime, GameObject& player)
 {
+	lasterPosition = lastPosition;
 	lastPosition = position;
 	position = mob.move(position, deltaTime);
-	glm::vec2 direction = ( position - lastPosition );
 	updateColliders();
+	glm::vec2 direction = ( position - lastPosition );
 	position += box.boundaryCheck({ position.x + 16, position.y + 10 });
 	updateAnims(deltaTime);
 
@@ -76,42 +77,46 @@ void Player::update(float deltaTime, GameObject& player)
 				switch (getState())
 				{
 				case State::Left:
-					if (flashlight->getState() == Flashlight::State::Left)
+					if (flashlight->getState() == Flashlight::State::Left || flashlight->getState() == Flashlight::State::Old)
 					{
 						if (getBox().getAABB().min.x > level.obstacles[i].getAABB().min.x)
 						{
-							position.x = lastPosition.x;
+							setPosition({ lastPosition.x, position.y });
 						}
 					}
 					break;
 				case State::Right:
-					if (flashlight->getState() == Flashlight::State::Right)
+					if (flashlight->getState() == Flashlight::State::Right || flashlight->getState() == Flashlight::State::Old)
 					{
 						if (getBox().getAABB().max.x < level.obstacles[i].getAABB().max.x)
 						{
-							position.x = lastPosition.x;
+							setPosition({ lastPosition.x, position.y });
 						}
 					}
 					break;
 				case State::Up:
-					if (flashlight->getState() == Flashlight::State::Up)
+					if (flashlight->getState() == Flashlight::State::Up || flashlight->getState() == Flashlight::State::Old)
 					{
 						if (getBox().getAABB().min.y > level.obstacles[i].getAABB().min.y)
 						{
-							position.y = lastPosition.y;
+							setPosition({ position.x, lastPosition.y });
 						}
 					}
 					break;
 				case State::Down:
-					if (flashlight->getState() == Flashlight::State::Down)
+					if (flashlight->getState() == Flashlight::State::Down || flashlight->getState() == Flashlight::State::Old)
 					{
 						if (getBox().getAABB().max.y < level.obstacles[i].getAABB().max.y)
 						{
-							position.y = lastPosition.y;
+							setPosition({ position.x, lastPosition.y });
 						}
 					}
 					break;
+				case State::Idle:
+					goBack();
+					break;
 				}
+				updateColliders();
 			}
 		}
 	}

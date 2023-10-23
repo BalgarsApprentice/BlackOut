@@ -28,6 +28,22 @@ void EventHandler::eventQueue(Window* window)
             case KeyCode::B:
                 gameManager->flipDarkness();
                 break;
+
+            case KeyCode::NumPad1:
+                gameManager->teleportTopRight();
+                break;
+
+            case KeyCode::NumPad2:
+                gameManager->teleportBottomRight();
+                break;
+
+            case KeyCode::NumPad3:
+                gameManager->teleportBottomLeft();
+                break;
+
+            case KeyCode::NumPad4:
+                gameManager->teleportTopLeft();
+                break;
 #endif
             case KeyCode::Z:
                 Flashlight::lockFlashlight();
