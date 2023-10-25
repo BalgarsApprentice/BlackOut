@@ -24,14 +24,14 @@ void MovingLight::update(float deltaTime, GameObject& player)
 	if (isMove)
 	{
 		position.x += direction * speed * deltaTime;
-		if (position.x > 262)
+		if (position.x > 358)
 		{
-			position.x = 262;
+			position.x = 358;
 			isMove = false;
 		}
-		if (position.x < 132)
+		if (position.x < 228)
 		{
-			position.x = 132;
+			position.x = 228;
 			isMove = false;
 		}
 	}

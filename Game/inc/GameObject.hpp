@@ -56,8 +56,6 @@ public:
 
 	void goBack();
 
-	void goBacker();
-
 private:
 	static GameObject* arrayOfprtObjects[128];
 	static int endOfObjectArray;
@@ -67,7 +65,6 @@ private:
 protected:
 	glm::vec2 position{ 0 };
 	glm::vec2 lastPosition{ 0 };
-	glm::vec2 lasterPosition{ 0 };
 	int objectIndex = 0;
 
 	bool isLit{ false };

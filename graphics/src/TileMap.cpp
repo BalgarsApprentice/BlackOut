@@ -72,11 +72,11 @@ void TileMap::drawOffset(Image& image, int horizontal, int vertical) const
     const int numSprites = static_cast<int>(spriteSheet->getNumSprites());
 
     int x = horizontal * spriteWidth;
-    int y = vertical * spriteHeight;
+    int y = vertical * spriteHeight + 4;
     int z = 0;
     for (uint32_t i = 0u; i < rows; ++i)
     {
-        x = horizontal * spriteWidth;
+        x = horizontal * spriteWidth + 4;
         for (uint32_t j = 0; j < columns; ++j)
         {
             const int spriteId = spriteGrid[i * columns + j];

@@ -10,6 +10,7 @@
 #include <Enemy.hpp>
 #include <Tracker.hpp>
 #include <AI.hpp>
+#include <Math/AABB.hpp>
 
 class GameManager
 {
@@ -46,18 +47,20 @@ public:
 private:
 	Graphics::Image canvas;
 	Graphics::Image darkness;
+	Graphics::Image UI;
+	Graphics::Sprite borderSprite;
 
-	const int SCREEN_WIDTH = 768;
-	const int SCREEN_HEIGHT = 576;
+	const int SCREEN_WIDTH = 776;
+	const int SCREEN_HEIGHT = 584;
 
 	bool isDark = 1;
 	bool isGameRunning = 1;
 
 	Level level;
-	glm::vec2 startPosition{ 69.0f, 75.0f };
+	glm::vec2 startPosition{ 196.0f, 100.0f };
 	Human human;
 	Player player{ startPosition, human, canvas, flashlight, &level };
-	Tracker tracker;
-	Enemy enemy{ startPosition, human, canvas, &level };
 	Flashlight flashlight{ startPosition, darkness };
+	//Tracker tracker{ &player };
+	//Enemy enemy{ { 300.0f, 300.0f }, tracker, canvas, &level };
 };

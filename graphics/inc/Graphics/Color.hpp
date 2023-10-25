@@ -95,6 +95,9 @@ struct SR_API alignas( 4 ) Color
     static const Color Magenta;
     static const Color Yellow;
     static const Color Cyan;
+    static const Color BlueWhite;
+    static const Color BlueGrey;
+    static const Color BlueBlack;
 };
 
 constexpr Color::Color() noexcept

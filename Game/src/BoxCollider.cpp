@@ -11,9 +11,9 @@ glm::vec2 BoxCollider::boundaryCheck(const glm::vec2& aPos)
 {
     auto aabb = getAABB();
     glm::vec2 correction{ 0 };
-    if (aabb.min.x < 0)
+    if (aabb.min.x < 96)
     {
-        correction.x = -aabb.min.x;
+        correction.x = 96 - aabb.min.x;
     }
     if (aabb.min.y < 0)
     {

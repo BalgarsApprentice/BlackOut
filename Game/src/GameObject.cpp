@@ -109,10 +109,5 @@ void GameObject::goBack()
 	setPosition(lastPosition);
 }
 
-void GameObject::goBacker()
-{
-	setPosition(lasterPosition);
-}
-
 GameObject* GameObject::arrayOfprtObjects[128]{ nullptr };
 int GameObject::endOfObjectArray{ 0 };

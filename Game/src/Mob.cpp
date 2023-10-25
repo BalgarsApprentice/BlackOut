@@ -13,8 +13,6 @@ glm::vec2 Mob::move(glm::vec2 aPos, float deltaTime)
 {
 	glm::vec2 direction = normalize(controller->getTarget(aPos));
 
-	direction.y = -direction.y;
-
 	aPos += direction * speed * deltaTime;
 	
 	return aPos;

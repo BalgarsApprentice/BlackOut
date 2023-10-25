@@ -32,7 +32,6 @@ void Player::setup()
 
 void Player::update(float deltaTime, GameObject& player)
 {
-	lasterPosition = lastPosition;
 	lastPosition = position;
 	position = mob.move(position, deltaTime);
 	updateColliders();
@@ -68,7 +67,7 @@ void Player::update(float deltaTime, GameObject& player)
 
 	if (hasFlashlight)
 	{
-		flashlight->setFlashlightPosition(position);
+		flashlight->setFlashlightPosition({ position.x - 32, position.y - 24 });
 		flashlight->setPlayerState(sendFlashlightState());
 		int len = sizeof(level->obstacles) / sizeof(BoxCollider);
 		for (int i = 0; i < len; ++i)
@@ -125,64 +124,65 @@ void Player::update(float deltaTime, GameObject& player)
 
 void Player::draw()
 {
+	glm::vec2 drawPosition = { getPosition().x - 32, getPosition().y - 24 };
 	switch(getState())
 	{
 	case State::Idle:
 		switch (getOldState())
 		{
 		case State::Left:
-			canvas->drawSprite(idleLeftSprite, position.x, position.y);
+			canvas->drawSprite(idleLeftSprite, drawPosition.x, drawPosition.y);
 			break;
 		case State::Right:
-			canvas->drawSprite(idleRightSprite, position.x, position.y);
+			canvas->drawSprite(idleRightSprite, drawPosition.x, drawPosition.y);
 			break;
 		case State::Up:
-			canvas->drawSprite(idleUpSprite, position.x, position.y);
+			canvas->drawSprite(idleUpSprite, drawPosition.x, drawPosition.y);
 			break;
 		case State::Down:
-			canvas->drawSprite(idleDownSprite, position.x, position.y);
+			canvas->drawSprite(idleDownSprite, drawPosition.x, drawPosition.y);
 			break;
 		}
 		stringState = "Idle";
 		break;
 
 	case State::Left:
-		canvas->drawSprite(leftAnim, position.x, position.y);
+		canvas->drawSprite(leftAnim, drawPosition.x, drawPosition.y);
 		stringState = "Left";
 		break;
 
 	case State::Right:
-		canvas->drawSprite(rightAnim, position.x, position.y);
+		canvas->drawSprite(rightAnim, drawPosition.x, drawPosition.y);
 		stringState = "Right";
 		break;
 
 	case State::Up:
-		canvas->drawSprite(upAnim, position.x, position.y);
+		canvas->drawSprite(upAnim, drawPosition.x, drawPosition.y);
 		stringState = "Up";
 		break;
 
 	case State::Down:
-		canvas->drawSprite(downAnim, position.x, position.y);
+		canvas->drawSprite(downAnim, drawPosition.x, drawPosition.y);
 		stringState = "Down";
 		break;
 
 	/*case State::Dead:
-		canvas->drawSprite(deadAnim, position.x, position.y);
+		canvas->drawSprite(deadAnim, drawPosition.x, drawPosition.y);
 		stringState = "Dead";
 		break;
 
 	case State::None:
-		canvas->drawSprite(noneAnim, position.x, position.y);
+		canvas->drawSprite(noneAnim, drawPosition.x, drawPosition.y);
 		stringState = "None";
 		break;*/
 	}
 	
 #if _DEBUG
-	canvas->drawText(Font::Default, stringState, position.x + 16, position.y - 2, Color::White);
+	canvas->drawText(Font::Default, stringState, position.x - 16, position.y - 26, Color::White);
 	canvas->drawAABB(box.getAABB(), Color::Yellow, {}, FillMode::WireFrame);
 	if (isLit)
 	{
-		canvas->drawCircle({ { position.x + 30, position.y + 26 }, 16.0f }, Color::White, {}, FillMode::WireFrame);
+		canvas->drawCircle({ { position.x - 2, position.y }, 16.0f }, Color::White, {}, FillMode::WireFrame);
 	}
 
 	canvas->drawAABB(flashlight->getBox().getAABB(), Color::Red, {}, FillMode::Solid);
@@ -193,8 +193,8 @@ void Player::draw()
 
 void Player::updateColliders()
 {
-	box.setPosition({ position.x + 16, position.y + 10 });
-	circle.setPosition({ position.x + 30, position.y + 26 });
+	box.setPosition({ position.x - 16, position.y - 16 });
+	circle.setPosition({ position.x, position.y });
 }
 
 CircleCollider& Player::getCircle()

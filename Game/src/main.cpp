@@ -2,6 +2,7 @@
 #include <Logger.hpp>
 #include <GameManager.hpp>
 #include <EventHandler.hpp>
+#include <VariousUI.hpp>
 
 #include <Graphics/Window.hpp>
 #include <Graphics/Timer.hpp>
@@ -18,6 +19,7 @@ Window window;
 Window* prtWindow = &window;
 Logger* logger = &Singleton<Logger>::GetInstance();
 GameManager* gameManager = &Singleton<GameManager>::GetInstance();
+VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
 
 int main()
 {
@@ -35,7 +37,15 @@ int main()
         Input::update();
         gameManager->updateGameObjects(timer.elapsedSeconds());
 
-        gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::White);
+        gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::Black);
+        gameManager->getCanvas().drawText(Font{ 2.0f }, "BLACK\nOUT", 10, 35, Color::White);
+        gameManager->getCanvas().drawText(Font{ 2.0f }, "Controls", 10, 90, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "WALK", 26, 124, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "W", 40, 145, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "A", 19, 167, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "S", 41, 167, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "D", 63, 167, Color::Black);
+        //gameManager->getCanvas().drawText(Font::Default, "FLASHLIGHT", 1, 205, Color::Black);
 
         window.present(gameManager->getCanvas());
 
@@ -47,7 +57,7 @@ int main()
         totalTime += timer.elapsedSeconds();
         if (totalTime > 1.0)
         {
-            fps = fmt::format("FPS: {:.3f}", static_cast<double>(frameCount) / totalTime);
+            fps = fmt::format("FPS: {:.2f}", static_cast<double>(frameCount) / totalTime);
 
             std::cout << fps << std::endl;
 

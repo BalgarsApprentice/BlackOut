@@ -87,7 +87,7 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 		currentFlashlightSprite = &upFlashlightSprite;
 		break;
 	case State::Down:
-		position = { aPos.x - 36, aPos.y + 16 };
+		position = { aPos.x - 35, aPos.y + 16 };
 		currentFlashlightSprite = &downFlashlightSprite;
 		break;
 	case State::Old:
