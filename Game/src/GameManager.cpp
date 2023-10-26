@@ -10,6 +10,8 @@ void GameManager::initializeGame(Window* prtWindow)
 
 	auto borderImage = ResourceManager::loadImage("assets/textures/border.png");
 	borderSprite = Sprite{ borderImage, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, BlendMode::AlphaBlend };
+	auto wasdImage = ResourceManager::loadImage("assets/textures/wasd.png");
+	wasdSprite = Sprite{ wasdImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
 
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -67,9 +69,9 @@ void GameManager::drawToCanvas()
 
 	canvas.copy(UI, {}, {}, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 90, 0, 0 }, { 96, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 90, 0, 0 }, { 91, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 95, 0, 0 }, { 96, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 94, 0, 0 }, { 100, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 94, 0, 0 }, { 95, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 99, 0, 0 }, { 100, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
 	//canvas.drawAABB(AABB{ { 0, 30, 0 }, { 89, 78, 0 } }, Color::Black, BlendMode::Disable);
 
@@ -94,8 +96,9 @@ void GameManager::drawToCanvas()
 	//canvas.drawAABB(AABB{ { 34, 243, 0 }, { 53, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
 	//canvas.drawAABB(AABB{ { 12, 243, 0 }, { 31, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
 	//canvas.drawAABB(AABB{ { 56, 243, 0 }, { 75, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-
-	canvas.drawSprite(borderSprite, 0, 0);
+	
+	canvas.drawSprite(wasdSprite, 4, 138);
+	//canvas.drawSprite(borderSprite, 0, 0);
 }
 
 void GameManager::clearLevelGameObjects()

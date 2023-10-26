@@ -49,6 +49,7 @@ private:
 	Graphics::Image darkness;
 	Graphics::Image UI;
 	Graphics::Sprite borderSprite;
+	Graphics::Sprite wasdSprite;
 
 	const int SCREEN_WIDTH = 776;
 	const int SCREEN_HEIGHT = 584;

@@ -5,6 +5,8 @@ class VariousUI
 public:
 	VariousUI();
 
+	//Image& getStartMenu();
+
 private:
 
 
