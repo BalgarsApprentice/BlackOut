@@ -104,7 +104,7 @@ const glm::vec2& GameObject::getPosition() const
 	return position;
 }
 
-void GameObject::goBack()
+void GameObject::goBack(Math::AABB aabb)
 {
 	setPosition(lastPosition);
 }

@@ -113,7 +113,7 @@ void Player::update(float deltaTime, GameObject& player)
 					}
 					break;
 				case State::Idle:
-					goBack();
+					goBack(level->obstacles[i].getAABB());
 					break;
 				}
 				updateColliders();
@@ -215,6 +215,71 @@ bool Player::getHasFlashlight()
 void Player::setHasFlashlight(bool bit)
 {
 	hasFlashlight = bit;
+}
+
+void Player::goBack(Math::AABB aabb)
+{
+	position = lastPosition;
+	//switch (getState())
+	//{
+	//case State::Left:
+	//	if (getBox().getAABB().min.x > aabb.min.x && getBox().getAABB().max.x < aabb.max.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	if (getBox().getAABB().max.y > aabb.min.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	if (getBox().getAABB().min.y > aabb.max.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	break;
+	//case State::Right:
+	//	if (getBox().getAABB().min.x < aabb.min.x && getBox().getAABB().max.x > aabb.max.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	if (getBox().getAABB().max.y > aabb.min.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	if (getBox().getAABB().min.y > aabb.max.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	break;
+	//case State::Up:
+	//	if (getBox().getAABB().min.y > aabb.min.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	if (getBox().getAABB().max.x > aabb.min.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	if (getBox().getAABB().min.x > aabb.max.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	break;
+	//case State::Down:
+	//	if (getBox().getAABB().max.y < aabb.max.y)
+	//	{
+	//		setPosition({ position.x, lastPosition.y });
+	//	}
+	//	if (getBox().getAABB().max.x > aabb.min.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	if (getBox().getAABB().min.x > aabb.max.x)
+	//	{
+	//		setPosition({ lastPosition.x, position.y });
+	//	}
+	//	break;
+	//}
+	//updateColliders();
 }
 
 void Player::setState(State newState)

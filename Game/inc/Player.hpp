@@ -41,6 +41,8 @@ public:
 
 	void setHasFlashlight(bool bit) override;
 
+	void goBack(Math::AABB aabb) override;
+
 	const State getState() const;
 
 	const State getOldState() const;

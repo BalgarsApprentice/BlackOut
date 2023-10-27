@@ -54,7 +54,7 @@ public:
 
 	const glm::vec2& getPosition() const;
 
-	void goBack();
+	virtual void goBack(Math::AABB aabb);
 
 private:
 	static GameObject* arrayOfprtObjects[128];

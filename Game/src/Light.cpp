@@ -68,7 +68,7 @@ void Light::litCheck(GameObject* mob) //static
 					Math::AABB aabb = ptrLight->arrayOfObstacles[j];
 					if (mob->getBox().getAABB().intersect(aabb))
 					{
-						mob->goBack();
+						mob->goBack(aabb);
 					}
 				}
 			}
