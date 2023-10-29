@@ -27,6 +27,8 @@ int main()
 
     gameManager->initializeGame(prtWindow);
 
+    variousUI->initializeUI();
+
     Timer       timer;
     double      totalTime = 0.0;
     uint64_t    frameCount = 0ull;
@@ -35,19 +37,22 @@ int main()
     while (window)
     {
         Input::update();
-        gameManager->updateGameObjects(timer.elapsedSeconds());
+        if (variousUI->getDisplaySetting())
+        {
+            variousUI->updateUI(timer.elapsedSeconds());
+            window.present(variousUI->getTextBox());
+        }
+        else
+        {
+            gameManager->updateGameObjects(timer.elapsedSeconds());
 
-        gameManager->getCanvas().drawText(Font::Default, fps, 10, 10, Color::Black);
-        gameManager->getCanvas().drawText(Font{ 2.0f }, "BLACK\nOUT", 10, 35, Color::White);
-        gameManager->getCanvas().drawText(Font{ 2.0f }, "Controls", 10, 90, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "WALK", 26, 124, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "W", 40, 145, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "A", 19, 167, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "S", 41, 167, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "D", 63, 167, Color::Black);
-        //gameManager->getCanvas().drawText(Font::Default, "FLASHLIGHT", 1, 205, Color::Black);
+            gameManager->getCanvas().drawText(Font::Default, fps, 12, 8, Color::Black);
+            gameManager->getCanvas().drawText(Font{ 2.0f }, "BLACK\nOUT", 10, 35, Color::White);
+            gameManager->getCanvas().drawText(Font{ 2.0f }, "Controls", 10, 90, Color::Black);
+            gameManager->getCanvas().drawText(Font{ 1.8f }, "WALK", 28, 120, Color::Black);
 
-        window.present(gameManager->getCanvas());
+            window.present(gameManager->getCanvas());
+        }
 
         Singleton<EventHandler>::GetInstance().eventQueue(prtWindow);
 
@@ -57,7 +62,7 @@ int main()
         totalTime += timer.elapsedSeconds();
         if (totalTime > 1.0)
         {
-            fps = fmt::format("FPS: {:.2f}", static_cast<double>(frameCount) / totalTime);
+            fps = fmt::format("FPS: {:.0f}", static_cast<double>(frameCount) / totalTime);
 
             std::cout << fps << std::endl;
 

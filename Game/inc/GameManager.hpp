@@ -48,8 +48,8 @@ private:
 	Graphics::Image canvas;
 	Graphics::Image darkness;
 	Graphics::Image UI;
-	Graphics::Sprite borderSprite;
 	Graphics::Sprite wasdSprite;
+	Graphics::Sprite arrowKeysSprite;
 
 	const int SCREEN_WIDTH = 776;
 	const int SCREEN_HEIGHT = 584;

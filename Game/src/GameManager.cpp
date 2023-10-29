@@ -8,10 +8,10 @@ void GameManager::initializeGame(Window* prtWindow)
 	prtWindow->create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);
 	prtWindow->show();
 
-	auto borderImage = ResourceManager::loadImage("assets/textures/border.png");
-	borderSprite = Sprite{ borderImage, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, BlendMode::AlphaBlend };
 	auto wasdImage = ResourceManager::loadImage("assets/textures/wasd.png");
 	wasdSprite = Sprite{ wasdImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
+	auto arrowKeysImage = ResourceManager::loadImage("assets/textures/arrowkeys.png");
+	arrowKeysSprite = Sprite{ arrowKeysImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
 
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -67,38 +67,57 @@ void GameManager::drawToCanvas()
 
 	player.draw();
 
+	// Drawing the UI
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	canvas.copy(UI, {}, {}, BlendMode::Disable);
 
-	canvas.drawAABB(AABB{ { 94, 0, 0 }, { 100, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
-	canvas.drawAABB(AABB{ { 94, 0, 0 }, { 95, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
-	canvas.drawAABB(AABB{ { 99, 0, 0 }, { 100, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 0, 0, 0 }, { 6, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 0, 0 }, { 6, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 0, 0, 0 }, { 1, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 0, 30, 0 }, { 89, 78, 0 } }, Color::Black, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { SCREEN_WIDTH - 6, 0, 0 }, { SCREEN_WIDTH, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { SCREEN_WIDTH - 6, 0, 0 }, { SCREEN_WIDTH - 5, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { SCREEN_WIDTH - 1, 0, 0 }, { SCREEN_WIDTH, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 0, 23, 0 }, { 92, 29, 0 } }, Color::BlueGrey, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 0, 23, 0 }, { 90, 24, 0 } }, Color::BlueBlack, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 0, 28, 0 }, { 90, 29, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 2, 0, 0 }, { SCREEN_WIDTH - 2, 6, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 2, 0, 0 }, { SCREEN_WIDTH - 2, 1, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 5, 0 }, { SCREEN_WIDTH - 5, 6, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 0, 79, 0 }, { 92, 85, 0 } }, Color::BlueGrey, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 0, 79, 0 }, { 90, 80, 0 } }, Color::BlueBlack, BlendMode::Disable);
-	//canvas.drawAABB(AABB{ { 0, 84, 0 }, { 90, 85, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 2, SCREEN_HEIGHT - 6, 0 }, { SCREEN_WIDTH - 2, SCREEN_HEIGHT, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 2, SCREEN_HEIGHT - 1, 0 }, { SCREEN_WIDTH - 2, SCREEN_HEIGHT, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, SCREEN_HEIGHT - 6, 0 }, { SCREEN_WIDTH - 5, SCREEN_HEIGHT - 5, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 34, 140, 0 }, { 53, 160, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 34, 162, 0 }, { 53, 182, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 12, 162, 0 }, { 31, 182, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 56, 162, 0 }, { 75, 182, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
+	canvas.drawAABB(AABB{ { 94, 2, 0 }, { 100, SCREEN_HEIGHT - 2, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 94, 5, 0 }, { 95, SCREEN_HEIGHT - 5, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 99, 5, 0 }, { 100, SCREEN_HEIGHT - 5, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 0, 110, 0 }, { 89, 111, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 7, 30, 0 }, { 93, 78, 0 } }, Color::Black, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 0, 190, 0 }, { 89, 191, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 23, 0 }, { 95, 29, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 23, 0 }, { 95, 24, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 28, 0 }, { 95, 29, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
-	//canvas.drawAABB(AABB{ { 34, 221, 0 }, { 53, 241, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 34, 243, 0 }, { 53, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 12, 243, 0 }, { 31, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
-	//canvas.drawAABB(AABB{ { 56, 243, 0 }, { 75, 263, 0 } }, Color::Black, BlendMode::Disable, FillMode::WireFrame);
+	canvas.drawAABB(AABB{ { 5, 79, 0 }, { 95, 85, 0 } }, Color::BlueGrey, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 79, 0 }, { 95, 80, 0 } }, Color::BlueBlack, BlendMode::Disable);
+	canvas.drawAABB(AABB{ { 5, 84, 0 }, { 95, 85, 0 } }, Color::BlueBlack, BlendMode::Disable);
+
+	canvas.drawAABB(AABB{ { 6, 110, 0 }, { 95, 111, 0 } }, Color::BlueBlack, BlendMode::Disable);
+
+	canvas.drawAABB(AABB{ { 6, 200, 0 }, { 95, 201, 0 } }, Color::BlueBlack, BlendMode::Disable);
 	
-	canvas.drawSprite(wasdSprite, 4, 138);
-	//canvas.drawSprite(borderSprite, 0, 0);
+	canvas.drawSprite(wasdSprite, 7, 138);
+	canvas.drawSprite(arrowKeysSprite, 7, 243);
+
+	canvas.drawText(Font{ 1.8f }, "FLASH", 24, 210, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 226, Color::Black);
+
+	if (!player.getHasFlashlight())
+	{
+		canvas.drawAABB(AABB{ { 7, 200, 0 }, { 93, 305, 0 } }, Color::BlueWhite, BlendMode::Disable);
+	}
+
+	canvas.drawAABB(AABB{ { 7, 306, 0 }, { 93, SCREEN_HEIGHT - 7, 0 } }, Color::BlueWhite, BlendMode::Disable);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void GameManager::clearLevelGameObjects()
