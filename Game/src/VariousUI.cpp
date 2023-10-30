@@ -27,6 +27,7 @@ void VariousUI::initializeUI()
 	spaceBarSprite = Sprite{ spaceBarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
 
 	buttonClick.loadSound("assets/sounds/TitleScreen/buttonecho.wav");
+	pickUp.loadSound("assets/sounds/pickup.wav");
 }
 
 const bool VariousUI::getDisplaySetting() const
@@ -64,12 +65,12 @@ void VariousUI::setState(UI state)
 		break;
 
 	case VariousUI::UI::flashlight:
-		secondCheck = -0.5f;
+		secondCheck = -1.0f;
 		stateString = "flashlight";
 		break;
 
 	case VariousUI::UI::darklight:
-		secondCheck = -0.5f;
+		secondCheck = -1.0f;
 		stateString = "darklight";
 		break;
 
@@ -121,7 +122,7 @@ void VariousUI::startMenuUI()
 {
 	textBox.drawSprite(flashlightSprite, 7, 7);
 
-	if (textBoxTime > 2.8f and textBoxTime < 4.0f)
+	if (textBoxTime > 2.8f and textBoxTime < 3.0f)
 	{
 		buttonClick.play();
 	}
@@ -146,6 +147,11 @@ void VariousUI::startMenuUI()
 
 void VariousUI::foundFlashlightUI()
 {
+	if (textBoxTime < 0.2f)
+	{
+		pickUp.play();
+	}
+
 	if (textBoxTime > 1.0f)
 	{
 		if (Input::getKeyDown(Graphics::KeyCode::Enter))
@@ -169,7 +175,6 @@ void VariousUI::foundFlashlightUI()
 	}
 
 	//textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
-
 }
 
 void VariousUI::foundDarklightUI()
@@ -196,7 +201,7 @@ void VariousUI::foundDarklightUI()
 		textBox.drawText(Font::Default, "(PRESS ENTER TO CONTINUE)", 279, 400, Color::Black);
 	}
 
-	textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
+	//textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
 }
 
 Image& VariousUI::getUI()

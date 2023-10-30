@@ -9,6 +9,8 @@
 #include <Graphics/Font.hpp>
 #include <Graphics/Input.hpp>
 
+#include <Audio/Sound.hpp>
+
 #include <fmt/core.h>
 
 #include <iostream>
@@ -20,9 +22,12 @@ Window* prtWindow = &window;
 Logger* logger = &Singleton<Logger>::GetInstance();
 GameManager* gameManager = &Singleton<GameManager>::GetInstance();
 VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
+EventHandler* eventHandler = &Singleton<EventHandler>::GetInstance();
 
 const int SCREEN_WIDTH = 776;
 const int SCREEN_HEIGHT = 584;
+
+Audio::Sound soundTrack;
 
 int main()
 {
@@ -33,6 +38,9 @@ int main()
 
     variousUI->setScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     variousUI->initializeUI();
+
+    soundTrack.loadMusic("assets/sounds/soundtrack.mp3");
+    soundTrack.play();
 
     Timer       timer;
     double      totalTime = 0.0;
@@ -46,13 +54,17 @@ int main()
     while (window)
     {
         Input::update();
+
         if (variousUI->getDisplaySetting())
         {
+            soundTrack.pause();
             variousUI->updateUI(timer.elapsedSeconds());
             window.present(variousUI->getUI());
         }
         else
         {
+            soundTrack.play();
+
             gameManager->updateGameObjects(timer.elapsedSeconds());
 
             gameManager->getCanvas().drawText(Font::Default, fps, 12, 10, Color::Black);
@@ -63,7 +75,7 @@ int main()
             window.present(gameManager->getCanvas());
         }
 
-        Singleton<EventHandler>::GetInstance().eventQueue(prtWindow);
+        eventHandler->eventQueue(prtWindow);
 
         timer.tick();
         ++frameCount;

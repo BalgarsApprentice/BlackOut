@@ -67,6 +67,7 @@ private:
 	Graphics::Sprite spaceBarSprite;
 
 	Audio::Sound buttonClick;
+	Audio::Sound pickUp;
 
 	UI ui{ none };
 	std::string stateString{ "" };
