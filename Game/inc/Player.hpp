@@ -6,6 +6,7 @@
 #include <Level.hpp>
 #include <Graphics/Input.hpp>
 #include <Graphics/SpriteAnim.hpp>
+#include <Audio/Sound.hpp>
 #include <Flashlight.hpp>
 #include <Human.hpp>
 

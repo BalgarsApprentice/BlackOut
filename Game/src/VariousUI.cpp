@@ -2,6 +2,7 @@
 
 using namespace Graphics;
 using namespace Math;
+using namespace Audio;
 
 VariousUI::VariousUI() = default;
 
@@ -22,6 +23,10 @@ void VariousUI::initializeUI()
 	titleSprite = Sprite{ titleImage, {0, 0, 500, 259}, BlendMode::AlphaBlend };
 	auto arrowKeysImage = ResourceManager::loadImage("assets/textures/arrowkeys.png");
 	arrowKeysSprite = Sprite{ arrowKeysImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
+	auto spaceBarImage = ResourceManager::loadImage("assets/textures/spacebar.png");
+	spaceBarSprite = Sprite{ spaceBarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
+
+	buttonClick.loadSound("assets/sounds/TitleScreen/buttonecho.wav");
 }
 
 const bool VariousUI::getDisplaySetting() const
@@ -64,6 +69,7 @@ void VariousUI::setState(UI state)
 		break;
 
 	case VariousUI::UI::darklight:
+		secondCheck = -0.5f;
 		stateString = "darklight";
 		break;
 
@@ -115,6 +121,11 @@ void VariousUI::startMenuUI()
 {
 	textBox.drawSprite(flashlightSprite, 7, 7);
 
+	if (textBoxTime > 2.8f and textBoxTime < 4.0f)
+	{
+		buttonClick.play();
+	}
+
 	if (textBoxTime > 3.0f)
 	{
 		textBox.drawSprite(lightSprite, 7, 7);
@@ -161,6 +172,33 @@ void VariousUI::foundFlashlightUI()
 
 }
 
+void VariousUI::foundDarklightUI()
+{
+	if (textBoxTime > 1.0f)
+	{
+		if (Input::getKeyDown(Graphics::KeyCode::Enter))
+		{
+			isDisplaying = false;
+			textBoxTime = 0.0f;
+		}
+	}
+
+	drawCustomBorder(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 4 * 3, SCREEN_HEIGHT / 4 * 3, true);
+	textBox.drawText(Font{ 3.0f }, "You found", 308, 183, Color::Black);
+	textBox.drawText(Font{ 3.0f }, "the darklight!", 281, 219, Color::Black);
+	textBox.drawText(Font{ 3.0f }, "darklight!", 350, 219, Color::Blue);
+	textBox.drawText(Font{ 2.0f }, "Swap from the flashlight to the", 217, 263, Color::Black);
+	textBox.drawText(Font{ 2.0f }, "darklight using the space bar.", 227, 287, Color::Black);
+	textBox.drawSprite(spaceBarSprite, 339, 347);
+
+	if (isStartText)
+	{
+		textBox.drawText(Font::Default, "(PRESS ENTER TO CONTINUE)", 279, 400, Color::Black);
+	}
+
+	textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
+}
+
 Image& VariousUI::getUI()
 {
 	drawBorder();
@@ -176,6 +214,7 @@ Image& VariousUI::getUI()
 		break;
 
 	case VariousUI::UI::darklight:
+		foundDarklightUI();
 		break;
 
 	case VariousUI::UI::pause:

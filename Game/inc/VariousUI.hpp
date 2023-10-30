@@ -5,8 +5,9 @@
 
 #include <Graphics/Image.hpp>
 #include <Graphics/ResourceManager.hpp>
-#include <Math/AABB.hpp>
 #include <Graphics/Input.hpp>
+#include <Math/AABB.hpp>
+#include <Audio/Sound.hpp>
 
 class VariousUI
 {
@@ -43,6 +44,8 @@ public:
 
 	void foundFlashlightUI();
 
+	void foundDarklightUI();
+
 	Graphics::Image& getUI();
 
 private:
@@ -61,6 +64,9 @@ private:
 	Graphics::Sprite lightSprite;
 	Graphics::Sprite titleSprite;
 	Graphics::Sprite arrowKeysSprite;
+	Graphics::Sprite spaceBarSprite;
+
+	Audio::Sound buttonClick;
 
 	UI ui{ none };
 	std::string stateString{ "" };
