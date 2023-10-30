@@ -13,8 +13,6 @@
 
 #include <fmt/core.h>
 
-#include <iostream>
-
 using namespace Graphics;
 
 Window window;
@@ -84,8 +82,6 @@ int main()
         if (totalTime > 1.0)
         {
             fps = fmt::format("FPS: {:.0f}", static_cast<double>(frameCount) / totalTime);
-
-            std::cout << fps << std::endl;
 
             frameCount = 0;
             totalTime = 0.0;

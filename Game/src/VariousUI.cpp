@@ -127,6 +127,12 @@ void VariousUI::startMenuUI()
 		buttonClick.play();
 	}
 
+	if (Input::getKeyDown(Graphics::KeyCode::Enter) && textBoxTime < 3.0f)
+	{
+		textBoxTime = 3.0f;
+		secondCheck = 0.0f;
+	}
+
 	if (textBoxTime > 3.0f)
 	{
 		textBox.drawSprite(lightSprite, 7, 7);
