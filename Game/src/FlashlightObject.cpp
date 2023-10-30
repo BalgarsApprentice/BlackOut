@@ -24,6 +24,7 @@ void FlashlightObject::update(float deltaTime, GameObject& player)
 	{
 		player.setHasFlashlight(true);
 		gone = true;
+		variousUI->setState(variousUI->UI::flashlight);
 	}
 }
 

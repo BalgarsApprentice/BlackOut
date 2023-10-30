@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Singleton.hpp>
+#include <VariousUI.hpp>
+
 #include <GameObject.hpp>
 #include <Graphics/SpriteAnim.hpp>
 
@@ -17,8 +20,11 @@ public:
 	void draw() override;
 
 private:
+	VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
+
 	Graphics::Image* canvas;
 	Graphics::Sprite objectSprite;
+	
 
 	bool gone{ false };
 

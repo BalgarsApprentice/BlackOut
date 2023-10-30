@@ -3,6 +3,12 @@
 using namespace Graphics;
 using namespace Math;
 
+void GameManager::setScreenSize(int width, int height)
+{
+	SCREEN_WIDTH = width;
+	SCREEN_HEIGHT = height;
+}
+
 void GameManager::initializeGame(Window* prtWindow)
 {
 	prtWindow->create(L"Black Out", SCREEN_WIDTH, SCREEN_HEIGHT);

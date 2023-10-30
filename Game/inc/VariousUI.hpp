@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Singleton.hpp>
+#include <Logger.hpp>
+
 #include <Graphics/Image.hpp>
 #include <Graphics/ResourceManager.hpp>
 #include <Math/AABB.hpp>
@@ -10,6 +13,18 @@ class VariousUI
 public:
 	VariousUI();
 
+	enum UI
+	{
+		none,
+		start,
+		flashlight,
+		darklight,
+		pause,
+		end
+	};
+
+	void setScreenSize(int width, int height);
+
 	void initializeUI();
 
 	const bool getDisplaySetting() const;
@@ -18,16 +33,36 @@ public:
 
 	void updateUI(const float deltaTime);
 
-	Graphics::Image& getTextBox();
+	void setState(UI ui);
+
+	void drawBorder();
+
+	void drawCustomBorder(int xMin, int yMin, int xMax, int yMax, bool fill);
+
+	void startMenuUI();
+
+	void foundFlashlightUI();
+
+	Graphics::Image& getUI();
 
 private:
+	Logger* logger = &Singleton<Logger>::GetInstance();
+
+	int SCREEN_WIDTH{ 0 };
+	int SCREEN_HEIGHT{ 0 };
+
 	float textBoxTime{ 0.0f };
 	float secondCheck{ 0.0f };
-	bool isShowText{ true };
+	bool isStartText{ true };
 	bool isDisplaying{ true };
-	Graphics::Image textBox;
-	Graphics::Sprite flashlight;
-	Graphics::Sprite light;
-	Graphics::Sprite title;
 
+	Graphics::Image textBox;
+	Graphics::Sprite flashlightSprite;
+	Graphics::Sprite lightSprite;
+	Graphics::Sprite titleSprite;
+	Graphics::Sprite arrowKeysSprite;
+
+	UI ui{ none };
+	std::string stateString{ "" };
+	int flashlightEventDim[4]{};
 };

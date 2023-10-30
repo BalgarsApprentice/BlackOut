@@ -24,6 +24,17 @@ void EventHandler::eventQueue(Window* window)
             case KeyCode::V:
                 window->toggleVSync();
                 break;
+
+            case KeyCode::F:
+                window->toggleFullscreen();
+                break;
+
+            case KeyCode::P:
+                if (variousUI->getDisplaySetting()) break;
+
+                gameManager->flipPause(); //consider swapping this out for the VariousUI pause state instead.
+                //variousUI->setState(variousUI->UI::pause);
+                break;
 #if _DEBUG
             case KeyCode::B:
                 gameManager->flipDarkness();
@@ -45,9 +56,6 @@ void EventHandler::eventQueue(Window* window)
                 gameManager->teleportTopLeft();
                 break;
 #endif
-            case KeyCode::P:
-                gameManager->flipPause();
-                break;
             }
             break;
         }

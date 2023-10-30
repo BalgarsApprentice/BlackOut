@@ -21,12 +21,17 @@ Logger* logger = &Singleton<Logger>::GetInstance();
 GameManager* gameManager = &Singleton<GameManager>::GetInstance();
 VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
 
+const int SCREEN_WIDTH = 776;
+const int SCREEN_HEIGHT = 584;
+
 int main()
 {
     logger->write("Blackout has started.");
 
+    gameManager->setScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     gameManager->initializeGame(prtWindow);
 
+    variousUI->setScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     variousUI->initializeUI();
 
     Timer       timer;
@@ -34,19 +39,23 @@ int main()
     uint64_t    frameCount = 0ull;
     std::string fps = "FPS: 0";
 
+    window.setFullscreen(true);
+
+    variousUI->setState(variousUI->UI::start);
+
     while (window)
     {
         Input::update();
         if (variousUI->getDisplaySetting())
         {
             variousUI->updateUI(timer.elapsedSeconds());
-            window.present(variousUI->getTextBox());
+            window.present(variousUI->getUI());
         }
         else
         {
             gameManager->updateGameObjects(timer.elapsedSeconds());
 
-            gameManager->getCanvas().drawText(Font::Default, fps, 12, 8, Color::Black);
+            gameManager->getCanvas().drawText(Font::Default, fps, 12, 10, Color::Black);
             gameManager->getCanvas().drawText(Font{ 2.0f }, "BLACK\nOUT", 10, 35, Color::White);
             gameManager->getCanvas().drawText(Font{ 2.0f }, "Controls", 10, 90, Color::Black);
             gameManager->getCanvas().drawText(Font{ 1.8f }, "WALK", 28, 120, Color::Black);

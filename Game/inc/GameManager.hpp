@@ -15,6 +15,8 @@
 class GameManager
 {
 public:
+	void setScreenSize(int width, int height);
+
 	void initializeGame(Graphics::Window* window);
 
 	void setupGameObjects();
@@ -51,8 +53,8 @@ private:
 	Graphics::Sprite wasdSprite;
 	Graphics::Sprite arrowKeysSprite;
 
-	const int SCREEN_WIDTH = 776;
-	const int SCREEN_HEIGHT = 584;
+	int SCREEN_WIDTH{ 0 };
+	int SCREEN_HEIGHT{ 0 };
 
 	bool isDark = 1;
 	bool isGameRunning = 1;
