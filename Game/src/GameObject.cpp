@@ -46,6 +46,15 @@ void GameObject::setHasFlashlight(bool bit)
 {
 }
 
+bool GameObject::getHasDarklight()
+{
+	return false;
+}
+
+void GameObject::setHasDarklight(bool bit)
+{
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -104,9 +113,13 @@ const glm::vec2& GameObject::getPosition() const
 	return position;
 }
 
-void GameObject::goBack(Math::AABB aabb)
+void GameObject::handleCollision(Math::AABB aabb)
 {
 	setPosition(lastPosition);
+}
+
+void GameObject::handleDarkCollision(Math::AABB aabb)
+{
 }
 
 GameObject* GameObject::arrayOfprtObjects[128]{ nullptr };

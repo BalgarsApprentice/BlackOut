@@ -11,7 +11,7 @@ class FlashlightObject : public GameObject
 public:
 	FlashlightObject();
 
-	explicit FlashlightObject(const glm::vec2& aPos, Graphics::Image& surface);
+	explicit FlashlightObject(const glm::vec2& aPos, Graphics::Image& surface, const bool type);
 	
 	void setup() override;
 
@@ -27,7 +27,8 @@ private:
 	
 
 	bool gone{ false };
+	bool isLightOrDark{ true };
 
-	BoxCollider box{ Math::AABB{ {652, 92, 0}, {684, 108, 0} } };
+	BoxCollider box{ Math::AABB{ {0, 0, 0}, {32, 16, 0} } };
 
 };

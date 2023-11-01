@@ -25,8 +25,6 @@ EventHandler* eventHandler = &Singleton<EventHandler>::GetInstance();
 const int SCREEN_WIDTH = 776;
 const int SCREEN_HEIGHT = 584;
 
-Audio::Sound soundTrack;
-
 int main()
 {
     logger->write("Blackout has started.");
@@ -37,9 +35,6 @@ int main()
     variousUI->setScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     variousUI->initializeUI();
 
-    soundTrack.loadMusic("assets/sounds/soundtrack.mp3");
-    soundTrack.play();
-
     Timer       timer;
     double      totalTime = 0.0;
     uint64_t    frameCount = 0ull;
@@ -48,6 +43,7 @@ int main()
     window.setFullscreen(true);
 
     variousUI->setState(variousUI->UI::start);
+    variousUI->getSoundTrack().play();
 
     while (window)
     {
@@ -55,13 +51,16 @@ int main()
 
         if (variousUI->getDisplaySetting())
         {
-            soundTrack.pause();
+            variousUI->getSoundTrack().pause();
             variousUI->updateUI(timer.elapsedSeconds());
             window.present(variousUI->getUI());
         }
         else
         {
-            //soundTrack.play();
+            if (gameManager->getPlayingMusic())
+            {
+                variousUI->getSoundTrack().play();
+            }
 
             gameManager->updateGameObjects(timer.elapsedSeconds());
 
@@ -91,7 +90,6 @@ int main()
     //      DO NOT REMOVE
     // must destroy manually to prevent an order-of-destruction error
     variousUI->destroySound();
-    soundTrack.~Sound();
 
     return 0;
 }

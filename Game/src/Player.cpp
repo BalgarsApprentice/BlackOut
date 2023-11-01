@@ -35,7 +35,7 @@ void Player::update(float deltaTime, GameObject& player)
 	lastPosition = position;
 	position = mob.move(position, deltaTime);
 	updateColliders();
-	glm::vec2 direction = ( position - lastPosition );
+	direction = ( position - lastPosition );
 	position += box.boundaryCheck({ position.x + 16, position.y + 10 });
 	updateAnims(deltaTime);
 
@@ -65,71 +65,67 @@ void Player::update(float deltaTime, GameObject& player)
 		setState(State::Idle);
 	}
 
-	if (hasFlashlight)
+	if (!hasFlashlight) return; //only continue if the player has found the flashlight
+
+	Math::AABB myAABB = getBox().getAABB();
+	flashlight->setFlashlightPosition({ position.x - 32, position.y - 24 });
+	flashlight->setPlayerState(sendFlashlightState());
+
+	if (!flashlight->getLightOrDark()) return; //only continue if the flashlight is not in its darklight mode
+
+	int len = sizeof(level->obstacles) / sizeof(BoxCollider);
+	for (int i = 0; i < len; ++i)
 	{
-		flashlight->setFlashlightPosition({ position.x - 32, position.y - 24 });
-		flashlight->setPlayerState(sendFlashlightState());
-		int len = sizeof(level->obstacles) / sizeof(BoxCollider);
-		for (int i = 0; i < len; ++i)
+		Math::AABB aabb = level->obstacles[i].getAABB();
+		if ( myAABB.intersect(aabb))
 		{
-			if (getBox().getAABB().intersect(level->obstacles[i].getAABB()))
+			switch (flashlight->getState())
 			{
-				switch (getState())
+			case Flashlight::State::Up:
+				if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 }))
 				{
-				case State::Left:
-					if (flashlight->getState() == Flashlight::State::Left || flashlight->getState() == Flashlight::State::Old)
+					if (direction.y < 0)
 					{
-						if (getBox().getAABB().min.x > level->obstacles[i].getAABB().min.x)
-						{
-							if (direction.x < 0)
-							{
-								position = { lastPosition.x, position.y };
-							}
-						}
+						position = { position.x, lastPosition.y };
 					}
-					break;
-				case State::Right:
-					if (flashlight->getState() == Flashlight::State::Right || flashlight->getState() == Flashlight::State::Old)
-					{
-						if (getBox().getAABB().max.x < level->obstacles[i].getAABB().max.x)
-						{
-							if (direction.x > 0)
-							{
-								position = { lastPosition.x, position.y };
-							}
-						}
-					}
-					break;
-				case State::Up:
-					if (flashlight->getState() == Flashlight::State::Up || flashlight->getState() == Flashlight::State::Old)
-					{
-						if (getBox().getAABB().min.y > level->obstacles[i].getAABB().min.y)
-						{
-							if (direction.y < 0)
-							{
-								position = { position.x, lastPosition.y };
-							}
-						}
-					}
-					break;
-				case State::Down:
-					if (flashlight->getState() == Flashlight::State::Down || flashlight->getState() == Flashlight::State::Old)
-					{
-						if (getBox().getAABB().max.y < level->obstacles[i].getAABB().max.y)
-						{
-							if (direction.y > 0)
-							{
-								position = { position.x, lastPosition.y };
-							}
-						}
-					}
-					break;
-				case State::Idle:
-					goBack(level->obstacles[i].getAABB());
-					break;
 				}
-				updateColliders();
+				break;
+
+			case Flashlight::State::Down:
+				if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.max.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.max.y, 0 }))
+				{
+					if (direction.y > 0)
+					{
+						position = { position.x, lastPosition.y };
+					}
+				}
+				break;
+
+			case Flashlight::State::Left:
+				if (aabb.intersect({ myAABB.min.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.min.x, myAABB.max.y - abs(direction.y), 0 }))
+				{
+					if (direction.x < 0)
+					{
+						position = { lastPosition.x, position.y };
+					}
+				}
+				break;
+
+			case Flashlight::State::Right:
+				if (aabb.intersect({ myAABB.max.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.max.x, myAABB.max.y - abs(direction.y), 0 }))
+				{
+					if (direction.x > 0)
+					{
+						position = { lastPosition.x, position.y };
+					}
+				}
+				break;
+
+			default:
+				position = lastPosition;
+				break;
 			}
+			updateColliders();
 		}
 	}
 }
@@ -229,8 +225,23 @@ void Player::setHasFlashlight(bool bit)
 	hasFlashlight = bit;
 }
 
-void Player::goBack(Math::AABB aabb)
+bool Player::getHasDarklight()
 {
+	return hasDarklight;
+}
+
+void Player::setHasDarklight(bool bit)
+{
+	hasDarklight = bit;
+}
+
+void Player::handleCollision(Math::AABB aabb)
+{
+	if (!flashlight->getLightOrDark())
+	{
+		handleDarkCollision(aabb);
+		return;
+	}
 
 	if (aabb.holds(getBox().getAABB()))
 	{
@@ -239,8 +250,7 @@ void Player::goBack(Math::AABB aabb)
 	}
 
 	glm::vec2 correction{ 0 };
-	glm::vec2 direction = (position - lastPosition);
-	glm::vec3 center = aabb.center();
+	//direction = (position - lastPosition);
 	Math::AABB myAABB = getBox().getAABB();
 
 	if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 })) //down
@@ -272,141 +282,61 @@ void Player::goBack(Math::AABB aabb)
 		}
 	}
 	updateColliders();
+}
 
-	//if (!aabb.intersect({ myAABB.min.x, myAABB.min.y, 0 }, { myAABB.max.x, myAABB.min.y, 0 })) //down
-	//{
-	//	if (direction.y > 0)
-	//	{
-	//		if ((center.y - position.y) > 0)
-	//		{
-	//			position = { position.x, lastPosition.y };
-	//		}
-	//	}
-	//}
-	//else if (!aabb.intersect({ myAABB.min.x, myAABB.max.y, 0 }, { myAABB.max.x, myAABB.max.y, 0 })) //up
-	//{
-	//	if (direction.y < 0)
-	//	{
-	//		if ((center.y - position.y) < 0)
-	//		{
-	//			position = { position.x, lastPosition.y };
-	//		}
-	//	}
-	//}
-	//if (!aabb.intersect({ myAABB.min.x, myAABB.min.y, 0 }, { myAABB.min.x, myAABB.max.y, 0 })) //right
-	//{
-	//	if (direction.x > 0)
-	//	{
-	//		if ((center.x - position.x) > 0)
-	//		{
-	//			position = { lastPosition.x, position.y };
-	//		}
-	//	}
-	//}
-	//else if (!aabb.intersect({ myAABB.max.x, myAABB.min.y, 0 }, { myAABB.max.x, myAABB.max.y, 0 })) //left
-	//{
-	//	if (direction.x < 0)
-	//	{
-	//		if ((center.x - position.x) < 0)
-	//		{
-	//			position = { lastPosition.x, position.y };
-	//		}
-	//	}
-	//}
+void Player::handleDarkCollision(Math::AABB aabb)
+{
+	Math::AABB myAABB = getBox().getAABB();
+	if (myAABB.intersect(aabb))
+	{
+		switch (flashlight->getState())
+		{
+		case Flashlight::State::Up:
+			if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 }))
+			{
+				if (direction.y > 0)
+				{
+					position = { lastPosition.x, lastPosition.y };
+				}
+			}
+			break;
 
-	//if (length(direction) > 0)
-	//{
-	//	if (direction.x > 0)
-	//	{
-	//		if ((center.x - position.x) > 0)
-	//		{
-	//			position = { lastPosition.x, position.y };
-	//		}
-	//	}
-	//	else if (direction.x < 0)
-	//	{
-	//		if ((center.x - position.x) < 0)
-	//		{
-	//			position = { lastPosition.x, position.y };
-	//		}
-	//	}
-	//	if (direction.y > 0)
-	//	{
-	//		if ((center.y - position.y) > 0)
-	//		{
-	//			position = { position.x, lastPosition.y };
-	//		}
-	//	}
-	//	else if (direction.y < 0)
-	//	{
-	//		if ((center.y - position.y) < 0)
-	//		{
-	//			position = { position.x, lastPosition.y };
-	//		}
-	//	}
-	//}
-	//position += correction;
+		case Flashlight::State::Down:
+			if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.max.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.max.y, 0 }))
+			{
+				if (direction.y < 0)
+				{
+					position = { lastPosition.x, lastPosition.y };
+				}
+			}
+			break;
 
-	//switch (flashlight->getState())
-	//{
-	//case Flashlight::State::Left:
-	//	if (getBox().getAABB().min.x < aabb.max.x && getBox().getAABB().max.x < aabb.max.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	if (getBox().getAABB().max.y > aabb.min.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	if (getBox().getAABB().min.y > aabb.max.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	break;
-	//case Flashlight::State::Right:
-	//	if (getBox().getAABB().min.x < aabb.min.x && getBox().getAABB().max.x > aabb.max.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	if (getBox().getAABB().max.y > aabb.min.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	if (getBox().getAABB().min.y > aabb.max.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	break;
-	//case Flashlight::State::Up:
-	//	if (getBox().getAABB().min.y > aabb.min.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	if (getBox().getAABB().max.x > aabb.min.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	if (getBox().getAABB().min.x > aabb.max.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	break;
-	//case Flashlight::State::Down:
-	//	if (getBox().getAABB().max.y < aabb.max.y)
-	//	{
-	//		setPosition({ position.x, lastPosition.y });
-	//	}
-	//	if (getBox().getAABB().max.x > aabb.min.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	if (getBox().getAABB().min.x > aabb.max.x)
-	//	{
-	//		setPosition({ lastPosition.x, position.y });
-	//	}
-	//	break;
-	//}
-	//updateColliders();
+		case Flashlight::State::Left:
+			if (aabb.intersect({ myAABB.min.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.min.x, myAABB.max.y - abs(direction.y), 0 }))
+			{
+				if (direction.x > 0)
+				{
+					position = { lastPosition.x, lastPosition.y };
+				}
+			}
+			break;
+
+		case Flashlight::State::Right:
+			if (aabb.intersect({ myAABB.max.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.max.x, myAABB.max.y - abs(direction.y), 0 }))
+			{
+				if (direction.x < 0)
+				{
+					position = { lastPosition.x, lastPosition.y };
+				}
+			}
+			break;
+
+		default:
+			position = lastPosition;
+			break;
+		}
+		updateColliders();
+	}
 }
 
 void Player::setState(State newState)

@@ -33,6 +33,10 @@ public:
 
 	virtual void setHasFlashlight(bool bit);
 
+	virtual bool getHasDarklight();
+
+	virtual void setHasDarklight(bool bit);
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	//static functions
@@ -54,7 +58,9 @@ public:
 
 	const glm::vec2& getPosition() const;
 
-	virtual void goBack(Math::AABB aabb);
+	virtual void handleCollision(Math::AABB aabb);
+
+	virtual void handleDarkCollision(Math::AABB aabb);
 
 private:
 	static GameObject* arrayOfprtObjects[128];
@@ -69,4 +75,5 @@ protected:
 
 	bool isLit{ false };
 	bool hasFlashlight{ false };
+	bool hasDarklight{ false };
 };

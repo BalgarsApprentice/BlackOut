@@ -35,6 +35,11 @@ void EventHandler::eventQueue(Window* window)
                 gameManager->flipPause(); //consider swapping this out for the VariousUI pause state instead.
                 //variousUI->setState(variousUI->UI::pause);
                 break;
+
+            case KeyCode::M:
+                gameManager->toggleMusic();
+                variousUI->getSoundTrack().pause();
+                break;
 #if _DEBUG
             case KeyCode::B:
                 gameManager->flipDarkness();

@@ -27,8 +27,8 @@ void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
         Light::initializeCollisionGroup(obstacles[i].getAABB());
     }
 
-    ptrFlashlightObject = new FlashlightObject({668, 100}, canvas);
-    ptrFlashlightObject = nullptr;
+    ptrFlashlightObject = new FlashlightObject({668, 100}, canvas, true);
+    ptrDarklightObject = new FlashlightObject({ 196, 484 }, canvas, false);
 }
 
 void Level::levelUnload()
@@ -40,6 +40,7 @@ void Level::levelUnload()
     }
 
     delete ptrFlashlightObject;
+    delete ptrDarklightObject;
 }
 
 Graphics::TileMap& Level::getTileMap()

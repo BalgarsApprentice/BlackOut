@@ -17,11 +17,25 @@ void Flashlight::setup()
 	rightFlashlightSprite = Sprite(flashlightImages, { 0, 328, 134, 164 }, BlendMode::AlphaBlend);
 	upFlashlightSprite = Sprite(flashlightImages, { 0, 164, 134, 164 }, BlendMode::AlphaBlend);
 	downFlashlightSprite = Sprite(flashlightImages, { 0, 492, 134, 164 }, BlendMode::AlphaBlend);
+
+	auto darklightImages = ResourceManager::loadImage("assets/textures/darklightspritesheet.png");
+	leftDarklightSprite = Sprite(darklightImages, { 0, 0, 134, 164 }, BlendMode::AlphaBlend);
+	rightDarklightSprite = Sprite(darklightImages, { 0, 328, 134, 164 }, BlendMode::AlphaBlend);
+	upDarklightSprite = Sprite(darklightImages, { 0, 164, 134, 164 }, BlendMode::AlphaBlend);
+	downDarklightSprite = Sprite(darklightImages, { 0, 492, 134, 164 }, BlendMode::AlphaBlend);
 }
 
 void Flashlight::update(float deltaTime, GameObject& player)
 {
 	if (!player.getHasFlashlight()) return;
+
+	if (player.getHasDarklight())
+	{
+		if (Input::getKeyDown(Graphics::KeyCode::Space))
+		{
+			toggleLight();
+		}
+	}
 
 	const int up  = Input::getKey(Graphics::KeyCode::Up) ? 1 : 0;
 	const int down = Input::getKey(Graphics::KeyCode::Down) ? 1 : 0;
@@ -67,47 +81,52 @@ BoxCollider& Flashlight::getBox()
 
 void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 {
-	if (isFlashlightLocked)
+	//set flashlight to display the appropriate sprite group
+	if (lightOrDark)
 	{
-		state = oldState;
+		currentFlashlightSprite = lightSprites[0];
+	}
+	else
+	{
+		currentFlashlightSprite = darkSprites[0];
 	}
 
 	switch (state)
 	{
 	case State::Left:
 		position = { aPos.x - 99, aPos.y - 50 };
-		currentFlashlightSprite = &leftFlashlightSprite;
+		//currentFlashlightSprite is already set to index 0
 		break;
 	case State::Right:
 		position = { aPos.x + 28, aPos.y - 54 };
-		currentFlashlightSprite = &rightFlashlightSprite;
+		currentFlashlightSprite += 1;
 		break;
 	case State::Up:
 		position = { aPos.x - 36, aPos.y - 134 };
-		currentFlashlightSprite = &upFlashlightSprite;
+		currentFlashlightSprite += 2;
 		break;
 	case State::Down:
 		position = { aPos.x - 35, aPos.y + 16 };
-		currentFlashlightSprite = &downFlashlightSprite;
+		currentFlashlightSprite += 3;
 		break;
 	case State::Old:
 		switch (oldState)
 		{
 		case State::Left:
 			position = { aPos.x - 99, aPos.y - 50 };
-			currentFlashlightSprite = &leftFlashlightSprite;
+			//currentFlashlightSprite is already set to index 0
 			break;
 		case State::Right:
 			position = { aPos.x + 28, aPos.y - 54 };
-			currentFlashlightSprite = &rightFlashlightSprite;
+			currentFlashlightSprite += 1;
 			break;
 		case State::Up:
 			position = { aPos.x - 36, aPos.y - 134 };
-			currentFlashlightSprite = &upFlashlightSprite;
+			currentFlashlightSprite += 2;
 			break;
 		case State::Down:
-			position = { aPos.x - 36, aPos.y + 16 };
-			currentFlashlightSprite = &downFlashlightSprite;
+			position = { aPos.x - 35, aPos.y + 16 };
+			currentFlashlightSprite += 3;
 			break;
 		}
 		break;
@@ -116,16 +135,6 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 	{
 		oldState = state;
 	}
-}
-
-void Flashlight::lockFlashlight()
-{
-	isFlashlightLocked = true;
-}
-
-void Flashlight::unlockFlashlight()
-{
-	isFlashlightLocked = false;
 }
 
 void Flashlight::updateColliders()
@@ -148,4 +157,12 @@ void Flashlight::setPlayerState(State aState)
 	playerState = aState;
 }
 
-bool Flashlight::isFlashlightLocked{false};
+const bool Flashlight::getLightOrDark() const
+{
+	return lightOrDark;
+}
+
+void Flashlight::toggleLight()
+{
+	lightOrDark = !lightOrDark;
+}

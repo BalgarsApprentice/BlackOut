@@ -148,6 +148,16 @@ const void GameManager::flipPause()
 	isGameRunning = !isGameRunning;
 }
 
+const void GameManager::toggleMusic()
+{
+	isPlayingMusic = !isPlayingMusic;
+}
+
+const bool GameManager::getPlayingMusic() const
+{
+	return isPlayingMusic;
+}
+
 Image& GameManager::getCanvas()
 {
 	return canvas;

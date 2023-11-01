@@ -47,6 +47,8 @@ public:
 	void foundDarklightUI();
 
 	Graphics::Image& getUI();
+	
+	Audio::Sound& getSoundTrack();
 
 	void destroySound();
 
@@ -68,6 +70,7 @@ private:
 	Graphics::Sprite arrowKeysSprite;
 	Graphics::Sprite spaceBarSprite;
 
+	Audio::Sound soundTrack;
 	Audio::Sound buttonClick;
 	Audio::Sound pickUp;
 

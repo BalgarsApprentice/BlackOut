@@ -33,6 +33,10 @@ public:
 
 	const void flipPause();
 
+	const void toggleMusic();
+
+	const bool getPlayingMusic() const;
+
 	Graphics::Image& getCanvas();
 	
 	//Debug Commands
@@ -56,8 +60,9 @@ private:
 	int SCREEN_WIDTH{ 0 };
 	int SCREEN_HEIGHT{ 0 };
 
-	bool isDark = 1;
-	bool isGameRunning = 1;
+	bool isDark{ true };
+	bool isGameRunning{ true };
+	bool isPlayingMusic{ true };
 
 	Level level;
 	glm::vec2 startPosition{ 196.0f, 100.0f };

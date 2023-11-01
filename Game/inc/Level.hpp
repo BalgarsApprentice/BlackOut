@@ -61,7 +61,7 @@ private:
     glm::vec2 arrayOfPositions[25]{ 
         {100, 4}, {100, 100}, {100, 196}, {196, 196}, {292, 196}, {196, 4}, {292, 4}, //top left corner lights
         { 668, 100 }, //top right corner light
-        {100, 580}, {100, 484}, {100, 388}, {196, 388}, {292, 388}, {196, 580}, {292, 580}, {292, 484}, {196, 484}, //bottom left corner lights WIP
+        {100, 580}, {100, 484}, {100, 388}, {196, 388}, {292, 388}, {196, 580}, {292, 580}, {292, 484}, {196, 484}, //bottom left corner lights
         {772, 580}, {772, 484}, {772, 388}, {580, 388}, {676, 388}, {580, 580}, {676, 580}, {580, 484}//, {676, 484} //bottom right corner lights
     };
 
@@ -71,6 +71,7 @@ private:
     glm::vec2 arrayOfMPositions[1]{ {228, 100} };
 
     FlashlightObject* ptrFlashlightObject{nullptr};
+    FlashlightObject* ptrDarklightObject{ nullptr };
 
 #if _DEBUG
 public:

@@ -26,6 +26,7 @@ void VariousUI::initializeUI()
 	auto spaceBarImage = ResourceManager::loadImage("assets/textures/spacebar.png");
 	spaceBarSprite = Sprite{ spaceBarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
 
+	soundTrack.loadMusic("assets/sounds/soundtrack.mp3");
 	buttonClick.loadSound("assets/sounds/TitleScreen/buttonecho.wav");
 	pickUp.loadSound("assets/sounds/pickup.wav");
 }
@@ -243,8 +244,14 @@ Image& VariousUI::getUI()
     return textBox;
 }
 
+Audio::Sound& VariousUI::getSoundTrack()
+{
+	return soundTrack;
+}
+
 void VariousUI::destroySound()
 {
-	buttonClick.~Sound();
-	pickUp.~Sound();
+	soundTrack = nullptr;
+	buttonClick = nullptr;
+	pickUp = nullptr;
 }

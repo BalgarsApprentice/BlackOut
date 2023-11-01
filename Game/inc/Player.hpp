@@ -42,7 +42,13 @@ public:
 
 	void setHasFlashlight(bool bit) override;
 
-	void goBack(Math::AABB aabb) override;
+	bool getHasDarklight() override;
+
+	void setHasDarklight(bool bit) override;
+
+	void handleCollision(Math::AABB aabb) override;
+
+	void handleDarkCollision(Math::AABB aabb) override;
 
 	const State getState() const;
 
@@ -77,6 +83,7 @@ private:
 
 	State state = State::Idle;
 	State oldState = State::Right;
+	glm::vec2 direction{ 0, 0 };
 
 	void setState(State newState);
 };

@@ -35,10 +35,6 @@ public:
 
 	void setFlashlightPosition(const glm::vec2& pos);
 
-	static void lockFlashlight();
-
-	static void unlockFlashlight();
-
 	void updateColliders();
 
 	const State getState() const;
@@ -47,12 +43,22 @@ public:
 
 	void setPlayerState(State aState);
 
+	const bool getLightOrDark() const;
+
 private:
 	Graphics::Image* darkness;
 	Graphics::Sprite leftFlashlightSprite;
 	Graphics::Sprite rightFlashlightSprite;
 	Graphics::Sprite upFlashlightSprite;
 	Graphics::Sprite downFlashlightSprite;
+	Graphics::Sprite* lightSprites[4]{ &leftFlashlightSprite, &rightFlashlightSprite, &upFlashlightSprite, &downFlashlightSprite };
+
+	Graphics::Sprite leftDarklightSprite;
+	Graphics::Sprite rightDarklightSprite;
+	Graphics::Sprite upDarklightSprite;
+	Graphics::Sprite downDarklightSprite;
+	Graphics::Sprite* darkSprites[4]{ &leftDarklightSprite, &rightDarklightSprite, &upDarklightSprite, &downDarklightSprite };
+
 
 	Graphics::Sprite* currentFlashlightSprite{ nullptr };
 
@@ -60,6 +66,9 @@ private:
 	State state{ State::Right };
 	State oldState{ State::Right };
 	State playerState{ State::Right };
+	bool lightOrDark{ 1 }; // 1 is regular light and 0 is the dark light
 
 	BoxCollider box{ {{0, 0, 0}, {1, 1, 0}} };
+
+	void toggleLight();
 };
