@@ -242,3 +242,9 @@ Image& VariousUI::getUI()
 
     return textBox;
 }
+
+void VariousUI::destroySound()
+{
+	buttonClick.~Sound();
+	pickUp.~Sound();
+}

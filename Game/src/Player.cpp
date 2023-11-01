@@ -81,7 +81,10 @@ void Player::update(float deltaTime, GameObject& player)
 					{
 						if (getBox().getAABB().min.x > level->obstacles[i].getAABB().min.x)
 						{
-							setPosition({ lastPosition.x, position.y });
+							if (direction.x < 0)
+							{
+								position = { lastPosition.x, position.y };
+							}
 						}
 					}
 					break;
@@ -90,7 +93,10 @@ void Player::update(float deltaTime, GameObject& player)
 					{
 						if (getBox().getAABB().max.x < level->obstacles[i].getAABB().max.x)
 						{
-							setPosition({ lastPosition.x, position.y });
+							if (direction.x > 0)
+							{
+								position = { lastPosition.x, position.y };
+							}
 						}
 					}
 					break;
@@ -99,7 +105,10 @@ void Player::update(float deltaTime, GameObject& player)
 					{
 						if (getBox().getAABB().min.y > level->obstacles[i].getAABB().min.y)
 						{
-							setPosition({ position.x, lastPosition.y });
+							if (direction.y < 0)
+							{
+								position = { position.x, lastPosition.y };
+							}
 						}
 					}
 					break;
@@ -108,7 +117,10 @@ void Player::update(float deltaTime, GameObject& player)
 					{
 						if (getBox().getAABB().max.y < level->obstacles[i].getAABB().max.y)
 						{
-							setPosition({ position.x, lastPosition.y });
+							if (direction.y > 0)
+							{
+								position = { position.x, lastPosition.y };
+							}
 						}
 					}
 					break;
@@ -219,11 +231,126 @@ void Player::setHasFlashlight(bool bit)
 
 void Player::goBack(Math::AABB aabb)
 {
-	position = lastPosition;
-	//switch (getState())
+
+	if (aabb.holds(getBox().getAABB()))
+	{
+		position = lastPosition;
+		return;
+	}
+
+	glm::vec2 correction{ 0 };
+	glm::vec2 direction = (position - lastPosition);
+	glm::vec3 center = aabb.center();
+	Math::AABB myAABB = getBox().getAABB();
+
+	if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 })) //down
+	{
+		if (direction.y < 0)
+		{
+			position = { position.x, lastPosition.y };
+		}
+	}
+	if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.max.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.max.y, 0 })) //up
+	{
+		if (direction.y > 0)
+		{
+			position = { position.x, lastPosition.y };
+		}
+	}
+	if (aabb.intersect({ myAABB.min.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.min.x, myAABB.max.y - abs(direction.y), 0 })) //right
+	{
+		if (direction.x < 0)
+		{
+			position = { lastPosition.x, position.y };
+		}
+	}
+	if (aabb.intersect({ myAABB.max.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.max.x, myAABB.max.y - abs(direction.y), 0 })) //left
+	{
+		if (direction.x > 0)
+		{
+			position = { lastPosition.x, position.y };
+		}
+	}
+	updateColliders();
+
+	//if (!aabb.intersect({ myAABB.min.x, myAABB.min.y, 0 }, { myAABB.max.x, myAABB.min.y, 0 })) //down
 	//{
-	//case State::Left:
-	//	if (getBox().getAABB().min.x > aabb.min.x && getBox().getAABB().max.x < aabb.max.x)
+	//	if (direction.y > 0)
+	//	{
+	//		if ((center.y - position.y) > 0)
+	//		{
+	//			position = { position.x, lastPosition.y };
+	//		}
+	//	}
+	//}
+	//else if (!aabb.intersect({ myAABB.min.x, myAABB.max.y, 0 }, { myAABB.max.x, myAABB.max.y, 0 })) //up
+	//{
+	//	if (direction.y < 0)
+	//	{
+	//		if ((center.y - position.y) < 0)
+	//		{
+	//			position = { position.x, lastPosition.y };
+	//		}
+	//	}
+	//}
+	//if (!aabb.intersect({ myAABB.min.x, myAABB.min.y, 0 }, { myAABB.min.x, myAABB.max.y, 0 })) //right
+	//{
+	//	if (direction.x > 0)
+	//	{
+	//		if ((center.x - position.x) > 0)
+	//		{
+	//			position = { lastPosition.x, position.y };
+	//		}
+	//	}
+	//}
+	//else if (!aabb.intersect({ myAABB.max.x, myAABB.min.y, 0 }, { myAABB.max.x, myAABB.max.y, 0 })) //left
+	//{
+	//	if (direction.x < 0)
+	//	{
+	//		if ((center.x - position.x) < 0)
+	//		{
+	//			position = { lastPosition.x, position.y };
+	//		}
+	//	}
+	//}
+
+	//if (length(direction) > 0)
+	//{
+	//	if (direction.x > 0)
+	//	{
+	//		if ((center.x - position.x) > 0)
+	//		{
+	//			position = { lastPosition.x, position.y };
+	//		}
+	//	}
+	//	else if (direction.x < 0)
+	//	{
+	//		if ((center.x - position.x) < 0)
+	//		{
+	//			position = { lastPosition.x, position.y };
+	//		}
+	//	}
+	//	if (direction.y > 0)
+	//	{
+	//		if ((center.y - position.y) > 0)
+	//		{
+	//			position = { position.x, lastPosition.y };
+	//		}
+	//	}
+	//	else if (direction.y < 0)
+	//	{
+	//		if ((center.y - position.y) < 0)
+	//		{
+	//			position = { position.x, lastPosition.y };
+	//		}
+	//	}
+	//}
+	//position += correction;
+
+	//switch (flashlight->getState())
+	//{
+	//case Flashlight::State::Left:
+	//	if (getBox().getAABB().min.x < aabb.max.x && getBox().getAABB().max.x < aabb.max.x)
 	//	{
 	//		setPosition({ lastPosition.x, position.y });
 	//	}
@@ -236,7 +363,7 @@ void Player::goBack(Math::AABB aabb)
 	//		setPosition({ position.x, lastPosition.y });
 	//	}
 	//	break;
-	//case State::Right:
+	//case Flashlight::State::Right:
 	//	if (getBox().getAABB().min.x < aabb.min.x && getBox().getAABB().max.x > aabb.max.x)
 	//	{
 	//		setPosition({ lastPosition.x, position.y });
@@ -250,7 +377,7 @@ void Player::goBack(Math::AABB aabb)
 	//		setPosition({ position.x, lastPosition.y });
 	//	}
 	//	break;
-	//case State::Up:
+	//case Flashlight::State::Up:
 	//	if (getBox().getAABB().min.y > aabb.min.y)
 	//	{
 	//		setPosition({ position.x, lastPosition.y });
@@ -264,7 +391,7 @@ void Player::goBack(Math::AABB aabb)
 	//		setPosition({ lastPosition.x, position.y });
 	//	}
 	//	break;
-	//case State::Down:
+	//case Flashlight::State::Down:
 	//	if (getBox().getAABB().max.y < aabb.max.y)
 	//	{
 	//		setPosition({ position.x, lastPosition.y });

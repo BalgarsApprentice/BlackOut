@@ -539,6 +539,15 @@ struct AABB
         return e.contains( glm::vec3 { circle.center, 0 } );
     }
 
+    bool holds(const AABB& a)
+    {
+        if (a.min.x > min.x && a.max.x < max.x && a.min.y > min.y && a.max.y < max.y)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// Construct an AABB from min & max points.
     /// </summary>

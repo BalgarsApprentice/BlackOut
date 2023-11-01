@@ -48,6 +48,8 @@ public:
 
 	Graphics::Image& getUI();
 
+	void destroySound();
+
 private:
 	Logger* logger = &Singleton<Logger>::GetInstance();
 

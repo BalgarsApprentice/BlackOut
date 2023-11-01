@@ -58,11 +58,11 @@ private:
     const uint32_t numRows = 24 - horizontalOffset;
     const uint32_t numColumns = 18 - verticalOffset;
 
-    glm::vec2 arrayOfPositions[26]{ 
+    glm::vec2 arrayOfPositions[25]{ 
         {100, 4}, {100, 100}, {100, 196}, {196, 196}, {292, 196}, {196, 4}, {292, 4}, //top left corner lights
         { 668, 100 }, //top right corner light
-        {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, //bottom left corner lights WIP
-        {772, 580}, {772, 484}, {772, 388}, {580, 388}, {676, 388}, {580, 580}, {676, 580}, {580, 484}, {676, 484} //bottom right corner lights
+        {100, 580}, {100, 484}, {100, 388}, {196, 388}, {292, 388}, {196, 580}, {292, 580}, {292, 484}, {196, 484}, //bottom left corner lights WIP
+        {772, 580}, {772, 484}, {772, 388}, {580, 388}, {676, 388}, {580, 580}, {676, 580}, {580, 484}//, {676, 484} //bottom right corner lights
     };
 
     //  SCREEN_WIDTH = 776;
@@ -76,10 +76,11 @@ private:
 public:
 #endif
 
-    BoxCollider obstacles[4]{
-        Math::AABB{ {101, 187, 0}, {330, 234, 0} },
-        Math::AABB{ {283, 5, 0}, {330, 186, 0} },
-        Math::AABB{ {539, 187, 0}, {772, 234, 0} },
-        Math::AABB{ {539, 5, 0}, {586, 186, 0} }
+    BoxCollider obstacles[9]{
+        Math::AABB{ {101, 187, 0}, {329, 233, 0} }, Math::AABB{ {283, 5, 0}, {329, 186, 0} }, //top left
+        Math::AABB{ {539, 187, 0}, {772, 233, 0} }, Math::AABB{ {539, 5, 0}, {586, 186, 0} }, // top right
+        Math::AABB{ {101, 350, 0}, {330, 398, 0} }, Math::AABB{ {283, 398, 0}, {330, 771, 0} }, //bottom left
+        Math::AABB{ {539, 350, 0}, {772, 398, 0} }, Math::AABB{ {539, 398, 0}, {586, 771, 0} }, //bottom right
+        Math::AABB{ {380, 220, 0}, {491, 362, 0} } //center
     };
 };

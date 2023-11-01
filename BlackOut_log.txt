@@ -1,2 +1,3 @@
 Blackout has started.
 variousUI has entered its start state.
+variousUI has entered its flashlight state.

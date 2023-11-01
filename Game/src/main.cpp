@@ -61,7 +61,7 @@ int main()
         }
         else
         {
-            soundTrack.play();
+            //soundTrack.play();
 
             gameManager->updateGameObjects(timer.elapsedSeconds());
 
@@ -87,5 +87,11 @@ int main()
             totalTime = 0.0;
         }
     }
+
+    //      DO NOT REMOVE
+    // must destroy manually to prevent an order-of-destruction error
+    variousUI->destroySound();
+    soundTrack.~Sound();
+
     return 0;
 }
