@@ -4,6 +4,7 @@
 #include <VariousUI.hpp>
 
 #include <GameObject.hpp>
+#include <Light.hpp>
 #include <Graphics/SpriteAnim.hpp>
 
 class FlashlightObject : public GameObject

@@ -186,6 +186,11 @@ void VariousUI::foundFlashlightUI()
 
 void VariousUI::foundDarklightUI()
 {
+	if (textBoxTime < 0.2f)
+	{
+		pickUp.play();
+	}
+
 	if (textBoxTime > 1.0f)
 	{
 		if (Input::getKeyDown(Graphics::KeyCode::Enter))

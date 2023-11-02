@@ -26,7 +26,10 @@ void Light::update(float deltaTime, GameObject& player)
 
 void Light::draw()
 {
-	darkness->drawSprite(lightAnim, position.x, position.y);
+	if (isLit)
+	{
+		darkness->drawSprite(lightAnim, position.x, position.y);
+	}
 }
 
 CircleCollider& Light::getCircle()
@@ -73,6 +76,14 @@ void Light::litCheck(GameObject* mob) //static
 				}
 			}
 		}
+	}
+}
+
+void Light::setLit(bool bit)
+{
+	for (int i = 8; i < 17; ++i)
+	{
+		arrayOfptrLights[i]->isLit = bit;
 	}
 }
 

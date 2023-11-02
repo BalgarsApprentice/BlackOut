@@ -48,8 +48,6 @@ public:
 
 	void handleCollision(Math::AABB aabb) override;
 
-	void handleDarkCollision(Math::AABB aabb) override;
-
 	const State getState() const;
 
 	const State getOldState() const;

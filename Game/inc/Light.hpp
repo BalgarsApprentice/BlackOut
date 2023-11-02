@@ -25,6 +25,8 @@ public:
 
 	static void litCheck(GameObject* entity);
 
+	static void setLit(bool bit);
+
 	void updateColliders();
 
 protected:

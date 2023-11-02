@@ -42,6 +42,7 @@ void FlashlightObject::update(float deltaTime, GameObject& player)
 		{
 			player.setHasDarklight(true);
 			variousUI->setState(variousUI->UI::darklight);
+			Light::setLit(true);
 		}
 	}
 }

@@ -239,104 +239,34 @@ void Player::handleCollision(Math::AABB aabb)
 {
 	if (!flashlight->getLightOrDark())
 	{
-		handleDarkCollision(aabb);
+		switch (flashlight->getState())
+		{
+		case Flashlight::State::Up:
+			position += box.openCollision(aabb, direction, BoxCollider::Side::top);
+			break;
+		case Flashlight::State::Down:
+			position += box.openCollision(aabb, direction, BoxCollider::Side::bottom);
+			break;
+		case Flashlight::State::Left:
+			position += box.openCollision(aabb, direction, BoxCollider::Side::left);
+			break;
+		case Flashlight::State::Right:
+			position += box.openCollision(aabb, direction, BoxCollider::Side::right);
+			break;
+		}
+		updateColliders();
 		return;
 	}
 
 	if (aabb.holds(getBox().getAABB()))
 	{
 		position = lastPosition;
+		updateColliders();
 		return;
 	}
 
-	glm::vec2 correction{ 0 };
-	//direction = (position - lastPosition);
-	Math::AABB myAABB = getBox().getAABB();
-
-	if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 })) //down
-	{
-		if (direction.y < 0)
-		{
-			position = { position.x, lastPosition.y };
-		}
-	}
-	if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.max.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.max.y, 0 })) //up
-	{
-		if (direction.y > 0)
-		{
-			position = { position.x, lastPosition.y };
-		}
-	}
-	if (aabb.intersect({ myAABB.min.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.min.x, myAABB.max.y - abs(direction.y), 0 })) //right
-	{
-		if (direction.x < 0)
-		{
-			position = { lastPosition.x, position.y };
-		}
-	}
-	if (aabb.intersect({ myAABB.max.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.max.x, myAABB.max.y - abs(direction.y), 0 })) //left
-	{
-		if (direction.x > 0)
-		{
-			position = { lastPosition.x, position.y };
-		}
-	}
+	position += box.faceCollision(aabb, direction);
 	updateColliders();
-}
-
-void Player::handleDarkCollision(Math::AABB aabb)
-{
-	Math::AABB myAABB = getBox().getAABB();
-	if (myAABB.intersect(aabb))
-	{
-		switch (flashlight->getState())
-		{
-		case Flashlight::State::Up:
-			if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.min.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.min.y, 0 }))
-			{
-				if (direction.y > 0)
-				{
-					position = { lastPosition.x, lastPosition.y };
-				}
-			}
-			break;
-
-		case Flashlight::State::Down:
-			if (aabb.intersect({ myAABB.min.x + abs(direction.x), myAABB.max.y, 0 }, { myAABB.max.x - abs(direction.x), myAABB.max.y, 0 }))
-			{
-				if (direction.y < 0)
-				{
-					position = { lastPosition.x, lastPosition.y };
-				}
-			}
-			break;
-
-		case Flashlight::State::Left:
-			if (aabb.intersect({ myAABB.min.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.min.x, myAABB.max.y - abs(direction.y), 0 }))
-			{
-				if (direction.x > 0)
-				{
-					position = { lastPosition.x, lastPosition.y };
-				}
-			}
-			break;
-
-		case Flashlight::State::Right:
-			if (aabb.intersect({ myAABB.max.x, myAABB.min.y + abs(direction.y), 0 }, { myAABB.max.x, myAABB.max.y - abs(direction.y), 0 }))
-			{
-				if (direction.x < 0)
-				{
-					position = { lastPosition.x, lastPosition.y };
-				}
-			}
-			break;
-
-		default:
-			position = lastPosition;
-			break;
-		}
-		updateColliders();
-	}
 }
 
 void Player::setState(State newState)

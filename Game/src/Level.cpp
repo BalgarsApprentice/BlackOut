@@ -27,6 +27,8 @@ void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
         Light::initializeCollisionGroup(obstacles[i].getAABB());
     }
 
+    Light::setLit(false);
+
     ptrFlashlightObject = new FlashlightObject({668, 100}, canvas, true);
     ptrDarklightObject = new FlashlightObject({ 196, 484 }, canvas, false);
 }

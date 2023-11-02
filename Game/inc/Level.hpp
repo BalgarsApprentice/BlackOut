@@ -65,9 +65,6 @@ private:
         {772, 580}, {772, 484}, {772, 388}, {580, 388}, {676, 388}, {580, 580}, {676, 580}, {580, 484}//, {676, 484} //bottom right corner lights
     };
 
-    //  SCREEN_WIDTH = 776;
-    //  SCREEN_HEIGHT = 584;
-
     glm::vec2 arrayOfMPositions[1]{ {228, 100} };
 
     FlashlightObject* ptrFlashlightObject{nullptr};
