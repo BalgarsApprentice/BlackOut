@@ -18,6 +18,8 @@ void GameManager::initializeGame(Window* prtWindow)
 	wasdSprite = Sprite{ wasdImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
 	auto arrowKeysImage = ResourceManager::loadImage("assets/textures/arrowkeys.png");
 	arrowKeysSprite = Sprite{ arrowKeysImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
+	auto spacebarImage = ResourceManager::loadImage("assets/textures/spacebar.png");
+	spacebarSprite = Sprite{ spacebarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
 
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -110,19 +112,43 @@ void GameManager::drawToCanvas()
 	canvas.drawAABB(AABB{ { 6, 110, 0 }, { 95, 111, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
 	canvas.drawAABB(AABB{ { 6, 200, 0 }, { 95, 201, 0 } }, Color::BlueBlack, BlendMode::Disable);
+
+	canvas.drawAABB(AABB{ { 6, 306, 0 }, { 95, 307, 0 } }, Color::BlueBlack, BlendMode::Disable);
+
+	canvas.drawAABB(AABB{ { 6, 380, 0 }, { 95, 381, 0 } }, Color::BlueBlack, BlendMode::Disable);
 	
 	canvas.drawSprite(wasdSprite, 7, 138);
 	canvas.drawSprite(arrowKeysSprite, 7, 243);
+	canvas.drawSprite(spacebarSprite, 7, 348);
 
-	canvas.drawText(Font{ 1.8f }, "FLASH", 24, 210, Color::Black);
-	canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 226, Color::Black);
+	if (player.getLightOrDark()) 
+	{
+		canvas.drawText(Font{ 1.8f }, "FLASH", 24, 210, Color::Black);
+		canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 226, Color::Black);
+	}
+	else 
+	{
+		canvas.drawText(Font{ 1.8f }, "DARK", 29, 210, Color::Black);
+		canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 226, Color::Black);
+	}
+
+	canvas.drawText(Font{ 1.8f }, "TOGGLE", 16, 315, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 331, Color::Black);
+
+	canvas.drawText(Font{ 1.8f }, "PAUSE", 9, 389, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "MUTE", 9, 415, Color::Black);
 
 	if (!player.getHasFlashlight())
 	{
 		canvas.drawAABB(AABB{ { 7, 200, 0 }, { 93, 305, 0 } }, Color::BlueWhite, BlendMode::Disable);
 	}
 
-	canvas.drawAABB(AABB{ { 7, 306, 0 }, { 93, SCREEN_HEIGHT - 7, 0 } }, Color::BlueWhite, BlendMode::Disable);
+	if (!player.getHasDarklight())
+	{
+		canvas.drawAABB(AABB{ { 7, 306, 0 }, { 93, 379, 0 } }, Color::BlueWhite, BlendMode::Disable);
+	}
+
+	//canvas.drawAABB(AABB{ { 7, 306, 0 }, { 93, SCREEN_HEIGHT - 7, 0 } }, Color::BlueWhite, BlendMode::Disable);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 

@@ -304,6 +304,11 @@ Flashlight::State Player::sendFlashlightState()
 	}
 }
 
+bool Player::getLightOrDark()
+{
+	return flashlight->getLightOrDark();
+}
+
 void Player::updateAnims(float deltaTime)
 {
 	leftAnim.update(deltaTime);

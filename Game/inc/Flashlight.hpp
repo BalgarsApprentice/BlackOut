@@ -66,7 +66,7 @@ private:
 	State state{ State::Right };
 	State oldState{ State::Right };
 	State playerState{ State::Right };
-	bool lightOrDark{ 1 }; // 1 is regular light and 0 is the dark light
+	bool isLightOrDark{ 1 }; // 1 is regular light and 0 is the dark light
 
 	BoxCollider box{ {{0, 0, 0}, {1, 1, 0}} };
 

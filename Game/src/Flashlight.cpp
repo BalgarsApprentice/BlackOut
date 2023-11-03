@@ -82,7 +82,7 @@ BoxCollider& Flashlight::getBox()
 void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 {
 	//set flashlight to display the appropriate sprite group
-	if (lightOrDark)
+	if (isLightOrDark)
 	{
 		currentFlashlightSprite = lightSprites[0];
 	}
@@ -159,10 +159,10 @@ void Flashlight::setPlayerState(State aState)
 
 const bool Flashlight::getLightOrDark() const
 {
-	return lightOrDark;
+	return isLightOrDark;
 }
 
 void Flashlight::toggleLight()
 {
-	lightOrDark = !lightOrDark;
+	isLightOrDark = !isLightOrDark;
 }

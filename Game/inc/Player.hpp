@@ -54,6 +54,8 @@ public:
 	
 	Flashlight::State sendFlashlightState();
 
+	bool getLightOrDark();
+
 private:
 	Mob mob;
 	Graphics::Image* canvas;

@@ -56,6 +56,7 @@ private:
 	Graphics::Image UI;
 	Graphics::Sprite wasdSprite;
 	Graphics::Sprite arrowKeysSprite;
+	Graphics::Sprite spacebarSprite;
 
 	int SCREEN_WIDTH{ 0 };
 	int SCREEN_HEIGHT{ 0 };
