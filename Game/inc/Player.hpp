@@ -83,9 +83,10 @@ private:
 	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
 	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
-	const float lightArc{70.0f};
+	const float lightArc{32.0f}; // ~0.56 radians
 
 	std::string stringState{ "" };
+	std::string lightState{ "" };
 
 	void updateAnims(float deltaTime);
 	void updateColliders();
@@ -98,4 +99,6 @@ private:
 	FlashlightObject* darklightObject{ nullptr };
 
 	void setState(State newState);
+
+	bool debuginfo{ false };
 };

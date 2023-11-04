@@ -191,6 +191,18 @@ void Player::draw()
 	
 #if _DEBUG
 	canvas->drawText(Font::Default, stringState, position.x - 16, position.y - 26, Color::White);
+	switch (flashlight->getState())
+	{
+	case Flashlight::State::Up:
+		break;
+	case Flashlight::State::Down:
+		break;
+	case Flashlight::State::Left:
+		break;
+	case Flashlight::State::Right:
+		break;
+	}
+	canvas->drawText(Font::Default, stringState, position.x - 16, position.y - 42, Color::White);
 	canvas->drawAABB(box.getAABB(), Color::Yellow, {}, FillMode::WireFrame);
 	if (isLit)
 	{
@@ -211,7 +223,10 @@ void Player::draw()
 	canvas->drawLine(position, { position.x + 82, position.y + 134 }, Color::Red, BlendMode::Disable);
 	canvas->drawLine(position, { position.x + 82, position.y - 134 }, Color::Red, BlendMode::Disable);
 
-	canvas->drawLine(position, darklightObject->getPosition(), Color::Blue, BlendMode::Disable);
+	if (debuginfo)
+	{
+		canvas->drawLine(position, darklightObject->getPosition(), Color::Blue, BlendMode::Disable);
+	}
 #endif
 
 	isLit = false;
@@ -352,38 +367,42 @@ void Player::pickUpObject(FlashlightObject& object)
 	}
 
 	glm::vec2 targetDist = object.getPosition() - position;
-	if (length(targetDist) > 64) return;
+	if (length(targetDist) > 100)
+	{
+		debuginfo = false;
+		return;
+	}
+	debuginfo = true;
 
 	glm::vec2 targetNorm = mob.normalize(targetDist);
-	glm::vec2 baseNorm{ 0 };
+	glm::vec2 arcNorm{ 0 };
 
 	switch (flashlight->getState())
 	{
 	case Flashlight::State::Up:
-		baseNorm = mob.normalize({ position.x + 82, position.y - 134 });
-		glm::vec2 arcNorm = 
+		arcNorm = { 0, -1 };
 		break;
 
 	case Flashlight::State::Down:
-		baseNorm = mob.normalize({ position.x - 82, position.y + 134 });
+		arcNorm = { 0, 1 };
 		break;
 
 	case Flashlight::State::Left:
-		baseNorm = mob.normalize({ position.x - 134, position.y - 82 });
+		arcNorm = { -1, 0 };
 		break;
 
 	case Flashlight::State::Right:
-		baseNorm = mob.normalize({ position.x + 134, position.y + 82 });
+		arcNorm = { 1, 0 };
 		break;
 
 	default:
 		return;
 	}
-	float radians = acos((targetNorm.x * baseNorm.x) + (targetNorm.y * baseNorm.y));
-	float degrees = radians * (180.0 / 3.141592653589793238463);
-	if (degrees < lightArc)
+	float targetRad = acos((targetNorm.x * arcNorm.x) + (targetNorm.y * arcNorm.y));
+	float targetDeg = targetRad * (180.0 / 3.141592653589793238463);
+	if (targetDeg < lightArc)
 	{
-		Singleton<Logger>::GetInstance().write(std::to_string(degrees));
+		Singleton<Logger>::GetInstance().write("target: " + std::to_string(targetDeg));
 		//setHasDarklight(true);
 		//flashlight->setLightPickedUp();
 		//object.pickUp();

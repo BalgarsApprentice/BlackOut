@@ -91,6 +91,11 @@ void Flashlight::setFlashlightPosition(const glm::vec2& aPos)
 		currentFlashlightSprite = darkSprites[0];
 	}
 
+	if (state == State::Old)
+	{
+		state = oldState;
+	}
+
 	switch (state)
 	{
 	case State::Left:

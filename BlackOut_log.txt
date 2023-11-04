@@ -1,11 +1,2 @@
 Blackout has started.
 variousUI has entered its start state.
-variousUI has entered its flashlight state.
-64.672852
-64.672852
-64.672852
-64.672852
-63.824947
-63.824947
-61.294125
-61.294125
