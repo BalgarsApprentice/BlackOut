@@ -29,6 +29,11 @@ void EventHandler::eventQueue(Window* window)
                 window->toggleFullscreen();
                 break;
 
+            case KeyCode::R: //WIP
+                //gameManager->clearAllGameObjects();
+                //gameManager->reinitializeGame();
+                break;
+
             case KeyCode::P:
                 if (variousUI->getDisplaySetting()) break;
 

@@ -15,6 +15,7 @@
     <ClCompile Include="src\BoxCollider.cpp" />
     <ClCompile Include="src\CircleCollider.cpp" />
     <ClCompile Include="src\Collider.cpp" />
+    <ClCompile Include="src\EndGoal.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EventHandler.cpp" />
     <ClCompile Include="src\Flashlight.cpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="inc\BoxCollider.hpp" />
     <ClInclude Include="inc\CircleCollider.hpp" />
     <ClInclude Include="inc\Collider.hpp" />
+    <ClInclude Include="inc\EndGoal.hpp" />
     <ClInclude Include="inc\Enemy.hpp" />
     <ClInclude Include="inc\EventHandler.hpp" />
     <ClInclude Include="inc\Flashlight.hpp" />

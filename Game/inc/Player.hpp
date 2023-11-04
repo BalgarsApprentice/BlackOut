@@ -11,6 +11,7 @@
 #include <Audio/Sound.hpp>
 #include <Flashlight.hpp>
 #include <FlashlightObject.hpp>
+#include <EndGoal.hpp>
 #include <Human.hpp>
 #include <cmath>
 
@@ -52,7 +53,7 @@ public:
 
 	void handleCollision(Math::AABB aabb) override;
 
-	void sendFlashlightObjects(FlashlightObject& light, FlashlightObject& dark);
+	void sendFlashlightObjects(FlashlightObject& light, FlashlightObject& dark, EndGoal& aGoal);
 
 	const State getState() const;
 
@@ -63,6 +64,8 @@ public:
 	bool getLightOrDark();
 
 	void pickUpObject(FlashlightObject& object);
+
+	void getGoal();
 
 private:
 	Mob mob;
@@ -97,8 +100,7 @@ private:
 
 	FlashlightObject* flashlightObject{ nullptr };
 	FlashlightObject* darklightObject{ nullptr };
+	GameObject* goal{ nullptr };
 
 	void setState(State newState);
-
-	bool debuginfo{ false };
 };

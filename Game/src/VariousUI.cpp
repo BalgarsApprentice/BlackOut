@@ -26,9 +26,13 @@ void VariousUI::initializeUI()
 	auto spaceBarImage = ResourceManager::loadImage("assets/textures/spacebar.png");
 	spaceBarSprite = Sprite{ spaceBarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
 
+	auto coinSprites = ResourceManager::loadSpriteSheet("assets/textures/bigcoin.png", 48, 48, 0, 0, BlendMode::AlphaBlend);
+	coinAnim = SpriteAnim{ coinSprites, 4, { { 0, 1, 2, 3, 4, 5, 6, 7, 8 } } };
+
 	soundTrack.loadMusic("assets/sounds/soundtrack.mp3");
 	buttonClick.loadSound("assets/sounds/TitleScreen/buttonecho.wav");
 	pickUp.loadSound("assets/sounds/pickup.wav");
+	coin.loadSound("assets/sounds/coin.wav");
 }
 
 const bool VariousUI::getDisplaySetting() const
@@ -51,6 +55,8 @@ void VariousUI::updateUI(const float deltaTime)
 		isStartText = !isStartText;
 		secondCheck = 0.0f;
 	}
+
+	coinAnim.update(deltaTime);
 }
 
 void VariousUI::setState(UI state)
@@ -171,7 +177,7 @@ void VariousUI::foundFlashlightUI()
 	drawCustomBorder(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 4 * 3, SCREEN_HEIGHT / 4 * 3, true);
 	textBox.drawText(Font{ 3.0f }, "You found", 308, 183, Color::Black);
 	textBox.drawText(Font{ 3.0f }, "the flashlight!", 278, 219, Color::Black);
-	textBox.drawText(Font{ 3.0f }, "flashlight!", 347, 219, Color::Blue);
+	textBox.drawText(Font{ 3.0f }, "flashlight", 347, 219, Color::Blue);
 	textBox.drawText(Font{ 2.0f }, "Control the direction of the", 237, 263, Color::Black);
 	textBox.drawText(Font{ 2.0f }, "flashlight using the arrow keys.", 218, 287, Color::Black);
 	textBox.drawSprite(arrowKeysSprite, 345, 321);
@@ -203,7 +209,7 @@ void VariousUI::foundDarklightUI()
 	drawCustomBorder(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 4 * 3, SCREEN_HEIGHT / 4 * 3, true);
 	textBox.drawText(Font{ 3.0f }, "You found", 308, 183, Color::Black);
 	textBox.drawText(Font{ 3.0f }, "the darklight!", 281, 219, Color::Black);
-	textBox.drawText(Font{ 3.0f }, "darklight!", 350, 219, Color::Blue);
+	textBox.drawText(Font{ 3.0f }, "darklight", 350, 219, Color::Blue);
 	textBox.drawText(Font{ 2.0f }, "Swap from the flashlight to the", 217, 263, Color::Black);
 	textBox.drawText(Font{ 2.0f }, "darklight using the space bar.", 227, 287, Color::Black);
 	textBox.drawSprite(spaceBarSprite, 339, 347);
@@ -212,6 +218,27 @@ void VariousUI::foundDarklightUI()
 	{
 		textBox.drawText(Font::Default, "(PRESS ENTER TO CONTINUE)", 279, 400, Color::Black);
 	}
+
+	//textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
+}
+
+void VariousUI::foundEndGoalUI()
+{
+	if (textBoxTime < 0.2f)
+	{
+		coin.play();
+	}
+
+	drawCustomBorder(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 4 * 3, SCREEN_HEIGHT / 4 * 3, true);
+	textBox.drawText(Font{ 3.0f }, "You found", 308, 183, Color::Black);
+	textBox.drawText(Font{ 3.0f }, "the golden coin!", 263, 219, Color::Black);
+	textBox.drawText(Font{ 3.0f }, "golden coin", 332, 219, Color::Blue);
+	textBox.drawText(Font{ 4.0f }, "You win!!", 298, 263, Color::Black);
+
+	textBox.drawSprite(coinAnim, 364, 320);
+
+	//textBox.drawText(Font::Default, "(PRESS R TO RESTART THE GAME)", 258, 392, Color::Black);
+	textBox.drawText(Font::Default, "(PRESS ESCAPE TO EXIT THE GAME)", 250, 408, Color::Black);
 
 	//textBox.drawAABB(AABB{ { SCREEN_WIDTH / 2 - 1, 0, 0 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0 } }, Color::Red, BlendMode::Disable);
 }
@@ -238,6 +265,7 @@ Image& VariousUI::getUI()
 		break;
 
 	case VariousUI::UI::end:
+		foundEndGoalUI();
 		break;
 
 	default:
@@ -259,4 +287,5 @@ void VariousUI::destroySound()
 	soundTrack = nullptr;
 	buttonClick = nullptr;
 	pickUp = nullptr;
+	coin = nullptr;
 }

@@ -26,6 +26,8 @@ public:
 
 	void pickUp();
 
+	void endGame();
+
 private:
 	VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
 

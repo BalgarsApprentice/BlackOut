@@ -31,14 +31,20 @@ void GameManager::initializeGame(Window* prtWindow)
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	UI.resize(96, SCREEN_HEIGHT);
 
-	level.levelSetup(canvas, darkness, player);
+	level.levelSetup(canvas, darkness);
+	setupGameObjects();
+}
+
+void GameManager::reinitializeGame()
+{
+	level.levelSetup(canvas, darkness);
 	setupGameObjects();
 }
 
 void GameManager::setupGameObjects()
 {
 	GameObject::setupGameObjects();
-	player.sendFlashlightObjects(flashlightObject, darklightObject);
+	player.sendFlashlightObjects(flashlightObject, darklightObject, coinGoal);
 }
 
 void GameManager::updateGameObjects(float deltaTime)

@@ -6,6 +6,7 @@
 #include <Graphics/Image.hpp>
 #include <Graphics/ResourceManager.hpp>
 #include <Graphics/Input.hpp>
+#include <Graphics/SpriteAnim.hpp>
 #include <Math/AABB.hpp>
 #include <Audio/Sound.hpp>
 
@@ -46,6 +47,8 @@ public:
 
 	void foundDarklightUI();
 
+	void foundEndGoalUI();
+
 	Graphics::Image& getUI();
 	
 	Audio::Sound& getSoundTrack();
@@ -69,10 +72,12 @@ private:
 	Graphics::Sprite titleSprite;
 	Graphics::Sprite arrowKeysSprite;
 	Graphics::Sprite spaceBarSprite;
+	Graphics::SpriteAnim coinAnim;
 
 	Audio::Sound soundTrack;
 	Audio::Sound buttonClick;
 	Audio::Sound pickUp;
+	Audio::Sound coin;
 
 	UI ui{ none };
 	std::string stateString{ "" };

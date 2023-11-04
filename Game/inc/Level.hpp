@@ -13,7 +13,7 @@ public:
 
     friend class Player;
 
-    void levelSetup(Graphics::Image& canvas, Graphics::Image& darkness, Player& player);
+    void levelSetup(Graphics::Image& canvas, Graphics::Image& darkness);
 
     void levelUnload();
 

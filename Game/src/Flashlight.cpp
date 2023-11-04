@@ -159,6 +159,10 @@ const Flashlight::State Flashlight::getOldState() const
 
 void Flashlight::setPlayerState(State aState)
 {
+	if (aState == State::Old)
+	{
+		aState = oldState;
+	}
 	playerState = aState;
 }
 

@@ -4,7 +4,7 @@ using namespace Graphics;
 
 Level::Level() = default;
 
-void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness, Player& player)
+void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
 {
 	auto groundtileSprites = ResourceManager::loadSpriteSheet("assets/textures/groundtiles.png", 32, 32, 0, 0);
 	groundTiles = TileMap{ groundtileSprites, numRows, numColumns };
@@ -37,6 +37,7 @@ void Level::levelUnload()
     {
         delete Light::arrayOfptrLights[i];
     }
+    Light::endOfLightArray = 0;
 }
 
 Graphics::TileMap& Level::getTileMap()

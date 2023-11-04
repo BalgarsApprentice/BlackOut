@@ -75,6 +75,11 @@ void FlashlightObject::pickUp()
 	gone = true;
 }
 
+void FlashlightObject::endGame()
+{
+	variousUI->setState(variousUI->UI::end);
+}
+
 bool FlashlightObject::flashlightCollision()
 {
 

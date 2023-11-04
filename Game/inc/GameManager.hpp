@@ -7,8 +7,8 @@
 #include <GameObject.hpp>
 #include <Player.hpp>
 #include <Human.hpp>
-#include <Enemy.hpp>
-#include <Tracker.hpp>
+#include <FlashlightObject.hpp>
+#include <EndGoal.hpp>
 #include <AI.hpp>
 #include <Math/AABB.hpp>
 
@@ -18,6 +18,8 @@ public:
 	void setScreenSize(int width, int height);
 
 	void initializeGame(Graphics::Window* window);
+
+	void reinitializeGame();
 
 	void setupGameObjects();
 
@@ -77,4 +79,5 @@ private:
 	//Enemy enemy{ { 300.0f, 300.0f }, tracker, canvas, &level };
 	FlashlightObject flashlightObject{ glm::vec2{ 668, 100 }, canvas, true };
 	FlashlightObject darklightObject{ glm::vec2{ 196, 484 }, canvas, false };
+	EndGoal coinGoal{ glm::vec2{ 674, 484 }, canvas };
 };

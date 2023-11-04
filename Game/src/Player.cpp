@@ -67,15 +67,18 @@ void Player::update(float deltaTime)
 	}
 
 	pickUpObject(*flashlightObject);
-	pickUpObject(*darklightObject);
 
 	if (!hasFlashlight) return; //only continue if the player has found the flashlight
+
+	pickUpObject(*darklightObject);
 
 	Math::AABB myAABB = getBox().getAABB();
 	flashlight->setFlashlightPosition({ position.x - 32, position.y - 24 });
 	flashlight->setPlayerState(sendFlashlightState());
 
 	if (!flashlight->getLightOrDark()) return; //only continue if the flashlight is not in its darklight mode
+
+	getGoal();
 
 	int len = sizeof(level->obstacles) / sizeof(BoxCollider);
 	for (int i = 0; i < len; ++i)
@@ -194,15 +197,22 @@ void Player::draw()
 	switch (flashlight->getState())
 	{
 	case Flashlight::State::Up:
+		lightState = "Up";
 		break;
 	case Flashlight::State::Down:
+		lightState = "Down";
 		break;
 	case Flashlight::State::Left:
+		lightState = "Left";
 		break;
 	case Flashlight::State::Right:
+		lightState = "Right";
+		break;
+	default:
+		lightState = "Uh oh!";
 		break;
 	}
-	canvas->drawText(Font::Default, stringState, position.x - 16, position.y - 42, Color::White);
+	canvas->drawText(Font::Default, lightState, position.x - 16, position.y - 42, Color::White);
 	canvas->drawAABB(box.getAABB(), Color::Yellow, {}, FillMode::WireFrame);
 	if (isLit)
 	{
@@ -223,10 +233,7 @@ void Player::draw()
 	canvas->drawLine(position, { position.x + 82, position.y + 134 }, Color::Red, BlendMode::Disable);
 	canvas->drawLine(position, { position.x + 82, position.y - 134 }, Color::Red, BlendMode::Disable);
 
-	if (debuginfo)
-	{
-		canvas->drawLine(position, darklightObject->getPosition(), Color::Blue, BlendMode::Disable);
-	}
+	//canvas->drawLine(position, goal->getPosition(), Color::Blue, BlendMode::Disable);
 #endif
 
 	isLit = false;
@@ -305,10 +312,11 @@ void Player::handleCollision(Math::AABB aabb)
 	updateColliders();
 }
 
-void Player::sendFlashlightObjects(FlashlightObject& light,FlashlightObject& dark)
+void Player::sendFlashlightObjects(FlashlightObject& light,FlashlightObject& dark, EndGoal& aGoal)
 {
 	flashlightObject = &light;
 	darklightObject = &dark;
+	goal = &aGoal;
 }
 
 void Player::setState(State newState)
@@ -367,12 +375,7 @@ void Player::pickUpObject(FlashlightObject& object)
 	}
 
 	glm::vec2 targetDist = object.getPosition() - position;
-	if (length(targetDist) > 100)
-	{
-		debuginfo = false;
-		return;
-	}
-	debuginfo = true;
+	if (length(targetDist) > 32 || length(targetDist) < 6) return;
 
 	glm::vec2 targetNorm = mob.normalize(targetDist);
 	glm::vec2 arcNorm{ 0 };
@@ -402,10 +405,46 @@ void Player::pickUpObject(FlashlightObject& object)
 	float targetDeg = targetRad * (180.0 / 3.141592653589793238463);
 	if (targetDeg < lightArc)
 	{
-		Singleton<Logger>::GetInstance().write("target: " + std::to_string(targetDeg));
-		//setHasDarklight(true);
-		//flashlight->setLightPickedUp();
-		//object.pickUp();
+		setHasDarklight(true);
+		flashlight->setDarkPickedUp();
+		object.pickUp();
+	}
+}
+
+void Player::getGoal()
+{
+	glm::vec2 targetDist = goal->getPosition() - position;
+	if (length(targetDist) > 16 || length(targetDist) < 8) return;
+
+	glm::vec2 targetNorm = mob.normalize(targetDist);
+	glm::vec2 arcNorm{ 0 };
+
+	switch (flashlight->getState())
+	{
+	case Flashlight::State::Up:
+		arcNorm = { 0, -1 };
+		break;
+
+	case Flashlight::State::Down:
+		arcNorm = { 0, 1 };
+		break;
+
+	case Flashlight::State::Left:
+		arcNorm = { -1, 0 };
+		break;
+
+	case Flashlight::State::Right:
+		arcNorm = { 1, 0 };
+		break;
+
+	default:
+		return;
+	}
+	float targetRad = acos((targetNorm.x * arcNorm.x) + (targetNorm.y * arcNorm.y));
+	float targetDeg = targetRad * (180.0 / 3.141592653589793238463);
+	if (targetDeg < lightArc)
+	{
+		flashlightObject->endGame();
 	}
 }
 
