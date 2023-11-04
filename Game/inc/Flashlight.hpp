@@ -27,7 +27,7 @@ public:
 
 	void setup() override;
 
-	void update(float deltaTime, GameObject& player) override;
+	void update(float deltaTime) override;
 
 	void draw() override;
 
@@ -44,6 +44,10 @@ public:
 	void setPlayerState(State aState);
 
 	const bool getLightOrDark() const;
+
+	void setLightPickedUp();
+
+	void setDarkPickedUp();
 
 private:
 	Graphics::Image* darkness;
@@ -67,6 +71,8 @@ private:
 	State oldState{ State::Right };
 	State playerState{ State::Right };
 	bool isLightOrDark{ 1 }; // 1 is regular light and 0 is the dark light
+	bool lightPickedUp{ false };
+	bool darkPickedUp{ false };
 
 	BoxCollider box{ {{0, 0, 0}, {1, 1, 0}} };
 

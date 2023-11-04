@@ -16,7 +16,7 @@ void GameObject::setup()
 	Singleton<Logger>::GetInstance().write("Object missed setup. Check for override.");
 }
 
-void GameObject::update(float deltaTime, GameObject& player)
+void GameObject::update(float deltaTime)
 {
 	Singleton<Logger>::GetInstance().write("Object missed update. Check for override.");
 }
@@ -67,11 +67,11 @@ void GameObject::setupGameObjects()
 	}
 }
 
-void GameObject::updateGameObjects(float deltaTime, GameObject& player)
+void GameObject::updateGameObjects(float deltaTime)
 {
 	for (int i = 0; i < endOfObjectArray; ++i)
 	{
-		arrayOfprtObjects[i]->update(deltaTime, player);
+		arrayOfprtObjects[i]->update(deltaTime);
 	}
 }
 

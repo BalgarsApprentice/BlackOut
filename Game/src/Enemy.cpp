@@ -26,7 +26,7 @@ void Enemy::setup()
 	downAnim = SpriteAnim{ shareSprites, 6, { {0, 1, 2, 3, 4, 5} } };
 }
 
-void Enemy::update(float deltaTime, GameObject& player)
+void Enemy::update(float deltaTime)
 {
 	if (!isLit) return;
 
@@ -62,10 +62,10 @@ void Enemy::update(float deltaTime, GameObject& player)
 	{
 		setState(State::Idle);
 	}
-	if (length(position - player.getPosition()) < 10)
-	{
-		setState(State::Attacking);
-	}
+	//if (length(position - player.getPosition()) < 10)
+	//{
+	//	setState(State::Attacking);
+	//}
 }
 
 void Enemy::draw()

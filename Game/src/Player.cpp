@@ -28,9 +28,10 @@ void Player::setup()
 	downAnim	= SpriteAnim{ shareSprites, 4, { {0, 2} } };
 	//deadAnim	= SpriteAnim{ shareSprites, 0, { {1, 1} } };
 	noneAnim	= SpriteAnim{ shareSprites, 0, { {1} } };
+	updateColliders();
 }
 
-void Player::update(float deltaTime, GameObject& player)
+void Player::update(float deltaTime)
 {
 	lastPosition = position;
 	position = mob.move(position, deltaTime);
@@ -64,6 +65,9 @@ void Player::update(float deltaTime, GameObject& player)
 	{
 		setState(State::Idle);
 	}
+
+	pickUpObject(*flashlightObject);
+	pickUpObject(*darklightObject);
 
 	if (!hasFlashlight) return; //only continue if the player has found the flashlight
 
@@ -194,6 +198,20 @@ void Player::draw()
 	}
 
 	canvas->drawAABB(flashlight->getBox().getAABB(), Color::Red, {}, FillMode::Solid);
+
+	canvas->drawLine(position, { position.x - 134, position.y + 82 }, Color::Red, BlendMode::Disable);
+	canvas->drawLine(position, { position.x - 134, position.y - 82 }, Color::Red, BlendMode::Disable);
+
+	canvas->drawLine(position, { position.x + 134, position.y + 82 }, Color::Red, BlendMode::Disable);
+	canvas->drawLine(position, { position.x + 134, position.y - 82 }, Color::Red, BlendMode::Disable);
+
+	canvas->drawLine(position, { position.x - 82, position.y + 134 }, Color::Red, BlendMode::Disable);
+	canvas->drawLine(position, { position.x - 82, position.y - 134 }, Color::Red, BlendMode::Disable);
+
+	canvas->drawLine(position, { position.x + 82, position.y + 134 }, Color::Red, BlendMode::Disable);
+	canvas->drawLine(position, { position.x + 82, position.y - 134 }, Color::Red, BlendMode::Disable);
+
+	canvas->drawLine(position, darklightObject->getPosition(), Color::Blue, BlendMode::Disable);
 #endif
 
 	isLit = false;
@@ -254,6 +272,7 @@ void Player::handleCollision(Math::AABB aabb)
 			position += box.openCollision(aabb, direction, BoxCollider::Side::right);
 			break;
 		}
+		direction = (position - lastPosition);
 		updateColliders();
 		return;
 	}
@@ -261,12 +280,20 @@ void Player::handleCollision(Math::AABB aabb)
 	if (aabb.holds(getBox().getAABB()))
 	{
 		position = lastPosition;
+		direction = (position - lastPosition);
 		updateColliders();
 		return;
 	}
 
 	position += box.faceCollision(aabb, direction);
+	direction = (position - lastPosition);
 	updateColliders();
+}
+
+void Player::sendFlashlightObjects(FlashlightObject& light,FlashlightObject& dark)
+{
+	flashlightObject = &light;
+	darklightObject = &dark;
 }
 
 void Player::setState(State newState)
@@ -307,6 +334,60 @@ Flashlight::State Player::sendFlashlightState()
 bool Player::getLightOrDark()
 {
 	return flashlight->getLightOrDark();
+}
+
+void Player::pickUpObject(FlashlightObject& object)
+{
+	if (object.getGone()) return;
+
+	if (object.getLightOrDark())
+	{
+		if (object.getBox().getAABB().intersect(this->box.getAABB()))
+		{
+			setHasFlashlight(true);
+			flashlight->setLightPickedUp();
+			object.pickUp();
+		}
+		return;
+	}
+
+	glm::vec2 targetDist = object.getPosition() - position;
+	if (length(targetDist) > 64) return;
+
+	glm::vec2 targetNorm = mob.normalize(targetDist);
+	glm::vec2 baseNorm{ 0 };
+
+	switch (flashlight->getState())
+	{
+	case Flashlight::State::Up:
+		baseNorm = mob.normalize({ position.x + 82, position.y - 134 });
+		glm::vec2 arcNorm = 
+		break;
+
+	case Flashlight::State::Down:
+		baseNorm = mob.normalize({ position.x - 82, position.y + 134 });
+		break;
+
+	case Flashlight::State::Left:
+		baseNorm = mob.normalize({ position.x - 134, position.y - 82 });
+		break;
+
+	case Flashlight::State::Right:
+		baseNorm = mob.normalize({ position.x + 134, position.y + 82 });
+		break;
+
+	default:
+		return;
+	}
+	float radians = acos((targetNorm.x * baseNorm.x) + (targetNorm.y * baseNorm.y));
+	float degrees = radians * (180.0 / 3.141592653589793238463);
+	if (degrees < lightArc)
+	{
+		Singleton<Logger>::GetInstance().write(std::to_string(degrees));
+		//setHasDarklight(true);
+		//flashlight->setLightPickedUp();
+		//object.pickUp();
+	}
 }
 
 void Player::updateAnims(float deltaTime)

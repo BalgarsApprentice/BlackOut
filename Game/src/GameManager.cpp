@@ -18,27 +18,34 @@ void GameManager::initializeGame(Window* prtWindow)
 	wasdSprite = Sprite{ wasdImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
 	auto arrowKeysImage = ResourceManager::loadImage("assets/textures/arrowkeys.png");
 	arrowKeysSprite = Sprite{ arrowKeysImage, {0, 0, 86, 58}, BlendMode::AlphaBlend };
-	auto spacebarImage = ResourceManager::loadImage("assets/textures/spacebar.png");
-	spacebarSprite = Sprite{ spacebarImage, {0, 0, 98, 27}, BlendMode::AlphaBlend };
+	auto spacebarImage = ResourceManager::loadImage("assets/textures/shortspacebar.png");
+	spacebarSprite = Sprite{ spacebarImage, {0, 0, 86, 27}, BlendMode::AlphaBlend };
+	auto pkeyImage = ResourceManager::loadImage("assets/textures/pkey.png");
+	pkeySprite = Sprite{ pkeyImage, {0, 0, 25, 27}, BlendMode::AlphaBlend };
+	auto mkeyImage = ResourceManager::loadImage("assets/textures/mkey.png");
+	mkeySprite = Sprite{ mkeyImage, {0, 0, 25, 27}, BlendMode::AlphaBlend };
+	auto esckeyImage = ResourceManager::loadImage("assets/textures/esckey.png");
+	esckeySprite = Sprite{ esckeyImage, {0, 0, 25, 27}, BlendMode::AlphaBlend };
 
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	UI.resize(96, SCREEN_HEIGHT);
 
-	level.levelSetup(canvas, darkness);
+	level.levelSetup(canvas, darkness, player);
 	setupGameObjects();
 }
 
 void GameManager::setupGameObjects()
 {
 	GameObject::setupGameObjects();
+	player.sendFlashlightObjects(flashlightObject, darklightObject);
 }
 
 void GameManager::updateGameObjects(float deltaTime)
 {
 	if (isGameRunning)
 	{
-		GameObject::updateGameObjects(deltaTime, player);
+		GameObject::updateGameObjects(deltaTime);
 		Light::litCheck(&player);
 	}
 
@@ -120,6 +127,9 @@ void GameManager::drawToCanvas()
 	canvas.drawSprite(wasdSprite, 7, 138);
 	canvas.drawSprite(arrowKeysSprite, 7, 243);
 	canvas.drawSprite(spacebarSprite, 7, 348);
+	canvas.drawSprite(pkeySprite, 68, 389);
+	canvas.drawSprite(mkeySprite, 68, 425);
+	canvas.drawSprite(esckeySprite, 68, 461);
 
 	if (player.getLightOrDark()) 
 	{
@@ -135,8 +145,9 @@ void GameManager::drawToCanvas()
 	canvas.drawText(Font{ 1.8f }, "TOGGLE", 16, 315, Color::Black);
 	canvas.drawText(Font{ 1.8f }, "LIGHT", 24, 331, Color::Black);
 
-	canvas.drawText(Font{ 1.8f }, "PAUSE", 9, 389, Color::Black);
-	canvas.drawText(Font{ 1.8f }, "MUTE", 9, 415, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "PAUSE", 9, 396, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "MUTE", 9, 432, Color::Black);
+	canvas.drawText(Font{ 1.8f }, "EXIT", 9, 468, Color::Black);
 
 	if (!player.getHasFlashlight())
 	{

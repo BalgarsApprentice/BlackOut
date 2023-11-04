@@ -25,11 +25,11 @@ void Flashlight::setup()
 	downDarklightSprite = Sprite(darklightImages, { 0, 492, 134, 164 }, BlendMode::AlphaBlend);
 }
 
-void Flashlight::update(float deltaTime, GameObject& player)
+void Flashlight::update(float deltaTime)
 {
-	if (!player.getHasFlashlight()) return;
+	if (!lightPickedUp) return;
 
-	if (player.getHasDarklight())
+	if (darkPickedUp)
 	{
 		if (Input::getKeyDown(Graphics::KeyCode::Space))
 		{
@@ -160,6 +160,16 @@ void Flashlight::setPlayerState(State aState)
 const bool Flashlight::getLightOrDark() const
 {
 	return isLightOrDark;
+}
+
+void Flashlight::setLightPickedUp()
+{
+	lightPickedUp = true;
+}
+
+void Flashlight::setDarkPickedUp()
+{
+	darkPickedUp = true;
 }
 
 void Flashlight::toggleLight()

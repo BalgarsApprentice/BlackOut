@@ -57,6 +57,9 @@ private:
 	Graphics::Sprite wasdSprite;
 	Graphics::Sprite arrowKeysSprite;
 	Graphics::Sprite spacebarSprite;
+	Graphics::Sprite pkeySprite;
+	Graphics::Sprite mkeySprite;
+	Graphics::Sprite esckeySprite;
 
 	int SCREEN_WIDTH{ 0 };
 	int SCREEN_HEIGHT{ 0 };
@@ -72,4 +75,6 @@ private:
 	Flashlight flashlight{ startPosition, darkness };
 	//Tracker tracker{ &player };
 	//Enemy enemy{ { 300.0f, 300.0f }, tracker, canvas, &level };
+	FlashlightObject flashlightObject{ glm::vec2{ 668, 100 }, canvas, true };
+	FlashlightObject darklightObject{ glm::vec2{ 196, 484 }, canvas, false };
 };

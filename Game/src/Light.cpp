@@ -19,7 +19,7 @@ void Light::setup()
 	lightAnim = SpriteAnim{ lightSprites, 4, {} };
 }
 
-void Light::update(float deltaTime, GameObject& player)
+void Light::update(float deltaTime)
 {
 	lightAnim.update(deltaTime);
 }

@@ -4,7 +4,7 @@ using namespace Graphics;
 
 Level::Level() = default;
 
-void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
+void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness, Player& player)
 {
 	auto groundtileSprites = ResourceManager::loadSpriteSheet("assets/textures/groundtiles.png", 32, 32, 0, 0);
 	groundTiles = TileMap{ groundtileSprites, numRows, numColumns };
@@ -28,9 +28,6 @@ void Level::levelSetup(Graphics::Image& canvas, Graphics::Image& darkness)
     }
 
     Light::setLit(false);
-
-    ptrFlashlightObject = new FlashlightObject({668, 100}, canvas, true);
-    ptrDarklightObject = new FlashlightObject({ 196, 484 }, canvas, false);
 }
 
 void Level::levelUnload()
@@ -40,9 +37,6 @@ void Level::levelUnload()
     {
         delete Light::arrayOfptrLights[i];
     }
-
-    delete ptrFlashlightObject;
-    delete ptrDarklightObject;
 }
 
 Graphics::TileMap& Level::getTileMap()

@@ -21,7 +21,7 @@ public:
 
 	virtual void setup();
 
-	virtual void update(float deltaTime, GameObject& player);
+	virtual void update(float deltaTime);
 
 	virtual void draw();
 
@@ -43,7 +43,7 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////
 	static void setupGameObjects();
 
-	static void updateGameObjects(float deltaTime, GameObject& player);
+	static void updateGameObjects(float deltaTime);
 
 	static void drawGameObjects();
 

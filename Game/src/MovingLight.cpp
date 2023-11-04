@@ -19,7 +19,7 @@ void MovingLight::setup()
 	lightAnim = SpriteAnim{ lightSprites, 4, {} };
 }
 
-void MovingLight::update(float deltaTime, GameObject& player)
+void MovingLight::update(float deltaTime)
 {
 	if (isMove)
 	{

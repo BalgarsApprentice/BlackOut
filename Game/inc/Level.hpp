@@ -4,15 +4,16 @@
 #include <Graphics/TileMap.hpp>
 #include <MovingLight.hpp>
 #include <FlashlightObject.hpp>
+#include <Player.hpp>
 
 class Level
 {
 public:
     Level();
 
-    void levelSetup(Graphics::Image& canvas, Graphics::Image& darkness);
-
     friend class Player;
+
+    void levelSetup(Graphics::Image& canvas, Graphics::Image& darkness, Player& player);
 
     void levelUnload();
 
@@ -66,9 +67,6 @@ private:
     };
 
     glm::vec2 arrayOfMPositions[1]{ {228, 100} };
-
-    FlashlightObject* ptrFlashlightObject{nullptr};
-    FlashlightObject* ptrDarklightObject{ nullptr };
 
 #if _DEBUG
 public:

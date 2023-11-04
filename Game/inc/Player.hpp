@@ -1,14 +1,18 @@
 #pragma once
 
+#include <Singleton.hpp>
+#include <Logger.hpp>
+
 #include <GameObject.hpp>
 #include <Graphics/Image.hpp>
 #include <Mob.hpp>
 #include <Level.hpp>
-#include <Graphics/Input.hpp>
 #include <Graphics/SpriteAnim.hpp>
 #include <Audio/Sound.hpp>
 #include <Flashlight.hpp>
+#include <FlashlightObject.hpp>
 #include <Human.hpp>
+#include <cmath>
 
 class Player : public GameObject
 {
@@ -30,7 +34,7 @@ public:
 
 	void setup() override;
 
-	void update(float deltaTime, GameObject& player) override;
+	void update(float deltaTime) override;
 
 	void draw() override;
 
@@ -48,6 +52,8 @@ public:
 
 	void handleCollision(Math::AABB aabb) override;
 
+	void sendFlashlightObjects(FlashlightObject& light, FlashlightObject& dark);
+
 	const State getState() const;
 
 	const State getOldState() const;
@@ -55,6 +61,8 @@ public:
 	Flashlight::State sendFlashlightState();
 
 	bool getLightOrDark();
+
+	void pickUpObject(FlashlightObject& object);
 
 private:
 	Mob mob;
@@ -75,6 +83,7 @@ private:
 	BoxCollider box{ {{0, 0, 0}, {28, 32, 0}} };
 	CircleCollider circle{ {}, 16 };
 	Flashlight* flashlight;
+	const float lightArc{70.0f};
 
 	std::string stringState{ "" };
 
@@ -84,6 +93,9 @@ private:
 	State state = State::Idle;
 	State oldState = State::Right;
 	glm::vec2 direction{ 0, 0 };
+
+	FlashlightObject* flashlightObject{ nullptr };
+	FlashlightObject* darklightObject{ nullptr };
 
 	void setState(State newState);
 };

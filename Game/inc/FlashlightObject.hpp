@@ -2,8 +2,6 @@
 
 #include <Singleton.hpp>
 #include <VariousUI.hpp>
-
-#include <GameObject.hpp>
 #include <Light.hpp>
 #include <Graphics/SpriteAnim.hpp>
 
@@ -16,20 +14,32 @@ public:
 	
 	void setup() override;
 
-	void update(float deltaTime, GameObject& player) override;
+	void update(float deltaTime) override;
 
 	void draw() override;
+
+	BoxCollider& getBox() override;
+
+	bool getGone();
+
+	bool getLightOrDark();
+
+	void pickUp();
 
 private:
 	VariousUI* variousUI = &Singleton<VariousUI>::GetInstance();
 
 	Graphics::Image* canvas;
-	Graphics::Sprite objectSprite;
+	Graphics::Sprite lightSprite;
+	Graphics::Sprite darkSprite;
 	
 
 	bool gone{ false };
 	bool isLightOrDark{ true };
 
-	BoxCollider box{ Math::AABB{ {0, 0, 0}, {32, 16, 0} } };
+	BoxCollider box{ Math::AABB{ {-16, -8, 0}, {16, 8, 0} } };
 
+	bool flashlightCollision();
+
+	void updateColliders();
 };
