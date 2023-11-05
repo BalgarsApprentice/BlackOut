@@ -62,6 +62,7 @@ private:
 	Graphics::Sprite pkeySprite;
 	Graphics::Sprite mkeySprite;
 	Graphics::Sprite esckeySprite;
+	Graphics::SpriteAnim coinAnim;
 
 	int SCREEN_WIDTH{ 0 };
 	int SCREEN_HEIGHT{ 0 };

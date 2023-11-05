@@ -27,6 +27,9 @@ void GameManager::initializeGame(Window* prtWindow)
 	auto esckeyImage = ResourceManager::loadImage("assets/textures/esckey.png");
 	esckeySprite = Sprite{ esckeyImage, {0, 0, 25, 27}, BlendMode::AlphaBlend };
 
+	auto coinSprites = ResourceManager::loadSpriteSheet("assets/textures/midcoin.png", 24, 24, 0, 0, BlendMode::AlphaBlend);
+	coinAnim = SpriteAnim{ coinSprites, 4, { { 0, 1, 2, 3, 4, 5, 6, 7, 8 } } };
+
 	canvas.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	darkness.resize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	UI.resize(96, SCREEN_HEIGHT);
@@ -49,6 +52,8 @@ void GameManager::setupGameObjects()
 
 void GameManager::updateGameObjects(float deltaTime)
 {
+	coinAnim.update(deltaTime);
+
 	if (isGameRunning)
 	{
 		GameObject::updateGameObjects(deltaTime);
@@ -129,6 +134,8 @@ void GameManager::drawToCanvas()
 	canvas.drawAABB(AABB{ { 6, 306, 0 }, { 95, 307, 0 } }, Color::BlueBlack, BlendMode::Disable);
 
 	canvas.drawAABB(AABB{ { 6, 380, 0 }, { 95, 381, 0 } }, Color::BlueBlack, BlendMode::Disable);
+
+	canvas.drawAABB(AABB{ { 6, 492, 0 }, { 95, 493, 0 } }, Color::BlueBlack, BlendMode::Disable);
 	
 	canvas.drawSprite(wasdSprite, 7, 138);
 	canvas.drawSprite(arrowKeysSprite, 7, 243);
@@ -154,6 +161,10 @@ void GameManager::drawToCanvas()
 	canvas.drawText(Font{ 1.8f }, "PAUSE", 9, 396, Color::Black);
 	canvas.drawText(Font{ 1.8f }, "MUTE", 9, 432, Color::Black);
 	canvas.drawText(Font{ 1.8f }, "EXIT", 9, 468, Color::Black);
+
+	canvas.drawText(Font{ 1.8f }, "FIND THE\nGOLDEN\nCOIN!", 9, 504, Color::Black);
+
+	canvas.drawSprite(coinAnim, 60, 542);
 
 	if (!player.getHasFlashlight())
 	{

@@ -132,7 +132,7 @@ static std::map<std::string, AxisCallback> g_AxisMap = {
 
          //const float x = static_cast<float>( mouseState.x );
 
-         return std::clamp( leftX + rightX - a + d /*- left + right + x*/, -1.0f, 1.0f );
+         return std::clamp( /*leftX + rightX*/ -a + d /*- left + right + x*/, -1.0f, 1.0f );
      } },
     { "Vertical", []( std::span<const GamePadStateTracker> gamePadStates, const KeyboardStateTracker& keyboardState, const MouseStateTracker& mouseState ) {
          float leftY  = 0.0f;
