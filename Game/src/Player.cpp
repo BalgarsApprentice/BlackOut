@@ -219,19 +219,19 @@ void Player::draw()
 		canvas->drawCircle({ { position.x - 2, position.y }, 16.0f }, Color::White, {}, FillMode::WireFrame);
 	}
 
-	canvas->drawAABB(flashlight->getBox().getAABB(), Color::Red, {}, FillMode::Solid);
+	//canvas->drawAABB(flashlight->getBox().getAABB(), Color::Red, {}, FillMode::Solid);
 
-	canvas->drawLine(position, { position.x - 134, position.y + 82 }, Color::Red, BlendMode::Disable);
-	canvas->drawLine(position, { position.x - 134, position.y - 82 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x - 134, position.y + 82 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x - 134, position.y - 82 }, Color::Red, BlendMode::Disable);
 
-	canvas->drawLine(position, { position.x + 134, position.y + 82 }, Color::Red, BlendMode::Disable);
-	canvas->drawLine(position, { position.x + 134, position.y - 82 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x + 134, position.y + 82 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x + 134, position.y - 82 }, Color::Red, BlendMode::Disable);
 
-	canvas->drawLine(position, { position.x - 82, position.y + 134 }, Color::Red, BlendMode::Disable);
-	canvas->drawLine(position, { position.x - 82, position.y - 134 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x - 82, position.y + 134 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x - 82, position.y - 134 }, Color::Red, BlendMode::Disable);
 
-	canvas->drawLine(position, { position.x + 82, position.y + 134 }, Color::Red, BlendMode::Disable);
-	canvas->drawLine(position, { position.x + 82, position.y - 134 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x + 82, position.y + 134 }, Color::Red, BlendMode::Disable);
+	//canvas->drawLine(position, { position.x + 82, position.y - 134 }, Color::Red, BlendMode::Disable);
 
 	//canvas->drawLine(position, goal->getPosition(), Color::Blue, BlendMode::Disable);
 #endif
